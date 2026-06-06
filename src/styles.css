@@ -1377,7 +1377,6 @@ textarea.form-field { resize: vertical; height: 96px; }
 
   .awards-strip { padding: 16px 24px; gap: 20px; }
   .testimonial::before { font-size: 180px; top: -20px; }
-}
 
   /* Inline-style grids on Studio/Clients pages — force single column */
   .philosophy-grid,

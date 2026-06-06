@@ -112,7 +112,7 @@ function StudioPage() {
 
       {/* VALUES */}
       <section className="section-pad bg-forest">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end" }}>
+        <div className="split-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end" }}>
           <div>
             <div className="section-eyebrow reveal">What we stand for</div>
             <h2 className="section-title reveal d1" style={{ fontSize: "clamp(36px,4vw,54px)", color: "var(--linen)" }}>

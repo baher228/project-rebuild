@@ -172,7 +172,7 @@ function ClientsPage() {
 
       {/* TRUST */}
       <section className="section-pad bg-linen">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end" }}>
+        <div className="split-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "end" }}>
           <div>
             <div className="section-eyebrow" style={{ color: "var(--gold)" }}>Why clients trust us</div>
             <h2 className="section-title reveal" style={{ fontSize: "clamp(34px,3.8vw,52px)", color: "var(--forest)" }}>

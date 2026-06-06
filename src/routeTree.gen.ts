@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudioRouteImport } from './routes/studio'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as ProcessRouteImport } from './routes/process'
@@ -21,6 +22,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const StudioRoute = StudioRouteImport.update({
   id: '/studio',
   path: '/studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/process': typeof ProcessRoute
   '/projects': typeof ProjectsRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/studio': typeof StudioRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/projects'
     | '/services'
+    | '/sitemap.xml'
     | '/studio'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/projects'
     | '/services'
+    | '/sitemap.xml'
     | '/studio'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/process'
     | '/projects'
     | '/services'
+    | '/sitemap.xml'
     | '/studio'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   ProcessRoute: typeof ProcessRoute
   ProjectsRoute: typeof ProjectsRoute
   ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudioRoute: typeof StudioRoute
 }
 
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/studio'
       fullPath: '/studio'
       preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProcessRoute: ProcessRoute,
   ProjectsRoute: ProjectsRoute,
   ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudioRoute: StudioRoute,
 }
 export const routeTree = rootRouteImport

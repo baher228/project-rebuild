@@ -1379,9 +1379,28 @@ textarea.form-field { resize: vertical; height: 96px; }
   .testimonial::before { font-size: 180px; top: -20px; }
 }
 
+  /* Inline-style grids on Studio/Clients/Contact — force single column */
+  .philosophy-grid,
+  section [style*="grid-template-columns: 1fr 1fr"],
+  section [style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
 @media (max-width: 560px) {
   .form-row { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
   .values-grid, .repeat-grid, .partner-grid { grid-template-columns: 1fr; }
   .hero-title { font-size: 44px; }
+  .arch-hero-left { padding: 120px 22px 50px; }
+  .section-pad,
+  .projects, .services, .testimonial, .journal, .contact-cta,
+  .clients-intro-grid { padding: 64px 22px; }
+  .awards-strip { gap: 14px; padding: 14px 22px; }
+  .award-item { font-size: 14px; }
+  .stat-num { font-size: 44px; }
+  .testi-quote { font-size: 22px; }
+  .service-card { padding: 36px 28px; }
+  .av-footer { padding: 56px 22px 32px; }
 }

@@ -1379,10 +1379,9 @@ textarea.form-field { resize: vertical; height: 96px; }
   .testimonial::before { font-size: 180px; top: -20px; }
 }
 
-  /* Inline-style grids on Studio/Clients/Contact — force single column */
+  /* Inline-style grids on Studio/Clients pages — force single column */
   .philosophy-grid,
-  section [style*="grid-template-columns: 1fr 1fr"],
-  section [style*="gridTemplateColumns"] {
+  .split-grid {
     grid-template-columns: 1fr !important;
     gap: 40px !important;
   }

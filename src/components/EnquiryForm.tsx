@@ -66,7 +66,14 @@ export function EnquiryForm({
           }
 
           if (field.textarea) {
-            rows.push(<textarea key={index} className="form-field" placeholder={field.placeholder} name={field.name} />);
+            rows.push(
+              <textarea
+                key={index}
+                className="form-field"
+                placeholder={field.placeholder}
+                name={field.name}
+              />,
+            );
           } else if (field.options) {
             rows.push(
               <select key={index} className="form-field" name={field.name} defaultValue="">
@@ -97,11 +104,22 @@ export function EnquiryForm({
 
         return rows;
       })()}
-      <button type="submit" className="form-btn" style={sent ? { background: "var(--dark-sage)" } : undefined} disabled={sent}>
+      <button
+        type="submit"
+        className="form-btn"
+        style={sent ? { background: "var(--dark-sage)" } : undefined}
+        disabled={sent}
+      >
         {sent ? "Enquiry sent - we'll be in touch soon." : buttonLabel}
         {!sent && (
           <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M3 8h10M9 4l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         )}
       </button>

@@ -15,9 +15,11 @@ export function useReveal() {
           }
         });
       },
-      { threshold: 0.08 }
+      { threshold: 0.08 },
     );
-    document.querySelectorAll<HTMLElement>(".reveal:not(.visible)").forEach((el) => obs.observe(el));
+    document
+      .querySelectorAll<HTMLElement>(".reveal:not(.visible)")
+      .forEach((el) => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 }

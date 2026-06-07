@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Crimson_Text, Josefin_Sans } from "next/font/google";
 
-import "../styles.css";
+import "./globals.css";
 import { RevealObserver } from "@/components/RevealObserver";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
@@ -36,7 +36,8 @@ export const metadata: Metadata = {
   authors: [{ name: "Ardivia" }],
   openGraph: {
     title: "Ardivia - Bespoke Design & Build, London",
-    description: "Architecture that endures. Bespoke design and build for those who demand the extraordinary.",
+    description:
+      "Architecture that endures. Bespoke design and build for those who demand the extraordinary.",
     type: "website",
   },
   twitter: {
@@ -46,7 +47,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${serifFont.variable} ${sansFont.variable}`}>
+    <html
+      lang="en"
+      className={`${displayFont.variable} ${serifFont.variable} ${sansFont.variable}`}
+    >
       <body>
         <RevealObserver />
         <SiteNav />

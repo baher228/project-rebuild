@@ -16,7 +16,9 @@ export function RevealObserver() {
       { threshold: 0.08 },
     );
 
-    document.querySelectorAll<HTMLElement>(".reveal:not(.visible)").forEach((element) => observer.observe(element));
+    document
+      .querySelectorAll<HTMLElement>(".reveal:not(.visible)")
+      .forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
   }, []);

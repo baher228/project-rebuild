@@ -6,10 +6,20 @@ export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
       { title: "Projects — Ardivia" },
-      { name: "description", content: "Selected projects from Ardivia: bespoke residences, commercial interiors and heritage renovations across London and the UK." },
+      {
+        name: "description",
+        content:
+          "Selected projects from Ardivia: bespoke residences, commercial interiors and heritage renovations across London and the UK.",
+      },
       { property: "og:title", content: "Projects — Ardivia" },
-      { property: "og:description", content: "A selected portfolio of bespoke residential, commercial and heritage work." },
-      { property: "og:image", content: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=80" },
+      {
+        property: "og:description",
+        content: "A selected portfolio of bespoke residential, commercial and heritage work.",
+      },
+      {
+        property: "og:image",
+        content: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=80",
+      },
     ],
   }),
   component: ProjectsPage,
@@ -17,19 +27,67 @@ export const Route = createFileRoute("/projects")({
 
 const Arrow = () => (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M3 8h10M9 4l4 4-4 4"
+      stroke="currentColor"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 type Cat = "all" | "residential" | "commercial" | "heritage";
 
-const projects: { img: string; type: string; name: string; loc: string; cat: Exclude<Cat, "all"> }[] = [
-  { img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1100&q=80", type: "Bespoke Residential", name: "Highgate Residence", loc: "North London · 2023", cat: "residential" },
-  { img: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=1100&q=80", type: "Commercial Interior", name: "The Strand HQ", loc: "Aldwych, London · 2024", cat: "commercial" },
-  { img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1100&q=80", type: "Heritage Renovation", name: "Cotswolds Manor", loc: "Gloucestershire · 2023", cat: "heritage" },
-  { img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1100&q=80", type: "Bespoke Residential", name: "Hampstead New Build", loc: "London NW3 · 2024", cat: "residential" },
-  { img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1100&q=80", type: "Commercial Interior", name: "Marsh & Partners Studio", loc: "Soho, London · 2023", cat: "commercial" },
-  { img: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=1100&q=80", type: "Heritage Renovation", name: "Chelsea Mews", loc: "London SW3 · 2022", cat: "heritage" },
+const projects: {
+  img: string;
+  type: string;
+  name: string;
+  loc: string;
+  cat: Exclude<Cat, "all">;
+}[] = [
+  {
+    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1100&q=80",
+    type: "Bespoke Residential",
+    name: "Highgate Residence",
+    loc: "North London · 2023",
+    cat: "residential",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=1100&q=80",
+    type: "Commercial Interior",
+    name: "The Strand HQ",
+    loc: "Aldwych, London · 2024",
+    cat: "commercial",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1100&q=80",
+    type: "Heritage Renovation",
+    name: "Cotswolds Manor",
+    loc: "Gloucestershire · 2023",
+    cat: "heritage",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1100&q=80",
+    type: "Bespoke Residential",
+    name: "Hampstead New Build",
+    loc: "London NW3 · 2024",
+    cat: "residential",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=1100&q=80",
+    type: "Commercial Interior",
+    name: "Marsh & Partners Studio",
+    loc: "Soho, London · 2023",
+    cat: "commercial",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=1100&q=80",
+    type: "Heritage Renovation",
+    name: "Chelsea Mews",
+    loc: "London SW3 · 2022",
+    cat: "heritage",
+  },
 ];
 
 const filters: { id: Cat; label: string }[] = [
@@ -50,17 +108,29 @@ function ProjectsPage() {
       <section className="arch-hero">
         <div className="arch-hero-left">
           <div className="hero-eyebrow">Selected Work</div>
-          <h1 className="hero-title">Recent<br /><em>projects.</em></h1>
+          <h1 className="hero-title">
+            Recent
+            <br />
+            <em>projects.</em>
+          </h1>
           <p className="hero-sub">
-            A curated selection of recent work — each commission represents months of careful collaboration with clients who demand the extraordinary.
+            A curated selection of recent work — each commission represents months of careful
+            collaboration with clients who demand the extraordinary.
           </p>
           <div className="hero-actions">
-            <Link to="/contact" className="btn-gold">Start a project <Arrow /></Link>
-            <Link to="/clients" className="btn-ghost">Client stories →</Link>
+            <Link to="/contact" className="btn-gold">
+              Start a project <Arrow />
+            </Link>
+            <Link to="/clients" className="btn-ghost">
+              Client stories →
+            </Link>
           </div>
         </div>
         <div className="arch-hero-right">
-          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80" alt="Featured project" />
+          <img
+            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80"
+            alt="Featured project"
+          />
         </div>
       </section>
 

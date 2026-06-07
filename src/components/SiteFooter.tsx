@@ -90,8 +90,8 @@ export function SiteFooter() {
       </div>
       <div className="footer-bottom">
         <div className="footer-copy">
-          &copy; 2026 Ardivia Ltd. Registered in England &amp; Wales. Company No. 06712834. RIBA Chartered
-          Practice.
+          &copy; 2026 Ardivia Ltd. Registered in England &amp; Wales. Company No. 06712834. RIBA
+          Chartered Practice.
         </div>
         <div className="footer-legal">
           <a href="#">Privacy Policy</a>

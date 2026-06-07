@@ -1,31 +1,9 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
-/* Brand fonts */
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=Josefin+Sans:wght@300;400;500&display=swap");
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-border: var(--border);
-  --color-ring: var(--ring);
+:root {
+  --radius: 0.5rem;
   --font-display: "Cormorant Garamond", serif;
   --font-serif: "Crimson Text", serif;
   --font-sans: "Josefin Sans", sans-serif;
-}
 
-:root {
-  --radius: 0.5rem;
-
-  /* Ardivia brand palette */
   --forest: #26342B;
   --dark-sage: #3D4A38;
   --sage: #7A8B6F;
@@ -36,7 +14,6 @@
   --linen-mid: #ddd6c6;
   --linen-deep: #cdc5b2;
 
-  /* shadcn semantic tokens (kept for any shadcn primitives) */
   --background: oklch(0.984 0.003 247.858);
   --foreground: oklch(0.129 0.042 264.695);
   --primary: oklch(0.208 0.042 265.755);

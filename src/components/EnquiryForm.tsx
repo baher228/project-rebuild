@@ -1,4 +1,6 @@
-import { useState } from "react";
+"use client";
+
+import { useState, type ReactNode } from "react";
 
 type Field = {
   name: string;
@@ -21,56 +23,82 @@ export function EnquiryForm({
   return (
     <form
       className="cta-form reveal d1"
-      onSubmit={(e) => {
-        e.preventDefault();
+      onSubmit={(event) => {
+        event.preventDefault();
         setSent(true);
       }}
     >
       {(() => {
-        const rows: React.ReactNode[] = [];
-        let i = 0;
-        while (i < fields.length) {
-          const f = fields[i];
-          const next = fields[i + 1];
-          if (!f.full && !f.textarea && !f.options && next && !next.full && !next.textarea && !next.options) {
+        const rows: ReactNode[] = [];
+        let index = 0;
+
+        while (index < fields.length) {
+          const field = fields[index];
+          const nextField = fields[index + 1];
+
+          if (
+            !field.full &&
+            !field.textarea &&
+            !field.options &&
+            nextField &&
+            !nextField.full &&
+            !nextField.textarea &&
+            !nextField.options
+          ) {
             rows.push(
-              <div className="form-row" key={i}>
-                <input className="form-field" type={f.type ?? "text"} placeholder={f.placeholder} name={f.name} />
-                <input className="form-field" type={next.type ?? "text"} placeholder={next.placeholder} name={next.name} />
-              </div>
+              <div className="form-row" key={index}>
+                <input
+                  className="form-field"
+                  type={field.type ?? "text"}
+                  placeholder={field.placeholder}
+                  name={field.name}
+                />
+                <input
+                  className="form-field"
+                  type={nextField.type ?? "text"}
+                  placeholder={nextField.placeholder}
+                  name={nextField.name}
+                />
+              </div>,
             );
-            i += 2;
+            index += 2;
             continue;
           }
-          if (f.textarea) {
+
+          if (field.textarea) {
+            rows.push(<textarea key={index} className="form-field" placeholder={field.placeholder} name={field.name} />);
+          } else if (field.options) {
             rows.push(
-              <textarea key={i} className="form-field" placeholder={f.placeholder} name={f.name} />
-            );
-          } else if (f.options) {
-            rows.push(
-              <select key={i} className="form-field" name={f.name} defaultValue="">
-                <option value="" disabled>{f.placeholder}</option>
-                {f.options.map((o) => (
-                  <option key={o} value={o}>{o}</option>
+              <select key={index} className="form-field" name={field.name} defaultValue="">
+                <option value="" disabled>
+                  {field.placeholder}
+                </option>
+                {field.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
                 ))}
-              </select>
+              </select>,
             );
           } else {
             rows.push(
-              <input key={i} className="form-field" type={f.type ?? "text"} placeholder={f.placeholder} name={f.name} />
+              <input
+                key={index}
+                className="form-field"
+                type={field.type ?? "text"}
+                placeholder={field.placeholder}
+                name={field.name}
+              />,
             );
           }
-          i += 1;
+
+          index += 1;
         }
+
         return rows;
       })()}
-      <button
-        type="submit"
-        className="form-btn"
-        style={sent ? { background: "var(--dark-sage)" } : undefined}
-        disabled={sent}
-      >
-        {sent ? "Enquiry sent — we'll be in touch soon." : buttonLabel}
+      <button type="submit" className="form-btn" style={sent ? { background: "var(--dark-sage)" } : undefined} disabled={sent}>
+        {sent ? "Enquiry sent - we'll be in touch soon." : buttonLabel}
         {!sent && (
           <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />

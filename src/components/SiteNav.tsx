@@ -1,20 +1,23 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/studio", label: "Studio" },
-  { to: "/services", label: "Services" },
-  { to: "/projects", label: "Projects" },
-  { to: "/process", label: "Process" },
-  { to: "/clients", label: "Clients" },
-  { to: "/journal", label: "Journal" },
+  { href: "/", label: "Home" },
+  { href: "/studio", label: "Studio" },
+  { href: "/services", label: "Services" },
+  { href: "/projects", label: "Projects" },
+  { href: "/process", label: "Process" },
+  { href: "/clients", label: "Clients" },
+  { href: "/journal", label: "Journal" },
 ] as const;
 
 export function SiteNav() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 56);
@@ -29,26 +32,26 @@ export function SiteNav() {
 
   return (
     <nav className={`av-nav${scrolled ? " scrolled" : ""}`}>
-      <Link to="/" className="av-logo">
+      <Link href="/" className="av-logo">
         Ardi<span>v</span>ia
       </Link>
       <ul className={`av-links${open ? " open" : ""}`}>
-        {links.map((l) => (
-          <li key={l.to}>
-            <Link to={l.to} className={pathname === l.to ? "active" : ""}>
-              {l.label}
+        {links.map((link) => (
+          <li key={link.href}>
+            <Link href={link.href} className={pathname === link.href ? "active" : ""}>
+              {link.label}
             </Link>
           </li>
         ))}
       </ul>
-      <Link to="/contact" className="av-cta">
+      <Link href="/contact" className="av-cta">
         Begin Your Project
       </Link>
       <button
         className="av-burger"
         aria-label="Toggle menu"
         aria-expanded={open}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setOpen((value) => !value)}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
           {open ? (

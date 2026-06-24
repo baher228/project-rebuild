@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardivia — Services & Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#26342B;--sage:#7A8B6F;--gold:#C9A84C;--linen:#E8E2D5;--white:#F5F3EE;
+  --ink:#111;--mid:#555;--rule:#D4CEC4;--dark:#1A1A1A;--darksage:#3D4A38;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring{width:48px;height:48px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+nav.scrolled{background:rgba(245,243,238,.97);backdrop-filter:blur(12px);border-bottom-color:var(--rule)}
+.nav-logo{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);text-decoration:none}
+.nav-logo sup{color:var(--gold);font-size:8px;vertical-align:super;font-weight:400}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:.5;transition:opacity .2s;cursor:none}
+.nav-links a:hover{opacity:1}
+.nav-cta{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:var(--forest);border:none;padding:10px 24px;cursor:none;transition:background .2s}
+.nav-cta:hover{background:var(--ink)}
+
+/* TABS */
+.tabs{position:sticky;top:64px;z-index:150;background:var(--ink);display:flex;align-items:center;padding:0 52px;border-bottom:1px solid rgba(255,255,255,.07);overflow-x:auto}
+.tab{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38);padding:16px 18px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab:hover{color:rgba(255,255,255,.72)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-sep{width:1px;height:16px;background:rgba(255,255,255,.1);flex-shrink:0;margin:0 4px}
+
+/* ATOMS */
+.tag{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.tag::before{content:'';width:22px;height:1px;background:var(--gold);display:block}
+.tag.muted{color:rgba(232,226,213,.4)}.tag.muted::before{background:rgba(232,226,213,.25)}
+.tag.dk{color:var(--forest)}.tag.dk::before{background:var(--forest)}
+h1.disp,h2.disp{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.0;letter-spacing:-.01em}
+.disp em{font-style:italic}.disp.light{color:var(--linen)}.disp.dark{color:var(--forest)}
+p.body{font-size:14px;font-weight:300;line-height:1.8;color:var(--mid)}
+p.body.light{color:rgba(232,226,213,.5)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 30px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:all .2s;cursor:none;border:none}
+.btn-f{background:var(--forest);color:var(--linen)}.btn-f:hover{background:var(--ink)}
+.btn-g{background:var(--gold);color:var(--forest)}.btn-g:hover{background:#d4b45a}
+.btn-ol{background:transparent;color:var(--linen);border:1px solid rgba(232,226,213,.22)}.btn-ol:hover{border-color:var(--gold);color:var(--gold)}
+.btn-old{background:transparent;color:var(--forest);border:1px solid rgba(38,52,43,.25)}.btn-old:hover{background:var(--forest);color:var(--linen);border-color:var(--forest)}
+.arrow{width:13px;height:13px}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+.page{display:none}.page.active{display:block}
+.hr{height:1px;background:var(--rule)}
+
+/* ════ SERVICES HUB ════ */
+.hub-hero{background:var(--forest);padding:104px 52px 72px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hub-hero h1{font-size:clamp(48px,6.5vw,92px);margin-bottom:24px}
+.hub-hero p{font-size:15px;font-weight:300;color:rgba(232,226,213,.5);max-width:560px;line-height:1.75}
+.hub-intro{display:grid;grid-template-columns:repeat(4,1fr);background:var(--linen);border-bottom:1px solid var(--rule)}
+.hub-stat{padding:36px 40px;border-right:1px solid var(--rule)}
+.hub-stat:last-child{border-right:none}
+.hub-stat-num{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;color:var(--forest);line-height:1;margin-bottom:5px}
+.hub-stat-lbl{font-size:9.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(38,52,43,.4)}
+
+.hub-tier-label{background:var(--white);padding:28px 52px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:18px}
+.htl-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--gold);opacity:.3;line-height:1}
+.htl-title{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mid)}
+.htl-sub{font-family:'Crimson Text',serif;font-style:italic;font-size:14px;color:var(--mid);margin-left:auto}
+
+/* Service catalogue grid */
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--rule);padding:2px;background:var(--white)}
+.cat-card{background:var(--white);border:1px solid var(--rule);padding:36px 32px;cursor:pointer;position:relative;overflow:hidden;transition:background .25s;display:flex;flex-direction:column;min-height:240px}
+.cat-card:hover{background:var(--linen)}
+.cat-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.cat-card:hover::after{transform:scaleX(1)}
+.cat-ghost{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(0,0,0,.04);position:absolute;top:10px;right:18px;line-height:1}
+.cat-icon{width:30px;height:30px;color:var(--sage);margin-bottom:20px;transition:color .25s}
+.cat-card:hover .cat-icon{color:var(--gold)}
+.cat-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;color:var(--forest);margin-bottom:10px;line-height:1.2}
+.cat-desc{font-size:13px;font-weight:300;color:var(--mid);line-height:1.65;margin-bottom:auto}
+.cat-link{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:7px;margin-top:20px;transition:gap .2s}
+.cat-card:hover .cat-link{gap:13px}
+.cat-badge{position:absolute;top:18px;left:18px;font-size:8px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:3px 8px}
+
+/* ════ SERVICE DETAIL PAGE ════ */
+.sd-hero{position:relative;min-height:78vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:var(--forest);margin-top:0}
+.sd-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.62)}
+.sd-hero-panel{position:absolute;left:0;top:0;bottom:0;width:50%;background:var(--forest);clip-path:polygon(0 0,100% 0,86% 100%,0 100%);z-index:1}
+.sd-hero-content{position:relative;z-index:2;padding:0 52px 64px;max-width:680px}
+.sd-back{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(232,226,213,.5);text-decoration:none;margin-bottom:24px;cursor:none;transition:color .2s}
+.sd-back:hover{color:var(--gold)}
+.sd-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5.5vw,80px);font-weight:300;color:var(--linen);line-height:.96;margin-bottom:24px}
+.sd-hero h1 em{font-style:italic}
+.sd-hero-sub{font-size:15px;font-weight:300;color:rgba(232,226,213,.55);line-height:1.75;max-width:440px;margin-bottom:36px}
+.sd-hero-meta{display:flex;gap:40px;padding-top:28px;border-top:1px solid rgba(232,226,213,.15)}
+.sd-meta-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--gold);line-height:1}
+.sd-meta-lbl{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(232,226,213,.4);margin-top:4px}
+
+/* Overview split */
+.sd-overview{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.sd-ov-text{padding:80px 64px;background:var(--white)}
+.sd-ov-text h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,42px);font-weight:300;color:var(--forest);line-height:1.05;margin-bottom:24px}
+.sd-ov-text p{font-size:14px;font-weight:300;color:var(--mid);line-height:1.8;margin-bottom:18px}
+.sd-ov-text p strong{color:var(--forest);font-weight:500}
+.sd-ov-img{position:relative;overflow:hidden;min-height:520px;border-left:1px solid var(--rule)}
+.sd-ov-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.72);display:block}
+
+/* What's included */
+.sd-included{background:var(--ink);padding:80px 52px}
+.sd-inc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}
+.inc-item{background:#161616;padding:32px 30px;border-top:2px solid transparent;transition:all .25s;cursor:none}
+.inc-item:hover{background:#1d1d1d;border-top-color:var(--gold)}
+.inc-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--gold);margin-bottom:14px}
+.inc-title{font-size:14px;font-weight:500;color:var(--linen);margin-bottom:8px}
+.inc-desc{font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.65}
+
+/* Process timeline */
+.sd-process{background:var(--linen);padding:80px 52px;border-top:1px solid var(--rule)}
+.sd-proc-steps{display:flex;flex-direction:column;margin-top:40px}
+.proc-row{display:grid;grid-template-columns:80px 1fr 1fr;gap:32px;padding:28px 0;border-bottom:1px solid var(--rule);align-items:start;cursor:none;transition:padding-left .2s}
+.proc-row:first-child{border-top:1px solid var(--rule)}
+.proc-row:hover{padding-left:12px}
+.proc-num{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--gold);opacity:.4;line-height:1}
+.proc-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--forest)}
+.proc-time{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-top:6px}
+.proc-desc{font-size:13.5px;font-weight:300;color:var(--mid);line-height:1.75}
+
+/* Spec table */
+.sd-specs{background:var(--forest);padding:80px 52px}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:44px}
+.spec-row{background:var(--darksage);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.spec-key{font-size:13px;font-weight:300;color:rgba(232,226,213,.5)}
+.spec-val{font-size:13px;font-weight:500;color:var(--linen);text-align:right}
+
+/* Pricing band */
+.sd-price{background:var(--white);padding:60px 52px;border-top:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:48px}
+.sd-price-left{}
+.sd-price-label{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.sd-price-range{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--forest);line-height:1}
+.sd-price-note{font-size:13px;font-weight:300;color:var(--mid);margin-top:8px;max-width:420px;line-height:1.6}
+
+/* Related projects */
+.sd-related{background:var(--ink);padding:80px 52px;border-top:1px solid rgba(255,255,255,.06)}
+.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:44px}
+.rel-card{position:relative;overflow:hidden;aspect-ratio:4/5;cursor:pointer}
+.rel-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.62) saturate(.6);transition:transform .6s,filter .35s}
+.rel-card:hover img{transform:scale(1.04);filter:brightness(.5)}
+.rel-info{position:absolute;bottom:0;left:0;right:0;padding:28px 26px;z-index:1}
+.rel-type{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.rel-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--linen);line-height:1.1}
+.rel-loc{font-size:11px;font-weight:300;color:rgba(232,226,213,.5);margin-top:5px}
+
+/* ════ PROJECTS PAGE ════ */
+.proj-hero{background:var(--forest);padding:104px 52px 64px;border-bottom:1px solid rgba(255,255,255,.06)}
+.proj-hero h1{font-size:clamp(48px,6.5vw,92px);margin-bottom:20px}
+.proj-hero p{font-size:15px;font-weight:300;color:rgba(232,226,213,.5);max-width:520px;line-height:1.75}
+.proj-filters{background:var(--ink);padding:20px 52px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:106px;z-index:140}
+.pfilter{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.5);padding:9px 18px;cursor:pointer;transition:all .2s}
+.pfilter:hover,.pfilter.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
+.proj-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;padding:2px;background:var(--white)}
+.pcard{position:relative;overflow:hidden;cursor:pointer;min-height:300px}
+.pcard.big{grid-column:span 6;grid-row:span 2}
+.pcard.med{grid-column:span 6}
+.pcard.third{grid-column:span 4}
+.pcard img{width:100%;height:100%;object-fit:cover;filter:brightness(.72) saturate(.68);transition:transform .7s,filter .35s;display:block}
+.pcard:hover img{transform:scale(1.04);filter:brightness(.55) saturate(.6)}
+.pcard-info{position:absolute;bottom:0;left:0;right:0;padding:32px 30px;z-index:1;transition:transform .35s}
+.pcard-meta{position:absolute;top:24px;left:26px;z-index:1;display:flex;gap:8px}
+.pcard-tag{font-size:8.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--linen);background:rgba(26,31,26,.6);backdrop-filter:blur(6px);padding:4px 10px}
+.pcard-type{font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--linen);line-height:1.08}
+.pcard.big .pcard-name{font-size:38px}
+.pcard-detail{font-size:11px;font-weight:300;color:rgba(232,226,213,.55);margin-top:6px}
+.pcard-cta{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:8px;margin-top:14px;opacity:0;transform:translateY(8px);transition:all .3s}
+.pcard:hover .pcard-cta{opacity:1;transform:translateY(0)}
+
+/* CASE STUDY DETAIL */
+.cs-hero{position:relative;height:88vh;overflow:hidden;display:flex;align-items:flex-end}
+.cs-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.6) saturate(.65)}
+.cs-hero-content{position:relative;z-index:1;padding:0 52px 64px;max-width:780px}
+.cs-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,84px);font-weight:300;color:var(--linen);line-height:.96;margin:16px 0 0}
+.cs-overview{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.cs-ov-left{padding:72px 64px;background:var(--white)}
+.cs-ov-left h2{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--forest);margin-bottom:20px}
+.cs-ov-left p{font-size:14px;font-weight:300;color:var(--mid);line-height:1.8;margin-bottom:16px}
+.cs-ov-meta{padding:72px 64px;background:var(--linen);border-left:1px solid var(--rule)}
+.cs-meta-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--rule)}
+.cs-meta-row:first-child{border-top:1px solid var(--rule)}
+.cs-meta-k{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--sage)}
+.cs-meta-v{font-size:14px;font-weight:400;color:var(--forest);text-align:right}
+.cs-gallery{display:grid;grid-template-columns:2fr 1fr;gap:2px;background:var(--white)}
+.cs-gallery img{width:100%;height:100%;object-fit:cover;filter:saturate(.72);display:block}
+.cs-gallery .cs-g-stack{display:grid;grid-template-rows:1fr 1fr;gap:2px}
+
+/* CONTACT mini */
+.cta-band{background:var(--forest);padding:72px 52px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-top:1px solid rgba(255,255,255,.06)}
+.form-wrap{display:flex;flex-direction:column}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ff{border:none;border-bottom:1px solid rgba(232,226,213,.2);background:transparent;padding:12px 0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--linen);outline:none;width:100%;margin-bottom:11px;transition:border-color .2s;cursor:none}
+.ff::placeholder{color:rgba(232,226,213,.3);font-size:13px}
+.ff:focus{border-bottom-color:var(--gold)}
+textarea.ff{resize:none;height:64px}
+
+/* FOOTER */
+footer{background:var(--ink);padding:68px 52px 36px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07)}
+.flogo{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--linen);margin-bottom:14px;display:block}
+.flogo sup{color:var(--gold);font-weight:400;font-size:8px}
+.ftag{font-size:13px;font-weight:300;color:rgba(232,226,213,.28);line-height:1.7;max-width:230px;margin-bottom:22px}
+.fct{font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;font-weight:300;color:rgba(232,226,213,.26);text-decoration:none;transition:color .2s;cursor:none}
+.flinks a:hover{color:var(--linen)}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-size:10px;font-weight:300;color:rgba(232,226,213,.14);letter-spacing:.04em}
+.fleg{display:flex;gap:18px}
+.fleg a{font-size:10px;font-weight:300;color:rgba(232,226,213,.14);text-decoration:none;cursor:none;transition:color .2s}
+.fleg a:hover{color:rgba(232,226,213,.45)}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo" onclick="show('hub');return false">Ardivia<sup>®</sup></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="show('hub');return false">Services</a></li>
+    <li><a href="#" onclick="show('projects');return false">Projects</a></li>
+    <li><a href="#" onclick="show('hub');return false">About</a></li>
+    <li><a href="#" onclick="show('hub');return false">Journal</a></li>
+  </ul>
+  <button class="nav-cta" onclick="show('projects')">View Our Work</button>
+</nav>
+
+<div class="tabs">
+  <button class="tab active" data-page="hub">All Services</button>
+  <div class="tab-sep"></div>
+  <button class="tab" data-page="svc-extensions">Extensions</button>
+  <button class="tab" data-page="svc-lofts">Lofts</button>
+  <button class="tab" data-page="svc-basements">Basements</button>
+  <button class="tab" data-page="svc-retrofit">Retrofitting</button>
+  <button class="tab" data-page="svc-climate">Air Conditioning</button>
+  <div class="tab-sep"></div>
+  <button class="tab" data-page="projects">Projects</button>
+  <button class="tab" data-page="casestudy">Case Study</button>
+</div>
+
+<!-- ═══════════ SERVICES HUB ═══════════ -->
+<div class="page active" id="page-hub">
+  <div class="hub-hero">
+    <div class="tag muted reveal">Services — Ardivia Design &amp; Build</div>
+    <h1 class="disp light reveal d1">Everything your<br>property needs.<br><em>One studio.</em></h1>
+    <p class="reveal d2">From a single-storey extension to a full block development — every discipline held in-house, every project delivered by people we directly employ. Explore our complete catalogue of specialised services below.</p>
+  </div>
+  <div class="hub-intro">
+    <div class="hub-stat reveal"><div class="hub-stat-num">21</div><div class="hub-stat-lbl">Specialised services</div></div>
+    <div class="hub-stat reveal d1"><div class="hub-stat-num">85</div><div class="hub-stat-lbl">In-house tradespeople</div></div>
+    <div class="hub-stat reveal d2"><div class="hub-stat-num">340+</div><div class="hub-stat-lbl">Projects delivered</div></div>
+    <div class="hub-stat reveal d3"><div class="hub-stat-num">18</div><div class="hub-stat-lbl">Years trading</div></div>
+  </div>
+
+  <!-- TIER: BIG SPECIALISED -->
+  <div class="hub-tier-label"><div class="htl-num">I</div><div class="htl-title">Major Structural Works</div><div class="htl-sub">The transformative projects — extensions, lofts, basements</div></div>
+  <div class="cat-grid">
+    <div class="cat-card reveal" onclick="show('svc-extensions')">
+      <div class="cat-badge">Most requested</div>
+      <div class="cat-ghost">01</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 26h24M5 26V14l8-8 8 8v12M19 26V18h4v8"/><path d="M5 14h16"/></svg>
+      <div class="cat-name">Extensions</div>
+      <div class="cat-desc">Single &amp; double-storey, side-return, wrap-around, and rear extensions. Designed, planned, and built end-to-end.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+    <div class="cat-card reveal d1" onclick="show('svc-lofts')">
+      <div class="cat-ghost">02</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 16L15 5l11 11M7 16v10h16V16M12 26v-6h6v6"/><circle cx="20" cy="11" r="1.5"/></svg>
+      <div class="cat-name">Loft Conversions</div>
+      <div class="cat-desc">Dormer, hip-to-gable, mansard, and Velux conversions. Adding a bedroom, suite, or studio above your home.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+    <div class="cat-card reveal d2" onclick="show('svc-basements')">
+      <div class="cat-ghost">03</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 8h22v18H4z"/><path d="M4 8L15 3l11 5M9 14v8M15 14v8M21 14v8"/></svg>
+      <div class="cat-name">Basement Excavation</div>
+      <div class="cat-desc">Full basement digs, cellar conversions, and lightwells. Creating new living space beneath your property.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+  </div>
+
+  <!-- TIER: SYSTEMS & PERFORMANCE -->
+  <div class="hub-tier-label"><div class="htl-num">II</div><div class="htl-title">Building Performance &amp; Systems</div><div class="htl-sub">Retrofitting, climate, energy, and water</div></div>
+  <div class="cat-grid">
+    <div class="cat-card reveal" onclick="show('svc-retrofit')">
+      <div class="cat-badge">EPC compliance</div>
+      <div class="cat-ghost">04</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 3v6M15 21v6M3 15h6M21 15h6"/><circle cx="15" cy="15" r="6"/><path d="M13 15l1.5 1.5L18 13"/></svg>
+      <div class="cat-name">Retrofitting &amp; Energy Upgrades</div>
+      <div class="cat-desc">Insulation, MVHR, heat pumps, EPC improvement programmes. Bringing older buildings to modern performance.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+    <div class="cat-card reveal d1" onclick="show('svc-climate')">
+      <div class="cat-ghost">05</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="7" width="24" height="11" rx="2"/><path d="M7 22c0 2 1 3 2 3M13 22c0 2 1 3 2 3M19 22c0 2 1 3 2 3M8 12h14"/></svg>
+      <div class="cat-name">Air Conditioning &amp; Climate</div>
+      <div class="cat-desc">Discreet ducted A/C, multi-zone climate control, ventilation, and whole-house comfort systems — designed in.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+    <div class="cat-card reveal d2" onclick="show('svc-retrofit')">
+      <div class="cat-ghost">06</div>
+      <svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><polygon points="15,3 18,12 27,12 19,18 22,27 15,21 8,27 11,18 3,12 12,12"/></svg>
+      <div class="cat-name">Renewable Energy Systems</div>
+      <div class="cat-desc">Solar PV, battery storage, ground &amp; air source heat pumps, EV charging — integrated into the architecture.</div>
+      <div class="cat-link">Explore service →</div>
+    </div>
+  </div>
+
+  <!-- TIER: DESIGN & BUILD CORE -->
+  <div class="hub-tier-label"><div class="htl-num">III</div><div class="htl-title">Design &amp; Build Core</div><div class="htl-sub">The foundation — architecture, interiors, delivery</div></div>
+  <div class="cat-grid">
+    <div class="cat-card reveal" onclick="show('projects')"><div class="cat-ghost">07</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 26V13L15 4l11 9v13M11 26v-7h8v7"/></svg><div class="cat-name">Architecture &amp; Design</div><div class="cat-desc">RIBA-chartered design from concept to technical drawings, planning, and consents.</div><div class="cat-link">Explore service →</div></div>
+    <div class="cat-card reveal d1" onclick="show('projects')"><div class="cat-ghost">08</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="24" height="24"/><path d="M3 11h24M11 11v16"/></svg><div class="cat-name">Interior Architecture</div><div class="cat-desc">Space planning, joinery, kitchens, bathrooms — designed by the same team as the building.</div><div class="cat-link">Explore service →</div></div>
+    <div class="cat-card reveal d2" onclick="show('projects')"><div class="cat-ghost">09</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="9" width="22" height="16" rx="1"/><path d="M10 9V6h10v3M15 14v5M12 16h6"/></svg><div class="cat-name">Full Design &amp; Build</div><div class="cat-desc">One contract for design, build, and delivery. One price. One point of accountability.</div><div class="cat-link">Explore service →</div></div>
+  </div>
+
+  <!-- TIER: SPECIALIST CRAFT -->
+  <div class="hub-tier-label"><div class="htl-num">IV</div><div class="htl-title">Specialist Craft &amp; Finishing</div><div class="htl-sub">Joinery, heritage, furniture, lighting, and beyond</div></div>
+  <div class="cat-grid">
+    <div class="cat-card reveal" onclick="show('projects')"><div class="cat-ghost">10</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="6" y="4" width="18" height="22"/><path d="M10 4v22M15 13v4M11 15h6"/></svg><div class="cat-name">Windows &amp; Doors</div><div class="cat-desc">Restoration of original joinery and bespoke hardwood, steel, and bronze manufacture.</div><div class="cat-link">Explore service →</div></div>
+    <div class="cat-card reveal d1" onclick="show('projects')"><div class="cat-ghost">11</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 25l5-6 4 4 6-8 5 6"/><circle cx="23" cy="8" r="4"/></svg><div class="cat-name">Bespoke Furniture</div><div class="cat-desc">Dining tables, libraries, built-ins, and upholstery — designed as part of the architecture.</div><div class="cat-link">Explore service →</div></div>
+    <div class="cat-card reveal d2" onclick="show('projects')"><div class="cat-ghost">12</div><svg class="cat-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 25h20M8 25V14l7-9 7 9v11M12 25v-7h6v7"/></svg><div class="cat-name">Heritage &amp; Masonry</div><div class="cat-desc">Lime mortar, stonework, original plaster, and listed building restoration.</div><div class="cat-link">Explore service →</div></div>
+  </div>
+
+  <!-- More services compact -->
+  <div style="background:var(--ink);padding:64px 52px;border-top:1px solid rgba(255,255,255,.06)">
+    <div class="tag muted reveal">And more</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px);margin-bottom:36px">Further specialised services.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
+      <div style="background:#161616;padding:24px 26px" class="reveal">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Garden Rooms &amp; Outbuildings</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">Home offices, studios, gyms, and pool houses — fully insulated and serviced.</div>
+      </div>
+      <div style="background:#161616;padding:24px 26px" class="reveal d1">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Structural Engineering</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">In-house structural calculations, steel design, and load-bearing alterations.</div>
+      </div>
+      <div style="background:#161616;padding:24px 26px" class="reveal d2">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Swimming Pools &amp; Wellness</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">Indoor &amp; outdoor pools, spas, saunas, and cold plunge — designed as architecture.</div>
+      </div>
+      <div style="background:#161616;padding:24px 26px" class="reveal">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Smart Home &amp; Automation</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">KNX, Crestron, Lutron — climate, lighting, AV, and security, all from one app.</div>
+      </div>
+      <div style="background:#161616;padding:24px 26px" class="reveal d1">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Landscaping &amp; Estate</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">Hard &amp; soft landscaping, garden design, driveways, and estate management.</div>
+      </div>
+      <div style="background:#161616;padding:24px 26px" class="reveal d2">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--linen);margin-bottom:6px">Property Maintenance</div>
+        <div style="font-size:12.5px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.6">Ongoing care contracts, seasonal checks, and emergency response for completed projects.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-band">
+    <div>
+      <div class="tag muted reveal">Start a project</div>
+      <h2 class="disp light reveal d1" style="font-size:clamp(30px,3.5vw,48px)">Not sure which<br>service you need?</h2>
+      <p class="body light reveal d2" style="margin-top:16px;max-width:380px">Tell us what you're trying to achieve. We'll guide you to the right approach — and give you an honest assessment of scope and cost.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name"><input class="ff" type="email" placeholder="Email address"></div>
+        <input class="ff" placeholder="Property type &amp; location">
+        <textarea class="ff" placeholder="What are you trying to achieve?"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Send enquiry <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICE: EXTENSIONS ═══════════ -->
+<div class="page" id="page-svc-extensions">
+  <div class="sd-hero">
+    <img class="sd-hero-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="Extensions">
+    <div class="sd-hero-panel"></div>
+    <div class="sd-hero-content">
+      <a class="sd-back" onclick="show('hub')">← All services</a>
+      <div class="tag reveal">Major Structural Works · 01</div>
+      <h1 class="reveal d1">Extensions<br>that <em>belong.</em></h1>
+      <p class="sd-hero-sub reveal d2">Single and double-storey, side-return, wrap-around, and rear extensions — designed so they look like they were always part of the house, not bolted on afterwards.</p>
+      <div class="sd-hero-meta reveal d3">
+        <div><div class="sd-meta-num">£2.5–4.5k</div><div class="sd-meta-lbl">Per sq ft (all-in)</div></div>
+        <div><div class="sd-meta-num">4–8</div><div class="sd-meta-lbl">Months typical</div></div>
+        <div><div class="sd-meta-num">120+</div><div class="sd-meta-lbl">Extensions built</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-overview">
+    <div class="sd-ov-text">
+      <div class="tag dk reveal">The Ardivia approach</div>
+      <h2 class="reveal d1">More than extra space — better space.</h2>
+      <p class="reveal d2">A poorly designed extension adds square footage but ruins a house. A well-designed one transforms how the entire property lives. We approach every extension as an <strong>architectural problem first</strong> — how light moves, how the new space connects to the old, how the proportions read from the garden.</p>
+      <p class="reveal d2">Because we design <strong>and</strong> build in-house, there's no gap between the architect's intent and what actually gets constructed. The team that draws your extension is accountable for building it — to the millimetre.</p>
+      <p class="reveal d3">From planning permission and party wall agreements through structural steel and final decoration, it's one contract, one price, and one team responsible for the result.</p>
+    </div>
+    <div class="sd-ov-img"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=900&q=80" alt="Extension interior"></div>
+  </div>
+
+  <div class="sd-included">
+    <div class="tag muted reveal">Types of extension we build</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.2vw,46px)">Every configuration.</h2>
+    <div class="sd-inc-grid">
+      <div class="inc-item reveal"><div class="inc-num">01</div><div class="inc-title">Single-storey rear</div><div class="inc-desc">The classic kitchen-diner extension — opening the back of the house to the garden with glazing, roof lights, and seamless threshold details.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">02</div><div class="inc-title">Double-storey</div><div class="inc-desc">Adding space across two floors — typically a larger kitchen below and a bedroom or bathroom above, maximising the return on groundworks.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">03</div><div class="inc-title">Side-return</div><div class="inc-desc">Reclaiming the narrow alley beside a Victorian terrace to widen the ground floor — one of the highest-value moves in London housing.</div></div>
+      <div class="inc-item reveal"><div class="inc-num">04</div><div class="inc-title">Wrap-around</div><div class="inc-desc">Combining a side-return and rear extension into a single L-shaped space that completely reconfigures the ground floor.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">05</div><div class="inc-title">Over-structure &amp; garage</div><div class="inc-desc">Building above an existing single-storey element — garages, utility rooms — to add bedrooms without extending the footprint.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">06</div><div class="inc-title">Glazed &amp; orangery</div><div class="inc-desc">Steel-framed glazed extensions, orangeries, and garden rooms — light-filled spaces with architectural roof structures.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-process">
+    <div class="tag dk reveal">How it works</div>
+    <h2 class="disp dark reveal d1" style="font-size:clamp(28px,3.2vw,46px)">From idea to finished extension.</h2>
+    <div class="sd-proc-steps">
+      <div class="proc-row reveal"><div class="proc-num">01</div><div><div class="proc-name">Feasibility &amp; design</div><div class="proc-time">Weeks 1–4</div></div><div class="proc-desc">Site survey, measured drawings, and concept design. We establish what's possible under permitted development or planning, and design the extension around how you actually want to live.</div></div>
+      <div class="proc-row reveal d1"><div class="proc-num">02</div><div><div class="proc-name">Planning &amp; approvals</div><div class="proc-time">Weeks 4–12</div></div><div class="proc-desc">We submit and manage your planning application or permitted development certificate, plus party wall agreements with neighbours and building regulations approval.</div></div>
+      <div class="proc-row reveal d2"><div class="proc-num">03</div><div><div class="proc-name">Structural &amp; technical</div><div class="proc-time">Weeks 10–14</div></div><div class="proc-desc">Our in-house structural engineers design the steelwork and foundations. Technical drawings are issued for construction with every detail resolved before we break ground.</div></div>
+      <div class="proc-row reveal"><div class="proc-num">04</div><div><div class="proc-name">Build</div><div class="proc-time">Weeks 14–30</div></div><div class="proc-desc">Groundworks, structure, roof, glazing, services, and fit-out — all delivered by our in-house brigade to a fixed programme and fixed price.</div></div>
+      <div class="proc-row reveal d1"><div class="proc-num">05</div><div><div class="proc-name">Handover &amp; warranty</div><div class="proc-time">Week 30+</div></div><div class="proc-desc">Snagging, building control sign-off, and handover. All structural work carries a 10-year warranty. We remain available for aftercare long after completion.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-price">
+    <div class="sd-price-left">
+      <div class="sd-price-label">Indicative investment</div>
+      <div class="sd-price-range">£2,500 – £4,500 / sq ft</div>
+      <div class="sd-price-note">All-in cost including design, planning, structural engineering, build, and finishing. Final figure depends on specification, glazing, and groundwork complexity. We provide a fixed price before work begins.</div>
+    </div>
+    <a class="btn btn-old" onclick="show('projects')">See extension projects <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+
+  <div class="sd-related">
+    <div class="tag muted reveal">Recent extension projects</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px)">See it built.</h2>
+    <div class="rel-grid">
+      <div class="rel-card reveal" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Wrap-around · Kitchen</div><div class="rel-name">Clapham Side-Return</div><div class="rel-loc">London SW4 · 2024</div></div></div>
+      <div class="rel-card reveal d1" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Double-storey</div><div class="rel-name">Richmond Family Home</div><div class="rel-loc">Surrey · 2023</div></div></div>
+      <div class="rel-card reveal d2" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Glazed orangery</div><div class="rel-name">Hampstead Garden Room</div><div class="rel-loc">London NW3 · 2024</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICE: LOFTS ═══════════ -->
+<div class="page" id="page-svc-lofts">
+  <div class="sd-hero">
+    <img class="sd-hero-img" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1600&q=80" alt="Lofts">
+    <div class="sd-hero-panel"></div>
+    <div class="sd-hero-content">
+      <a class="sd-back" onclick="show('hub')">← All services</a>
+      <div class="tag reveal">Major Structural Works · 02</div>
+      <h1 class="reveal d1">Loft conversions<br>with <em>headroom.</em></h1>
+      <p class="sd-hero-sub reveal d2">Dormer, hip-to-gable, mansard, and rooflight conversions — turning unused roof space into a master suite, guest bedroom, studio, or home office, all to building regulations.</p>
+      <div class="sd-hero-meta reveal d3">
+        <div><div class="sd-meta-num">£1.5–2.5k</div><div class="sd-meta-lbl">Per sq ft (all-in)</div></div>
+        <div><div class="sd-meta-num">8–14</div><div class="sd-meta-lbl">Weeks typical</div></div>
+        <div><div class="sd-meta-num">+20%</div><div class="sd-meta-lbl">Avg. value added</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-overview">
+    <div class="sd-ov-text">
+      <div class="tag dk reveal">The Ardivia approach</div>
+      <h2 class="reveal d1">The cheapest square footage you'll ever add.</h2>
+      <p class="reveal d2">A loft conversion is almost always the highest-return way to add space to a house — the roof and walls already exist. But the difference between a cramped, awkward loft and one that feels like it was always a proper floor is <strong>entirely in the design</strong>.</p>
+      <p class="reveal d2">We obsess over the things that make a loft work: head height at the right points, where the staircase lands, how the dormers are proportioned from the street, and how natural light reaches the centre of the plan.</p>
+      <p class="reveal d3">Most of our loft conversions add a <strong>full bedroom suite with an en-suite bathroom</strong>, and typically increase property value by more than the cost of the works.</p>
+    </div>
+    <div class="sd-ov-img"><img src="https://images.unsplash.com/photo-1617104678098-de229db51175?w=900&q=80" alt="Loft interior"></div>
+  </div>
+
+  <div class="sd-included">
+    <div class="tag muted reveal">Types of loft conversion</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.2vw,46px)">Right for your roof.</h2>
+    <div class="sd-inc-grid">
+      <div class="inc-item reveal"><div class="inc-num">01</div><div class="inc-title">Dormer</div><div class="inc-desc">The most common conversion — a box dormer extends out from the roof slope to create full head height and floor area. Excellent value and flexibility.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">02</div><div class="inc-title">Hip-to-gable</div><div class="inc-desc">Replacing a sloping hip end with a vertical gable wall, dramatically increasing internal volume — ideal for semi-detached and end-of-terrace homes.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">03</div><div class="inc-title">Mansard</div><div class="inc-desc">The most extensive conversion — rebuilding the roof structure to near-vertical, maximising space across the full footprint. Common in conservation areas.</div></div>
+      <div class="inc-item reveal"><div class="inc-num">04</div><div class="inc-title">Rooflight (Velux)</div><div class="inc-desc">Where head height already exists, simply adding rooflights and a floor — the most economical conversion, with minimal external alteration.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">05</div><div class="inc-title">L-shaped dormer</div><div class="inc-desc">Combining a main roof dormer with one over a rear addition — creating a generous multi-room conversion on period properties.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">06</div><div class="inc-title">Bespoke &amp; structural</div><div class="inc-desc">Complex conversions involving roof raises, structural alteration, or terraces and balconies cut into the roofscape.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-process">
+    <div class="tag dk reveal">How it works</div>
+    <h2 class="disp dark reveal d1" style="font-size:clamp(28px,3.2vw,46px)">Up and running in weeks.</h2>
+    <div class="sd-proc-steps">
+      <div class="proc-row reveal"><div class="proc-num">01</div><div><div class="proc-name">Survey &amp; feasibility</div><div class="proc-time">Weeks 1–3</div></div><div class="proc-desc">We assess your roof structure, head height, and the best conversion type. Most lofts fall under permitted development — we confirm this early.</div></div>
+      <div class="proc-row reveal d1"><div class="proc-num">02</div><div><div class="proc-name">Design &amp; approvals</div><div class="proc-time">Weeks 3–8</div></div><div class="proc-desc">Detailed design, party wall agreements, and building regulations application. Where planning is needed (mansards, conservation areas), we manage it.</div></div>
+      <div class="proc-row reveal d2"><div class="proc-num">03</div><div><div class="proc-name">Structure &amp; build</div><div class="proc-time">Weeks 8–18</div></div><div class="proc-desc">Steel beams, new floor joists, dormer construction, staircase, insulation, and weatherproofing — built by our team with minimal disruption to the floors below.</div></div>
+      <div class="proc-row reveal"><div class="proc-num">04</div><div><div class="proc-name">Fit-out &amp; finish</div><div class="proc-time">Weeks 14–20</div></div><div class="proc-desc">Plastering, en-suite installation, electrics, heating, and decoration. Bespoke storage built into the eaves to make use of every inch.</div></div>
+      <div class="proc-row reveal d1"><div class="proc-num">05</div><div><div class="proc-name">Sign-off &amp; handover</div><div class="proc-time">Week 18+</div></div><div class="proc-desc">Building control completion certificate, fire safety compliance, and handover. Your new floor, ready to move into.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-price">
+    <div class="sd-price-left">
+      <div class="sd-price-label">Indicative investment</div>
+      <div class="sd-price-range">£1,500 – £2,500 / sq ft</div>
+      <div class="sd-price-note">All-in including design, structural work, build, en-suite, and finishing. Dormers and rooflight conversions sit at the lower end; mansards and structural roof works at the higher. Fixed price before work begins.</div>
+    </div>
+    <a class="btn btn-old" onclick="show('projects')">See loft projects <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+
+  <div class="sd-related">
+    <div class="tag muted reveal">Recent loft projects</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px)">See it built.</h2>
+    <div class="rel-grid">
+      <div class="rel-card reveal" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Dormer · Master suite</div><div class="rel-name">Islington Loft</div><div class="rel-loc">London N1 · 2024</div></div></div>
+      <div class="rel-card reveal d1" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1617104551722-3b2d51366400?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Hip-to-gable</div><div class="rel-name">Wandsworth Conversion</div><div class="rel-loc">London SW18 · 2023</div></div></div>
+      <div class="rel-card reveal d2" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Mansard</div><div class="rel-name">Chelsea Roof Suite</div><div class="rel-loc">London SW3 · 2024</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICE: BASEMENTS ═══════════ -->
+<div class="page" id="page-svc-basements">
+  <div class="sd-hero">
+    <img class="sd-hero-img" src="https://images.unsplash.com/photo-1604014237800-1c9102c219da?w=1600&q=80" alt="Basements">
+    <div class="sd-hero-panel"></div>
+    <div class="sd-hero-content">
+      <a class="sd-back" onclick="show('hub')">← All services</a>
+      <div class="tag reveal">Major Structural Works · 03</div>
+      <h1 class="reveal d1">Basement<br>excavation &amp;<br><em>conversion.</em></h1>
+      <p class="sd-hero-sub reveal d2">Full basement digs, cellar conversions, and lightwell creation — adding an entire floor of living space beneath your property without changing its external footprint.</p>
+      <div class="sd-hero-meta reveal d3">
+        <div><div class="sd-meta-num">£4–7k</div><div class="sd-meta-lbl">Per sq ft (all-in)</div></div>
+        <div><div class="sd-meta-num">9–18</div><div class="sd-meta-lbl">Months typical</div></div>
+        <div><div class="sd-meta-num">£10M</div><div class="sd-meta-lbl">PI cover</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-overview">
+    <div class="sd-ov-text">
+      <div class="tag dk reveal">The Ardivia approach</div>
+      <h2 class="reveal d1">The most complex residential work there is.</h2>
+      <p class="reveal d2">Basement excavation is the highest-risk, highest-skill work in residential construction — and where the gap between a good contractor and a poor one is widest. It demands <strong>serious structural engineering, faultless waterproofing, and meticulous management</strong> of party walls and neighbouring structures.</p>
+      <p class="reveal d2">This is precisely the kind of work where our in-house model matters most. Our directly-employed teams and in-house structural engineers mean there is no subcontractor cutting corners on the things you'll never see — but that determine whether a basement stays dry for decades.</p>
+      <p class="reveal d3">Every Ardivia basement carries <strong>full structural warranty and tanking guarantees</strong>, and we hold £10M professional indemnity cover.</p>
+    </div>
+    <div class="sd-ov-img"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=900&q=80" alt="Basement interior"></div>
+  </div>
+
+  <div class="sd-included">
+    <div class="tag muted reveal">What we deliver</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.2vw,46px)">Below ground, beautifully.</h2>
+    <div class="sd-inc-grid">
+      <div class="inc-item reveal"><div class="inc-num">01</div><div class="inc-title">Full excavation</div><div class="inc-desc">Digging out a new basement level beneath the existing footprint — including underpinning, structural slab, and retaining structure.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">02</div><div class="inc-title">Cellar conversion</div><div class="inc-desc">Converting an existing cellar into habitable space — lowering floors, tanking, and bringing head height and light up to standard.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">03</div><div class="inc-title">Garden &amp; lightwells</div><div class="inc-desc">Excavated lightwells and sunken courtyards bringing natural daylight deep into basement levels — essential for liveable space.</div></div>
+      <div class="inc-item reveal"><div class="inc-num">04</div><div class="inc-title">Waterproofing &amp; tanking</div><div class="inc-desc">Multi-layer waterproofing systems with cavity drainage, sump pumps, and guaranteed tanking — the part that matters most.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">05</div><div class="inc-title">Pools, cinemas &amp; gyms</div><div class="inc-desc">The most popular basement uses — swimming pools, home cinemas, gyms, wine cellars, and spa facilities, all designed in.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">06</div><div class="inc-title">Party wall management</div><div class="inc-desc">Full management of party wall awards and neighbour relations — the legal and diplomatic side that derails so many basement projects.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-price">
+    <div class="sd-price-left">
+      <div class="sd-price-label">Indicative investment</div>
+      <div class="sd-price-range">£4,000 – £7,000 / sq ft</div>
+      <div class="sd-price-note">Basement work is the most variable of all — driven by ground conditions, water table, access, and structural complexity. We undertake detailed feasibility and ground investigation before providing a fixed price.</div>
+    </div>
+    <a class="btn btn-old" onclick="show('projects')">See basement projects <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICE: RETROFIT ═══════════ -->
+<div class="page" id="page-svc-retrofit">
+  <div class="sd-hero">
+    <img class="sd-hero-img" src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=1600&q=80" alt="Retrofit">
+    <div class="sd-hero-panel"></div>
+    <div class="sd-hero-content">
+      <a class="sd-back" onclick="show('hub')">← All services</a>
+      <div class="tag reveal">Building Performance · 04</div>
+      <h1 class="reveal d1">Retrofitting &amp;<br>energy <em>upgrades.</em></h1>
+      <p class="sd-hero-sub reveal d2">Bringing older buildings to modern performance — insulation, ventilation, heat pumps, and EPC improvement programmes that cut running costs and meet compliance deadlines.</p>
+      <div class="sd-hero-meta reveal d3">
+        <div><div class="sd-meta-num">EPC C</div><div class="sd-meta-lbl">Compliance ready</div></div>
+        <div><div class="sd-meta-num">60%</div><div class="sd-meta-lbl">Avg. energy saving</div></div>
+        <div><div class="sd-meta-num">MCS</div><div class="sd-meta-lbl">Certified installer</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-overview">
+    <div class="sd-ov-text">
+      <div class="tag dk reveal">The Ardivia approach</div>
+      <h2 class="reveal d1">Performance, without losing character.</h2>
+      <p class="reveal d2">The UK's housing stock is among the oldest and least efficient in Europe. New EPC regulations mean landlords and homeowners increasingly <strong>must</strong> upgrade — but a clumsy retrofit can damage a period building, cause damp, or strip out its character.</p>
+      <p class="reveal d2">We take a <strong>whole-house, fabric-first approach</strong>: understanding how a building performs before specifying changes, so that insulation, ventilation, and heating work together rather than against each other. This is especially critical in older and listed buildings where the wrong intervention causes condensation and decay.</p>
+      <p class="reveal d3">As an <strong>MCS-certified installer</strong>, we can access available grants and ensure all renewable installations are eligible for incentive schemes.</p>
+    </div>
+    <div class="sd-ov-img"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&q=80" alt="Retrofit systems"></div>
+  </div>
+
+  <div class="sd-included">
+    <div class="tag muted reveal">What we install</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.2vw,46px)">The full upgrade.</h2>
+    <div class="sd-inc-grid">
+      <div class="inc-item reveal"><div class="inc-num">01</div><div class="inc-title">Insulation</div><div class="inc-desc">Wall (internal &amp; external), roof, floor, and loft insulation — specified to avoid cold bridging and interstitial condensation.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">02</div><div class="inc-title">MVHR ventilation</div><div class="inc-desc">Mechanical ventilation with heat recovery — fresh, filtered air without heat loss, essential for airtight modern retrofits.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">03</div><div class="inc-title">Heat pumps</div><div class="inc-desc">Air source and ground source heat pumps replacing gas boilers — designed and sized for the upgraded building fabric.</div></div>
+      <div class="inc-item reveal"><div class="inc-num">04</div><div class="inc-title">Solar PV &amp; battery</div><div class="inc-desc">Roof-integrated solar arrays and battery storage — generating and storing power on-site to cut bills and carbon.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">05</div><div class="inc-title">Glazing upgrades</div><div class="inc-desc">Secondary glazing, slim double-glazed units, and draught-proofing — thermal performance while retaining period windows.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">06</div><div class="inc-title">EPC programmes</div><div class="inc-desc">Full assessment, specification, and delivery of the works needed to reach EPC C or better — managed end-to-end.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-specs">
+    <div class="tag muted reveal">Typical outcomes</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px)">What a retrofit delivers.</h2>
+    <div class="spec-grid">
+      <div class="spec-row reveal"><span class="spec-key">EPC rating improvement</span><span class="spec-val">Typically 2–3 bands</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Energy bill reduction</span><span class="spec-val">40–60% average</span></div>
+      <div class="spec-row reveal"><span class="spec-key">Carbon reduction</span><span class="spec-val">Up to 70%</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Heat pump efficiency</span><span class="spec-val">300–400% (COP 3–4)</span></div>
+      <div class="spec-row reveal"><span class="spec-key">Grant eligibility</span><span class="spec-val">MCS-certified · BUS scheme</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Warranty</span><span class="spec-val">Up to 10 years on systems</span></div>
+    </div>
+  </div>
+
+  <div class="sd-price">
+    <div class="sd-price-left">
+      <div class="sd-price-label">Where to start</div>
+      <div class="sd-price-range">Whole-house assessment</div>
+      <div class="sd-price-note">Every retrofit begins with a building performance assessment — we measure how your property performs today, then specify a phased or single-stage upgrade with clear cost, saving, and EPC projections.</div>
+    </div>
+    <a class="btn btn-old" onclick="show('hub')">Book an assessment <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICE: CLIMATE / AC ═══════════ -->
+<div class="page" id="page-svc-climate">
+  <div class="sd-hero">
+    <img class="sd-hero-img" src="https://images.unsplash.com/photo-1631545806609-c2b999c9b1e8?w=1600&q=80" alt="Air conditioning">
+    <div class="sd-hero-panel"></div>
+    <div class="sd-hero-content">
+      <a class="sd-back" onclick="show('hub')">← All services</a>
+      <div class="tag reveal">Building Performance · 05</div>
+      <h1 class="reveal d1">Air conditioning<br>&amp; <em>climate control.</em></h1>
+      <p class="sd-hero-sub reveal d2">Discreet, ducted air conditioning and whole-house climate systems — designed into the architecture so you feel the comfort but never see the equipment.</p>
+      <div class="sd-hero-meta reveal d3">
+        <div><div class="sd-meta-num">Multi-zone</div><div class="sd-meta-lbl">Room-by-room control</div></div>
+        <div><div class="sd-meta-num">F-Gas</div><div class="sd-meta-lbl">Certified engineers</div></div>
+        <div><div class="sd-meta-num">Silent</div><div class="sd-meta-lbl">Concealed systems</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sd-overview">
+    <div class="sd-ov-text">
+      <div class="tag dk reveal">The Ardivia approach</div>
+      <h2 class="reveal d1">Comfort you feel, equipment you don't.</h2>
+      <p class="reveal d2">British summers are getting warmer, and high-end clients increasingly expect the same climate comfort at home that they have in their cars and offices. But conventional air conditioning is ugly — visible wall units, exposed pipework, and noise.</p>
+      <p class="reveal d2">We design <strong>concealed, ducted systems</strong> integrated into ceiling voids, bulkheads, and joinery during the build — so cooling and heating reach every room through discreet linear grilles, with the plant hidden entirely from view and from earshot.</p>
+      <p class="reveal d3">Because we design it alongside the architecture, there's <strong>no retrofitting, no compromise, and no ugly box on the wall</strong> — just perfect, silent, room-by-room climate control.</p>
+    </div>
+    <div class="sd-ov-img"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=900&q=80" alt="Climate interior"></div>
+  </div>
+
+  <div class="sd-included">
+    <div class="tag muted reveal">What we install</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.2vw,46px)">Whole-house comfort.</h2>
+    <div class="sd-inc-grid">
+      <div class="inc-item reveal"><div class="inc-num">01</div><div class="inc-title">Ducted air conditioning</div><div class="inc-desc">Concealed ducted systems delivering cooling and heating through discreet ceiling and wall grilles — invisible plant, even temperatures.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">02</div><div class="inc-title">Multi-zone control</div><div class="inc-desc">Independent climate control for every room or zone — so bedrooms, living spaces, and home offices each hold their own setting.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">03</div><div class="inc-title">Air source heat pumps</div><div class="inc-desc">Modern heat pump systems providing both heating and cooling from a single efficient unit — the sustainable route to year-round comfort.</div></div>
+      <div class="inc-item reveal"><div class="inc-num">04</div><div class="inc-title">Comfort cooling &amp; MVHR</div><div class="inc-desc">Integration with mechanical ventilation for fresh, filtered, temperature-controlled air throughout airtight modern homes.</div></div>
+      <div class="inc-item reveal d1"><div class="inc-num">05</div><div class="inc-title">Smart integration</div><div class="inc-desc">Full integration with KNX, Crestron, and home automation — climate controlled by app, voice, or automated schedule.</div></div>
+      <div class="inc-item reveal d2"><div class="inc-num">06</div><div class="inc-title">Plant &amp; condenser concealment</div><div class="inc-desc">External condensers screened or housed within the landscape design; internal plant within dedicated, acoustically-isolated spaces.</div></div>
+    </div>
+  </div>
+
+  <div class="sd-price">
+    <div class="sd-price-left">
+      <div class="sd-price-label">Designed in, not bolted on</div>
+      <div class="sd-price-range">Part of your project</div>
+      <div class="sd-price-note">Climate control is best specified as part of a wider design-and-build or renovation project, where ductwork and plant can be concealed during construction. Standalone installations are available for completed properties.</div>
+    </div>
+    <a class="btn btn-old" onclick="show('hub')">Discuss your project <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+</div>
+
+<!-- ═══════════ PROJECTS ═══════════ -->
+<div class="page" id="page-projects">
+  <div class="proj-hero">
+    <div class="tag muted reveal">Selected work — Ardivia</div>
+    <h1 class="disp light reveal d1">Projects.</h1>
+    <p class="reveal d2">Eighteen years of residential transformations across London and the Home Counties — from single-room refurbishments to full block developments. Filter by type below.</p>
+  </div>
+  <div class="proj-filters">
+    <button class="pfilter active">All Projects</button>
+    <button class="pfilter">Extensions</button>
+    <button class="pfilter">Loft Conversions</button>
+    <button class="pfilter">Basements</button>
+    <button class="pfilter">Full Renovations</button>
+    <button class="pfilter">New Build</button>
+    <button class="pfilter">Heritage</button>
+    <button class="pfilter">Retrofit</button>
+  </div>
+  <div class="proj-grid">
+    <div class="pcard big" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1100&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Full Renovation</span><span class="pcard-tag">Extension</span></div>
+      <div class="pcard-info">
+        <div class="pcard-type">Bespoke Residential · 8,400 sq ft</div>
+        <div class="pcard-name">Highgate Residence</div>
+        <div class="pcard-detail">North London · Full renovation, double-storey extension &amp; loft · 2023</div>
+        <div class="pcard-cta">View case study <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+    <div class="pcard med" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Extension</span></div>
+      <div class="pcard-info"><div class="pcard-type">Side-return · Kitchen</div><div class="pcard-name">Clapham Side-Return</div><div class="pcard-detail">London SW4 · 2024</div></div>
+    </div>
+    <div class="pcard third" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Loft</span></div>
+      <div class="pcard-info"><div class="pcard-type">Dormer · Master suite</div><div class="pcard-name">Islington Loft</div><div class="pcard-detail">London N1 · 2024</div></div>
+    </div>
+    <div class="pcard third" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Basement</span></div>
+      <div class="pcard-info"><div class="pcard-type">Excavation · Pool &amp; gym</div><div class="pcard-name">Notting Hill Basement</div><div class="pcard-detail">London W11 · 2023</div></div>
+    </div>
+    <div class="pcard med" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Heritage</span><span class="pcard-tag">Listed</span></div>
+      <div class="pcard-info"><div class="pcard-type">Grade II Listed Renovation</div><div class="pcard-name">Cotswolds Manor</div><div class="pcard-detail">Gloucestershire · 2023</div></div>
+    </div>
+    <div class="pcard med" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Extension</span><span class="pcard-tag">Glazed</span></div>
+      <div class="pcard-info"><div class="pcard-type">Orangery · Garden Room</div><div class="pcard-name">Hampstead Garden Room</div><div class="pcard-detail">London NW3 · 2024</div></div>
+    </div>
+    <div class="pcard third" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1617104551722-3b2d51366400?w=600&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Loft</span></div>
+      <div class="pcard-info"><div class="pcard-type">Hip-to-gable</div><div class="pcard-name">Wandsworth Conversion</div><div class="pcard-detail">London SW18 · 2023</div></div>
+    </div>
+    <div class="pcard third" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=600&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">Retrofit</span></div>
+      <div class="pcard-info"><div class="pcard-type">EPC D → B · Whole house</div><div class="pcard-name">Dulwich Retrofit</div><div class="pcard-detail">London SE21 · 2024</div></div>
+    </div>
+    <div class="pcard third" onclick="show('casestudy')">
+      <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80" alt="">
+      <div class="pcard-meta"><span class="pcard-tag">New Build</span></div>
+      <div class="pcard-info"><div class="pcard-type">24-unit BTR block</div><div class="pcard-name">Tottenham Hale</div><div class="pcard-detail">London N17 · On site</div></div>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <div class="tag muted reveal">Start your project</div>
+      <h2 class="disp light reveal d1" style="font-size:clamp(30px,3.5vw,48px)">Your project<br>could be next.</h2>
+      <p class="body light reveal d2" style="margin-top:16px;max-width:380px">Every project here began with a single conversation. Tell us what you have in mind.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name"><input class="ff" type="email" placeholder="Email"></div>
+        <input class="ff" placeholder="Project type &amp; location">
+        <textarea class="ff" placeholder="Tell us about your project"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Send enquiry <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CASE STUDY ═══════════ -->
+<div class="page" id="page-casestudy">
+  <div class="cs-hero">
+    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80" alt="">
+    <div class="cs-hero-content">
+      <a class="sd-back" onclick="show('projects')">← All projects</a>
+      <div class="tag" style="color:var(--gold)">Full Renovation · Extension · Loft</div>
+      <h1>Highgate Residence</h1>
+    </div>
+  </div>
+
+  <div class="cs-overview">
+    <div class="cs-ov-left">
+      <div class="tag dk reveal">The brief</div>
+      <h2 class="reveal d1">A tired 1930s semi, reimagined as an 8,400 sq ft family home.</h2>
+      <p class="reveal d2">Our clients had bought a substantial but dated 1930s property in Highgate with the intention of creating their forever home. The house was structurally sound but poorly arranged, energy-inefficient, and far smaller than they needed for a family of five.</p>
+      <p class="reveal d2">Ardivia delivered a complete transformation under a single contract: a double-storey rear extension, a full loft conversion creating a master suite, a basement excavation for a gym and cinema, and a comprehensive renovation and retrofit of the entire existing house.</p>
+      <p class="reveal d3">Designed by our architecture team, engineered by our in-house structural engineers, and built by our own brigade — delivered on time and to a fixed price, with zero variation orders.</p>
+    </div>
+    <div class="cs-ov-meta">
+      <div class="tag dk reveal">Project details</div>
+      <div style="margin-top:24px" class="reveal d1">
+        <div class="cs-meta-row"><span class="cs-meta-k">Location</span><span class="cs-meta-v">Highgate, London N6</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">Size</span><span class="cs-meta-v">8,400 sq ft</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">Scope</span><span class="cs-meta-v">Renovation · Extension · Loft · Basement</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">Duration</span><span class="cs-meta-v">14 months</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">EPC improvement</span><span class="cs-meta-v">E → B</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">Variation orders</span><span class="cs-meta-v">Zero</span></div>
+        <div class="cs-meta-row"><span class="cs-meta-k">Completed</span><span class="cs-meta-v">2023</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-gallery">
+    <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1100&q=80" alt="">
+    <div class="cs-g-stack">
+      <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&q=80" alt="">
+    </div>
+  </div>
+
+  <div class="sd-specs">
+    <div class="tag muted reveal">The works</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px)">Everything, under one contract.</h2>
+    <div class="spec-grid">
+      <div class="spec-row reveal"><span class="spec-key">Double-storey rear extension</span><span class="spec-val">1,200 sq ft added</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Loft conversion</span><span class="spec-val">Master suite + en-suite</span></div>
+      <div class="spec-row reveal"><span class="spec-key">Basement excavation</span><span class="spec-val">Gym, cinema, plant</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Energy retrofit</span><span class="spec-val">ASHP, MVHR, solar PV</span></div>
+      <div class="spec-row reveal"><span class="spec-key">Climate control</span><span class="spec-val">Concealed ducted, multi-zone</span></div>
+      <div class="spec-row reveal d1"><span class="spec-key">Smart home</span><span class="spec-val">Full KNX integration</span></div>
+    </div>
+  </div>
+
+  <div style="background:var(--linen);padding:80px 52px;text-align:center;border-top:1px solid var(--rule)">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3vw,40px);font-weight:300;font-style:italic;color:var(--forest);max-width:840px;margin:0 auto 28px;line-height:1.45" class="reveal">"Ardivia took on a project most firms would have split between four different contractors — architect, builder, basement specialist, M&amp;E. Having one company own all of it, with their own people on site, is the reason it actually worked."</div>
+    <div class="reveal d1"><div style="width:32px;height:1px;background:var(--forest);margin:0 auto 12px"></div><div style="font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)">Catherine &amp; Edward Forsythe</div><div style="font-size:13px;font-weight:300;color:var(--mid);margin-top:4px">Private clients · Highgate Residence</div></div>
+  </div>
+
+  <div class="sd-related">
+    <div class="tag muted reveal">More projects</div>
+    <h2 class="disp light reveal d1" style="font-size:clamp(26px,3vw,42px)">Explore further.</h2>
+    <div class="rel-grid">
+      <div class="rel-card reveal" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Heritage · Listed</div><div class="rel-name">Cotswolds Manor</div><div class="rel-loc">Gloucestershire · 2023</div></div></div>
+      <div class="rel-card reveal d1" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Basement · Pool</div><div class="rel-name">Notting Hill Basement</div><div class="rel-loc">London W11 · 2023</div></div></div>
+      <div class="rel-card reveal d2" onclick="show('casestudy')"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80" alt=""><div class="rel-info"><div class="rel-type">Loft · Master suite</div><div class="rel-name">Islington Loft</div><div class="rel-loc">London N1 · 2024</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <span class="flogo">Ardivia<sup>®</sup></span>
+      <p class="ftag">Design. Build. Deliver. Specialised residential works across London and the Home Counties.</p>
+    </div>
+    <div>
+      <div class="fct">Major Works</div>
+      <ul class="flinks">
+        <li><a onclick="show('svc-extensions')">Extensions</a></li>
+        <li><a onclick="show('svc-lofts')">Loft Conversions</a></li>
+        <li><a onclick="show('svc-basements')">Basements</a></li>
+        <li><a onclick="show('svc-retrofit')">Retrofitting</a></li>
+        <li><a onclick="show('svc-climate')">Air Conditioning</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Studio</div>
+      <ul class="flinks">
+        <li><a onclick="show('hub')">All Services</a></li>
+        <li><a onclick="show('projects')">Projects</a></li>
+        <li><a href="#">About Ardivia</a></li>
+        <li><a href="#">Journal</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Contact</div>
+      <ul class="flinks">
+        <li><a href="#">hello@ardivia.co.uk</a></li>
+        <li><a href="#">+44 20 7946 0000</a></li>
+        <li><a href="#" style="line-height:1.7;margin-top:6px;display:block">14 Charlotte Street<br>Fitzrovia, London W1T 2LS</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <div class="fcopy">© 2025 Ardivia Ltd. Registered in England &amp; Wales. Co. No. 06712834. RIBA Chartered · FMB · NHBC · MCS Certified.</div>
+    <div class="fleg"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';},50);});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+function show(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  const tab=document.querySelector(`.tab[data-page="${id}"]`);
+  if(tab)tab.classList.add('active');
+  setTimeout(()=>{
+    const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}});},{threshold:0.08});
+    document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el=>o.observe(el));
+  },60);
+  return false;
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>show(t.dataset.page)));
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Project filters (visual only)
+document.querySelectorAll('.pfilter').forEach(f=>f.addEventListener('click',()=>{document.querySelectorAll('.pfilter').forEach(x=>x.classList.remove('active'));f.classList.add('active');}));
+function sub(form,e){e.preventDefault();const b=form.querySelector('button');b.textContent="Sent — we'll be in touch.";b.style.background='#7A8B6F';}
+</script>
+</body>
+</html>

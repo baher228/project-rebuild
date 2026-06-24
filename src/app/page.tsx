@@ -71,7 +71,7 @@ const services = [
 
 const articles = [
   {
-    img: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=1100&q=80",
+    img: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1100&q=80",
     cat: "Design thinking",
     title:
       "Why the relationship between architect and client defines everything about a project's outcome",

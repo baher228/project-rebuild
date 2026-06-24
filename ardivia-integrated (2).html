@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardivia — Design. Build. Deliver.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══ */
+:root {
+  --forest:   #26342B;
+  --sage:     #7A8B6F;
+  --gold:     #C9A84C;
+  --linen:    #E8E2D5;
+  --white:    #F5F3EE;
+  --ink:      #111111;
+  --mid:      #555;
+  --rule:     #D4CEC4;
+  --dark:     #1A1A1A;
+  /* Journey accent colours */
+  --home-accent:   #26342B;  /* Forest — homeowners */
+  --land-accent:   #4A3728;  /* Warm brown — landlords */
+  --dev-accent:    #1D2B3A;  /* Navy — developers */
+  --land-mid:      #6B5040;
+  --dev-mid:       #2E4257;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+.cursor{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring{width:48px;height:48px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:64px;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+nav.scrolled{background:rgba(245,243,238,.97);backdrop-filter:blur(12px);border-bottom-color:var(--rule)}
+.nav-logo{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);text-decoration:none}
+.nav-logo sup{color:var(--gold);font-size:8px;vertical-align:super;font-weight:400}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:.5;transition:opacity .2s;cursor:none}
+.nav-links a:hover{opacity:1}
+.nav-cta{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--white);background:var(--forest);border:none;padding:10px 24px;cursor:none;transition:background .2s}
+.nav-cta:hover{background:var(--ink)}
+
+/* ═══════════════════════════════════════
+   PAGE SWITCHER TABS
+═══════════════════════════════════════ */
+.page-tabs{
+  position:sticky;top:64px;z-index:150;
+  background:var(--ink);
+  display:flex;align-items:center;padding:0 52px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  overflow-x:auto;
+}
+.ptab{
+  font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.38);padding:16px 20px;border:none;background:none;
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;
+  white-space:nowrap;
+}
+.ptab:hover{color:rgba(255,255,255,.7)}
+.ptab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ptab-sep{width:1px;height:16px;background:rgba(255,255,255,.1);flex-shrink:0;margin:0 4px}
+
+/* ═══════════════════════════════════════
+   SHARED ATOMS
+═══════════════════════════════════════ */
+.tag{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.tag::before{content:'';width:22px;height:1px;background:var(--gold);display:block}
+.tag.muted::before{background:rgba(232,226,213,.25)}.tag.muted{color:rgba(232,226,213,.4)}
+h1.display,h2.display{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.0;letter-spacing:-.01em}
+h1.display{font-size:clamp(54px,7vw,100px)}
+h2.display{font-size:clamp(36px,4.2vw,60px)}
+h2.display.sm{font-size:clamp(28px,3vw,44px)}
+.display em{font-style:italic}
+.display.light{color:var(--linen)}
+.display.dark{color:var(--forest)}
+.display.ink{color:var(--ink)}
+p.body{font-size:14px;font-weight:300;line-height:1.8;color:var(--mid)}
+p.body.light{color:rgba(232,226,213,.5)}
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 30px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:all .2s;cursor:none;border:none}
+.btn-f{background:var(--forest);color:var(--linen)}.btn-f:hover{background:var(--ink)}
+.btn-g{background:var(--gold);color:var(--forest)}.btn-g:hover{background:#d4b45a}
+.btn-w{background:var(--white);color:var(--forest)}.btn-w:hover{background:var(--linen)}
+.btn-ol{background:transparent;color:var(--linen);border:1px solid rgba(232,226,213,.22)}.btn-ol:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ol-d{background:transparent;color:var(--forest);border:1px solid rgba(38,52,43,.25)}.btn-ol-d:hover{border-color:var(--forest);background:var(--forest);color:var(--linen)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* ═══════════════════════════════════════
+   PAGE VIEWS
+═══════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+
+/* ─── FORMS ─── */
+.form-wrap{display:flex;flex-direction:column}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ff{border:none;border-bottom:1px solid rgba(0,0,0,.15);background:transparent;padding:12px 0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--forest);outline:none;width:100%;margin-bottom:11px;transition:border-color .2s;cursor:none}
+.ff::placeholder{color:rgba(0,0,0,.28);font-size:13px}
+.ff:focus{border-bottom-color:var(--forest)}
+.ff.light{color:var(--linen);border-bottom-color:rgba(232,226,213,.2)}
+.ff.light::placeholder{color:rgba(232,226,213,.28)}
+.ff.light:focus{border-bottom-color:var(--gold)}
+textarea.ff{resize:none;height:68px}
+.form-btn{align-self:flex-start;margin-top:10px}
+
+/* Rule */
+.hr{width:100%;height:1px;background:var(--rule)}
+.hr.dark{background:rgba(255,255,255,.07)}
+
+/* ═══════════════════════════════════════
+   HOMEPAGE
+═══════════════════════════════════════ */
+
+/* HERO */
+.hero{height:100vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:var(--forest)}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.52) saturate(.6)}
+.hero-panel{position:absolute;left:0;top:0;bottom:0;width:50%;background:var(--forest);clip-path:polygon(0 0,100% 0,86% 100%,0 100%);z-index:1}
+.hero-wm{position:absolute;bottom:-20px;right:-16px;z-index:2;font-size:clamp(80px,15vw,220px);font-weight:600;letter-spacing:-.04em;text-transform:uppercase;color:rgba(245,243,238,.05);line-height:1;pointer-events:none;user-select:none}
+.hero-content{position:relative;z-index:2;padding:0 52px 72px;max-width:700px}
+.hero-lbl{font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:28px;display:flex;align-items:center;gap:12px}
+.hero-lbl::before{content:'';width:28px;height:1px;background:var(--gold);display:block}
+.hero-rule{width:1px;height:48px;background:var(--gold);margin:0 0 24px 2px;display:block}
+.hero-sub{font-size:15px;font-weight:300;color:rgba(232,226,213,.58);line-height:1.75;max-width:420px;margin-bottom:44px}
+.hero-actions{display:flex;gap:14px;align-items:center}
+.hero-ghost{font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,226,213,.48);text-decoration:none;cursor:none;border-bottom:1px solid rgba(232,226,213,.18);padding-bottom:1px;transition:color .2s,border-color .2s}
+.hero-ghost:hover{color:var(--linen);border-color:rgba(232,226,213,.45)}
+.scroll-hint{position:absolute;bottom:36px;right:52px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:9px}
+.scroll-hint span{font-size:8px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:44px;background:var(--gold);animation:sp 2.4s ease-in-out infinite;opacity:.5}
+@keyframes sp{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.5);opacity:.2}}
+
+/* TRUST BAR */
+.trust-bar{background:var(--linen);display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule)}
+.trust-item{padding:36px 44px;border-right:1px solid var(--rule)}
+.trust-item:last-child{border-right:none}
+.trust-num{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--forest);line-height:1;margin-bottom:5px}
+.trust-lbl{font-size:10px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(38,52,43,.38)}
+
+/* JOURNEY CARDS */
+.journeys{padding:80px 52px;background:var(--white);border-top:1px solid var(--rule)}
+.journeys-hdr{margin-bottom:48px;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.journey-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.jcard{position:relative;overflow:hidden;min-height:480px;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end}
+.jcard-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.55) brightness(.6);transition:transform .7s ease,filter .35s}
+.jcard:hover .jcard-bg{transform:scale(1.04);filter:saturate(.55) brightness(.5)}
+.jcard-overlay{position:absolute;inset:0;transition:opacity .3s}
+.jcard.home .jcard-overlay{background:var(--home-accent);opacity:.72}
+.jcard.land .jcard-overlay{background:var(--land-accent);opacity:.7}
+.jcard.dev  .jcard-overlay{background:var(--dev-accent);opacity:.72}
+.jcard:hover .jcard-overlay{opacity:.82}
+.jcard-body{position:relative;z-index:1;padding:36px 32px}
+.jcard-who{font-size:9px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:rgba(232,226,213,.5);margin-bottom:12px}
+.jcard-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--linen);line-height:1.15;margin-bottom:10px}
+.jcard-desc{font-size:13px;font-weight:300;color:rgba(232,226,213,.55);line-height:1.65;margin-bottom:20px}
+.jcard-cta{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.jcard:hover .jcard-cta{gap:14px}
+.jcard-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.jcard.home .jcard-accent{background:var(--gold)}
+.jcard.land .jcard-accent{background:#C9955A}
+.jcard.dev  .jcard-accent{background:#4A8CB5}
+
+/* FEATURED PROJECT */
+.featured{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--rule)}
+.feat-img{position:relative;overflow:hidden;min-height:500px}
+.feat-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.72);display:block;transition:transform .7s}
+.featured:hover .feat-img img{transform:scale(1.03)}
+.feat-label{position:absolute;bottom:20px;left:24px;font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,226,213,.5);background:rgba(26,31,26,.7);padding:4px 12px}
+.feat-content{background:var(--white);padding:80px 64px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--rule)}
+.feat-type{font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.feat-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.5vw,48px);font-weight:300;color:var(--forest);line-height:1.04;margin-bottom:18px}
+.feat-body{font-size:14px;font-weight:300;color:var(--mid);line-height:1.8;margin-bottom:28px}
+.feat-stats{display:flex;gap:32px;margin-bottom:32px;padding:20px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.feat-stat-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--forest);line-height:1}
+.feat-stat-lbl{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(38,52,43,.38);margin-top:4px}
+
+/* ═══════════════════════════════════════
+   JOURNEY 1 — HOMEOWNERS
+═══════════════════════════════════════ */
+.j-hero{min-height:92vh;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:var(--home-accent)}
+.j-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.65)}
+.j-hero-panel{position:absolute;left:0;top:0;bottom:0;width:48%;background:var(--home-accent);clip-path:polygon(0 0,100% 0,84% 100%,0 100%);z-index:1}
+.j-hero-content{position:relative;z-index:2;padding:0 52px 80px;max-width:640px}
+
+/* Process steps */
+.process-visual{background:var(--white);padding:80px 52px;border-top:1px solid var(--rule)}
+.pv-title{margin-bottom:56px}
+.pv-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;position:relative}
+.pv-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--rule);z-index:0}
+.pv-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1;cursor:none;transition:transform .2s}
+.pv-step:hover{transform:translateY(-4px)}
+.pv-step-dot{width:56px;height:56px;border-radius:50%;background:var(--white);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:background .25s,border-color .25s}
+.pv-step:hover .pv-step-dot{background:var(--forest);border-color:var(--forest)}
+.pv-step:hover .pv-step-dot svg{color:var(--gold)}
+.pv-step-dot svg{width:20px;height:20px;color:var(--sage);transition:color .25s}
+.pv-step-num{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pv-step-title{font-size:13px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.pv-step-desc{font-size:12px;font-weight:300;color:var(--mid);line-height:1.55}
+
+/* Pricing guide */
+.pricing{background:var(--ink);padding:80px 52px;border-top:1px solid rgba(255,255,255,.06)}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px}
+.price-card{background:#1a1a1a;padding:36px 32px;border-top:2px solid transparent;transition:border-color .25s,background .25s;cursor:none}
+.price-card:hover{background:#212121;border-top-color:var(--gold)}
+.pc-type{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--linen);margin-bottom:10px;line-height:1.2}
+.pc-range{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--linen);line-height:1;margin-bottom:6px}
+.pc-unit{font-size:10px;font-weight:300;color:rgba(232,226,213,.3);letter-spacing:.06em}
+.pc-includes{margin-top:18px;list-style:none;display:flex;flex-direction:column;gap:7px}
+.pc-includes li{font-size:12px;font-weight:300;color:rgba(232,226,213,.38);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.pc-includes li::before{content:'—';color:var(--gold);flex-shrink:0;font-family:'Cormorant Garamond',serif}
+
+/* Gallery strip */
+.gallery-strip{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2px;border-top:1px solid var(--rule)}
+.gs-img{overflow:hidden;position:relative}
+.gs-img img{width:100%;height:100%;min-height:280px;object-fit:cover;filter:saturate(.7);display:block;transition:transform .6s,filter .3s}
+.gs-img:hover img{transform:scale(1.05);filter:saturate(.8)}
+.gs-label{position:absolute;bottom:14px;left:18px;font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,226,213,.5);background:rgba(26,31,26,.65);padding:4px 10px}
+
+/* FAQ */
+.faq{background:var(--linen);padding:80px 52px;border-top:1px solid var(--rule)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:48px}
+.faq-item{background:var(--white);padding:28px 32px;border-left:2px solid transparent;transition:border-color .25s;cursor:none}
+.faq-item:hover{border-left-color:var(--forest)}
+.faq-q{font-size:14px;font-weight:500;color:var(--forest);margin-bottom:10px}
+.faq-a{font-size:13px;font-weight:300;color:var(--mid);line-height:1.75}
+
+/* ═══════════════════════════════════════
+   JOURNEY 2 — LANDLORDS
+═══════════════════════════════════════ */
+.land-hero{background:var(--land-accent)}
+.land-hero-panel{background:var(--land-accent)}
+
+/* Case studies */
+.case-studies{padding:80px 52px;background:var(--white);border-top:1px solid var(--rule)}
+.cs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}
+.cs-card{background:var(--dark);overflow:hidden;cursor:none;transition:background .25s;display:flex;flex-direction:column}
+.cs-card:hover{background:#222}
+.cs-img{aspect-ratio:16/10;overflow:hidden}
+.cs-img img{width:100%;height:100%;object-fit:cover;filter:brightness(.65) saturate(.6);transition:transform .55s}
+.cs-card:hover .cs-img img{transform:scale(1.04)}
+.cs-body{padding:28px;flex:1;display:flex;flex-direction:column}
+.cs-type{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.cs-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--linen);line-height:1.25;margin-bottom:12px}
+.cs-outcomes{display:flex;flex-direction:column;gap:8px;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+.cs-outcome-item{display:flex;justify-content:space-between;align-items:baseline}
+.cs-outcome-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,226,213,.32)}
+.cs-outcome-val{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--gold)}
+
+/* Why landlords */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--forest)}
+.why-card{background:var(--dark-sage, #3D4A38);padding:52px 48px;border-right:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);cursor:none;transition:background .25s;position:relative}
+.why-card:hover{background:var(--forest)}
+.why-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.why-card:hover::after{transform:scaleX(1)}
+.why-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(201,168,76,.12);line-height:1;margin-bottom:16px}
+.why-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--linen);margin-bottom:12px}
+.why-body{font-size:13px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.75}
+
+/* EPC band */
+.epc-band{background:var(--gold);padding:40px 52px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+.epc-text{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,28px);font-weight:300;font-style:italic;color:var(--forest);max-width:700px;line-height:1.35}
+.epc-cta{flex-shrink:0}
+
+/* ═══════════════════════════════════════
+   JOURNEY 3 — DEVELOPERS
+═══════════════════════════════════════ */
+.dev-hero{background:var(--dev-accent)}
+
+/* Capability table */
+.cap-table{background:var(--dark);padding:80px 52px;border-top:1px solid rgba(255,255,255,.06)}
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}
+.cap-card{background:#161616;padding:40px 36px;border-top:2px solid transparent;transition:all .25s;cursor:none;position:relative;overflow:hidden}
+.cap-card::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(201,168,76,.02);opacity:0;transition:opacity .3s}
+.cap-card:hover{background:#1d1d1d;border-top-color:var(--gold)}.cap-card:hover::before{opacity:1}
+.cap-icon{width:32px;height:32px;color:rgba(232,226,213,.25);margin-bottom:20px;transition:color .25s}
+.cap-card:hover .cap-icon{color:var(--gold)}
+.cap-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;color:var(--linen);margin-bottom:10px}
+.cap-body{font-size:13px;font-weight:300;color:rgba(232,226,213,.38);line-height:1.7}
+.cap-ghost{font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:300;color:rgba(255,255,255,.03);position:absolute;top:8px;right:14px;line-height:1}
+
+/* In-house brigade callout */
+.brigade{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.06)}
+.brigade-left{background:var(--forest);padding:80px 64px;border-right:1px solid rgba(255,255,255,.06)}
+.brigade-right{background:#111;padding:80px 64px}
+.brigade-metric{display:flex;flex-direction:column;gap:28px;margin-top:40px}
+.bm-item{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.bm-item:first-child{border-top:1px solid rgba(255,255,255,.06)}
+.bm-label{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(232,226,213,.3);margin-bottom:6px}
+.bm-value{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--linen);line-height:1}
+.bm-note{font-size:12px;font-weight:300;color:rgba(232,226,213,.35);margin-top:4px}
+
+/* Pipeline */
+.pipeline{background:var(--white);padding:80px 52px;border-top:1px solid var(--rule)}
+.pipeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}
+.pl-card{border:1px solid var(--rule);padding:32px;cursor:none;transition:border-color .25s,background .25s}
+.pl-card:hover{border-color:var(--forest);background:var(--linen)}
+.pl-status{display:inline-flex;align-items:center;gap:6px;font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}
+.pl-dot{width:6px;height:6px;border-radius:50%}
+.pl-dot.live{background:#4CAF72}.pl-status.live{color:#4CAF72}
+.pl-dot.design{background:var(--gold)}.pl-status.design{color:var(--gold)}
+.pl-dot.tender{background:var(--sage)}.pl-status.tender{color:var(--sage)}
+.pl-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;color:var(--forest);margin-bottom:10px}
+.pl-details{display:flex;flex-direction:column;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--rule)}
+.pl-detail{display:flex;justify-content:space-between;font-size:12px;font-weight:300;color:var(--mid)}
+.pl-detail strong{color:var(--forest);font-weight:500}
+
+/* ═══════════════════════════════════════
+   SERVICES PAGE
+═══════════════════════════════════════ */
+
+/* Service tier header */
+.svc-tier-bar{background:var(--white);padding:24px 52px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between}
+.stb-left{display:flex;align-items:center;gap:16px}
+.stb-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--gold);line-height:1;opacity:.3}
+.stb-title{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mid)}
+.stb-sub{font-size:13px;font-weight:300;font-style:italic;font-family:'Crimson Text',serif;color:var(--mid)}
+
+/* Split service detail */
+.svc-split{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.svc-img{position:relative;overflow:hidden;min-height:520px}
+.svc-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.7) brightness(.85);display:block;transition:transform .7s}
+.svc-split:hover .svc-img img{transform:scale(1.03)}
+.svc-img-lbl{position:absolute;bottom:18px;left:22px;font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,226,213,.45);background:rgba(26,31,26,.7);padding:4px 11px}
+.svc-content{padding:68px 60px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--rule)}
+.svc-content.on-dark{background:var(--forest);border-color:rgba(255,255,255,.06)}
+.svc-id{font-size:9px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.svc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.2vw,44px);font-weight:300;line-height:1.04;margin-bottom:18px}
+.svc-title.dark{color:var(--forest)}.svc-title.light{color:var(--linen)}
+.svc-body{font-size:14px;font-weight:300;line-height:1.8;margin-bottom:20px}
+.svc-body.dark{color:var(--mid)}.svc-body.light{color:rgba(232,226,213,.5)}
+.svc-features{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:28px}
+.svc-feat{display:flex;align-items:flex-start;gap:11px;font-size:13px;font-weight:300;line-height:1.5}
+.svc-feat.dark{color:var(--mid)}.svc-feat.light{color:rgba(232,226,213,.48)}
+.svc-feat::before{content:'—';color:var(--gold);flex-shrink:0;font-family:'Cormorant Garamond',serif}
+.stags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.stag{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border:1px solid}
+.stag.d{color:rgba(38,52,43,.7);border-color:rgba(38,52,43,.2)}
+.stag.l{color:rgba(201,168,76,.6);border-color:rgba(201,168,76,.2)}
+
+/* 3-col service cards */
+.svc-3{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.s3c{padding:40px 34px;cursor:none;position:relative;overflow:hidden;transition:background .25s;border-top:2px solid transparent;transition:border-color .25s,background .25s}
+.s3c:hover{border-top-color:var(--gold)}
+.s3c.bg-ink{background:var(--ink)}.s3c.bg-ink:hover{background:#1a1a1a}
+.s3c.bg-forest{background:#3D4A38}.s3c.bg-forest:hover{background:var(--forest)}
+.s3c.bg-white{background:var(--white);border:1px solid var(--rule)}.s3c.bg-white:hover{background:var(--linen)}
+.s3c-ghost{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:300;position:absolute;top:8px;right:14px;line-height:1;pointer-events:none}
+.s3c.bg-ink .s3c-ghost,.s3c.bg-forest .s3c-ghost{color:rgba(255,255,255,.04)}
+.s3c.bg-white .s3c-ghost{color:rgba(0,0,0,.04)}
+.s3c-icon{width:28px;height:28px;margin-bottom:20px;transition:color .25s}
+.s3c.bg-ink .s3c-icon,.s3c.bg-forest .s3c-icon{color:rgba(232,226,213,.28)}
+.s3c.bg-white .s3c-icon{color:var(--sage)}
+.s3c:hover .s3c-icon{color:var(--gold) !important}
+.s3c-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;margin-bottom:10px;line-height:1.2}
+.s3c.bg-ink .s3c-name,.s3c.bg-forest .s3c-name{color:var(--linen)}
+.s3c.bg-white .s3c-name{color:var(--forest)}
+.s3c-desc{font-size:13px;font-weight:300;line-height:1.7}
+.s3c.bg-ink .s3c-desc,.s3c.bg-forest .s3c-desc{color:rgba(232,226,213,.36)}
+.s3c.bg-white .s3c-desc{color:var(--mid)}
+
+/* Callout strip */
+.callout{padding:52px 52px;display:flex;align-items:center;justify-content:space-between;gap:48px;border-top:1px solid}
+.callout.f{background:var(--forest);border-color:rgba(255,255,255,.06)}
+.callout.l{background:var(--linen);border-color:var(--rule)}
+.callout-q{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.2vw,28px);font-weight:300;font-style:italic;line-height:1.35;max-width:680px}
+.callout.f .callout-q{color:var(--linen)}.callout.l .callout-q{color:var(--forest)}
+.callout-src{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
+.callout.f .callout-src{color:rgba(232,226,213,.28)}.callout.l .callout-src{color:rgba(38,52,43,.38)}
+
+/* Brand ladder table */
+.brand-table{background:var(--dark);padding:60px 52px;border-top:1px solid rgba(255,255,255,.06)}
+.bt-grid{display:grid;grid-template-columns:180px 1fr;border:1px solid rgba(255,255,255,.07);margin-top:40px}
+.bt-row{display:contents}
+.bt-row>div{padding:18px 24px;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px;font-weight:300}
+.bt-label{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,226,213,.28);background:rgba(255,255,255,.02);border-right:1px solid rgba(255,255,255,.06) !important}
+.bt-value.light{color:var(--linen)}.bt-value.gold{color:var(--gold);font-family:'Crimson Text',serif;font-style:italic;font-size:16px}
+
+/* ═══════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════ */
+.contact-page{display:grid;grid-template-columns:1fr 1fr;min-height:90vh;margin-top:64px}
+.cp-left{background:var(--forest);padding:80px 64px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(255,255,255,.06)}
+.cp-contact-row{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.07);align-items:flex-start}
+.cp-contact-row:first-of-type{border-top:1px solid rgba(255,255,255,.07)}
+.cp-label{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);width:68px;flex-shrink:0;margin-top:1px}
+.cp-val{font-size:14px;font-weight:300;color:rgba(232,226,213,.5);line-height:1.6}
+.cp-right{background:var(--linen);padding:80px 64px;display:flex;flex-direction:column;justify-content:center}
+.cp-form-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--rule)}
+.cft{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(38,52,43,.35);padding:10px 16px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;margin-bottom:-1px}
+.cft:hover{color:var(--forest)}.cft.active{color:var(--forest);border-bottom-color:var(--forest)}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer{background:var(--ink);padding:68px 52px 36px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:48px;margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07)}
+.flogo{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--linen);margin-bottom:14px;display:block}
+.flogo sup{color:var(--gold);font-weight:400;font-size:8px}
+.ftag{font-size:13px;font-weight:300;color:rgba(232,226,213,.28);line-height:1.7;max-width:230px;margin-bottom:22px}
+.fsocials{display:flex;gap:8px}
+.fsoc{width:30px;height:30px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;color:rgba(232,226,213,.28);font-size:10px;font-weight:500;transition:all .2s;cursor:none}
+.fsoc:hover{border-color:var(--gold);color:var(--gold)}
+.fct{font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;font-weight:300;color:rgba(232,226,213,.26);text-decoration:none;transition:color .2s;cursor:none}
+.flinks a:hover{color:var(--linen)}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-size:10px;font-weight:300;color:rgba(232,226,213,.14);letter-spacing:.04em}
+.fleg{display:flex;gap:18px}
+.fleg a{font-size:10px;font-weight:300;color:rgba(232,226,213,.14);text-decoration:none;transition:color .2s;cursor:none}
+.fleg a:hover{color:rgba(232,226,213,.45)}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Ardivia<sup>®</sup></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="show('home');return false">Home</a></li>
+    <li><a href="#" onclick="show('services');return false">What We Do</a></li>
+    <li><a href="#" onclick="show('home');return false">Projects</a></li>
+    <li><a href="#" onclick="show('home');return false">About</a></li>
+    <li><a href="#" onclick="show('home');return false">Insights</a></li>
+  </ul>
+  <button class="nav-cta" onclick="show('contact')">Start a Conversation</button>
+</nav>
+
+<!-- ══ PAGE TABS ══ -->
+<div class="page-tabs">
+  <button class="ptab active" data-page="home">Homepage</button>
+  <div class="ptab-sep"></div>
+  <button class="ptab" data-page="homeowner">Homeowners</button>
+  <button class="ptab" data-page="landlord">Landlords</button>
+  <button class="ptab" data-page="developer">Developers &amp; Investors</button>
+  <div class="ptab-sep"></div>
+  <button class="ptab" data-page="services">All Services</button>
+  <button class="ptab" data-page="contact">Contact</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="Ardivia">
+    <div class="hero-panel"></div>
+    <div class="hero-wm">ARDIVIA</div>
+    <div class="hero-content">
+      <div class="hero-lbl">Design · Build · Deliver — London</div>
+      <h1 class="display light reveal" style="font-size:clamp(52px,7vw,100px)">One company.<br>One contract.<br><em>From design<br>to keys.</em></h1>
+      <span class="hero-rule"></span>
+      <p class="hero-sub">We design, build and deliver residential properties — from a single flat transformation to a full block development — under one roof, with one point of accountability.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-g" onclick="show('homeowner');return false">Start your project <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="hero-ghost" onclick="show('services');return false">All services →</a>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="scroll-line"></div><span>Explore</span></div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-item reveal"><div class="trust-num">18</div><div class="trust-lbl">Years trading</div></div>
+    <div class="trust-item reveal d1"><div class="trust-num">340+</div><div class="trust-lbl">Units delivered</div></div>
+    <div class="trust-item reveal d2"><div class="trust-num">12</div><div class="trust-lbl">Live projects</div></div>
+    <div class="trust-item reveal d3"><div class="trust-num">RIBA</div><div class="trust-lbl">Chartered practice · FMB · NHBC</div></div>
+  </div>
+
+  <!-- THREE JOURNEYS -->
+  <section class="journeys">
+    <div class="journeys-hdr">
+      <div>
+        <div class="tag reveal">Who we work with</div>
+        <h2 class="display dark reveal d1" style="font-size:clamp(34px,4vw,54px)">Your journey<br>starts here.</h2>
+      </div>
+      <p class="body reveal d2" style="max-width:340px">We serve three distinct client types. Choose your path — or explore everything we do.</p>
+    </div>
+    <div class="journey-cards">
+      <div class="jcard home reveal" onclick="show('homeowner')" style="cursor:pointer">
+        <div class="jcard-accent"></div>
+        <img class="jcard-bg" src="https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=800&q=80" alt="Homeowners">
+        <div class="jcard-overlay"></div>
+        <div class="jcard-body">
+          <div class="jcard-who">For homeowners &amp; general public</div>
+          <div class="jcard-title">I want my home transformed.</div>
+          <div class="jcard-desc">Flat refurbs, extensions, full renovations, home offices, and bespoke design — in plain English, with one team responsible for everything.</div>
+          <div class="jcard-cta">Explore homeowner services <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="jcard land reveal d1" onclick="show('landlord')" style="cursor:pointer">
+        <div class="jcard-accent"></div>
+        <img class="jcard-bg" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Landlords">
+        <div class="jcard-overlay"></div>
+        <div class="jcard-body">
+          <div class="jcard-who">For landlords &amp; letting investors</div>
+          <div class="jcard-title">I need reliable work that maximises yield.</div>
+          <div class="jcard-desc">HMO conversions, buy-to-let refurbs, EPC upgrades, block improvements — fixed price, no void periods, one contractor from design to handover.</div>
+          <div class="jcard-cta" style="color:#C9955A">Explore landlord services <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="jcard dev reveal d2" onclick="show('developer')" style="cursor:pointer">
+        <div class="jcard-accent"></div>
+        <img class="jcard-bg" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80" alt="Developers">
+        <div class="jcard-overlay"></div>
+        <div class="jcard-body">
+          <div class="jcard-who">For property developers &amp; investors</div>
+          <div class="jcard-title">I'm developing residential property at scale.</div>
+          <div class="jcard-desc">Block contracts, co-development, JV structures, new build and refurb — in-house brigades, fixed costs, programme certainty, and real financial transparency.</div>
+          <div class="jcard-cta" style="color:#4A8CB5">Explore developer services <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PROJECT -->
+  <section class="featured">
+    <div class="feat-img">
+      <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80" alt="Highgate Residence">
+      <div class="feat-label">Featured project · 2024</div>
+    </div>
+    <div class="feat-content">
+      <div class="feat-type reveal">Bespoke Residential · Highgate, London</div>
+      <div class="feat-title reveal d1">Highgate Residence — Full design, build &amp; delivery</div>
+      <p class="feat-body reveal d2">A complete transformation of a 1930s semi-detached property — extended, redesigned, and rebuilt to create an 8,400 sq ft family home. Designed by Ardivia's architecture team, built by our in-house brigade, delivered on time and on budget.</p>
+      <div class="feat-stats reveal d3">
+        <div><div class="feat-stat-num">8,400</div><div class="feat-stat-lbl">Square feet</div></div>
+        <div><div class="feat-stat-num">14</div><div class="feat-stat-lbl">Months on site</div></div>
+        <div><div class="feat-stat-num">£0</div><div class="feat-stat-lbl">Variation orders</div></div>
+      </div>
+      <div class="reveal d3"><a href="#" class="btn btn-f">View case study <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <div style="background:var(--forest);padding:56px 52px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,.06)">
+    <div>
+      <h2 class="display light reveal" style="font-size:clamp(28px,3vw,44px)">Start a conversation.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.45);margin-top:8px" class="reveal d1">No commitment. Just a conversation about what you're trying to achieve.</p>
+    </div>
+    <a href="#" class="btn btn-g reveal d1" onclick="show('contact');return false">Get in touch <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+
+</div><!-- /home -->
+
+<!-- ══════════════════════════════════════
+     HOMEOWNERS JOURNEY
+══════════════════════════════════════ -->
+<div class="page" id="page-homeowner">
+
+  <section class="j-hero">
+    <img class="j-hero-img" src="https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=1600&q=80" alt="Homeowners">
+    <div class="j-hero-panel" style="background:var(--home-accent);clip-path:polygon(0 0,100% 0,84% 100%,0 100%);position:absolute;left:0;top:0;bottom:0;width:48%;z-index:1"></div>
+    <div class="j-hero-content">
+      <div class="hero-lbl">For Homeowners</div>
+      <h1 class="display light reveal" style="font-size:clamp(48px,6.5vw,88px)">Your home.<br><em>Transformed.</em></h1>
+      <span class="hero-rule"></span>
+      <p class="hero-sub">From a single room to a full house — we handle design, planning, build, and handover. You deal with one team. One contract. No surprises.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-g" onclick="show('contact');return false">Free consultation <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="hero-ghost">View gallery →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process-visual">
+    <div class="pv-title">
+      <div class="tag reveal">How it works</div>
+      <h2 class="display dark reveal d1" style="font-size:clamp(32px,3.8vw,52px)">Five steps from first call<br>to moving day.</h2>
+    </div>
+    <div class="pv-steps">
+      <div class="pv-step reveal">
+        <div class="pv-step-dot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M10 2C6 2 2 6 2 10s4 8 8 8 8-4 8-8S14 2 10 2z"/><path d="M10 6v4l3 2"/></svg></div>
+        <div class="pv-step-num">01</div>
+        <div class="pv-step-title">Consultation</div>
+        <div class="pv-step-desc">Free 60-minute meeting. We listen, ask questions, and begin to understand your project.</div>
+      </div>
+      <div class="pv-step reveal d1">
+        <div class="pv-step-dot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 16l4-4 3 3 4-6 4 5"/><circle cx="15" cy="6" r="3"/></svg></div>
+        <div class="pv-step-num">02</div>
+        <div class="pv-step-title">Design</div>
+        <div class="pv-step-desc">Our architects develop your brief into drawings, material choices, and a detailed specification.</div>
+      </div>
+      <div class="pv-step reveal d2">
+        <div class="pv-step-dot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="14" height="14" rx="1"/><path d="M3 8h14M8 3v14"/></svg></div>
+        <div class="pv-step-num">03</div>
+        <div class="pv-step-title">Planning</div>
+        <div class="pv-step-desc">We handle all planning permissions, building regulations, and approvals on your behalf.</div>
+      </div>
+      <div class="pv-step reveal d3">
+        <div class="pv-step-dot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 16V9l6-6 6 6v7M8 16v-5h4v5"/></svg></div>
+        <div class="pv-step-num">04</div>
+        <div class="pv-step-title">Build</div>
+        <div class="pv-step-desc">Our in-house brigade builds your project — no subcontractor relay races, no excuses.</div>
+      </div>
+      <div class="pv-step reveal d4">
+        <div class="pv-step-dot"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 10l4 4 8-8"/></svg></div>
+        <div class="pv-step-num">05</div>
+        <div class="pv-step-title">Handover</div>
+        <div class="pv-step-desc">Full snagging, sign-off, and aftercare. Your home, exactly as designed, ready to live in.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+    <div class="tag muted reveal">Indicative pricing guide</div>
+    <h2 class="display light reveal d1" style="font-size:clamp(32px,3.8vw,52px);margin-bottom:8px">What does it cost?</h2>
+    <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.42);max-width:560px;line-height:1.75" class="reveal d2">Every project is unique. These ranges give you a realistic starting point. All prices include design, project management, and construction — one fixed price, no hidden costs.</p>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="pc-type">Type 01</div>
+        <div class="pc-name">Flat Refurbishment</div>
+        <div class="pc-range">£800–£1,400</div>
+        <div class="pc-unit">per sq ft · all-in</div>
+        <ul class="pc-includes">
+          <li>Design and specification</li>
+          <li>Kitchen and bathroom</li>
+          <li>Flooring and plastering</li>
+          <li>Electrical and plumbing</li>
+          <li>Decoration throughout</li>
+        </ul>
+      </div>
+      <div class="price-card reveal d1">
+        <div class="pc-type">Type 02</div>
+        <div class="pc-name">Full House Renovation</div>
+        <div class="pc-range">£1,200–£2,000</div>
+        <div class="pc-unit">per sq ft · all-in</div>
+        <ul class="pc-includes">
+          <li>Full architectural redesign</li>
+          <li>All rooms and services</li>
+          <li>Structural works</li>
+          <li>Heritage and listed capability</li>
+          <li>10-year structural warranty</li>
+        </ul>
+      </div>
+      <div class="price-card reveal d2">
+        <div class="pc-type">Type 03</div>
+        <div class="pc-name">Extension &amp; Addition</div>
+        <div class="pc-range">£2,500–£4,500</div>
+        <div class="pc-unit">per sq ft new build element</div>
+        <ul class="pc-includes">
+          <li>Planning permission included</li>
+          <li>Full design and specification</li>
+          <li>Structural engineering</li>
+          <li>Building regulations</li>
+          <li>Integrated with existing fabric</li>
+        </ul>
+      </div>
+      <div class="price-card reveal d3">
+        <div class="pc-type">Type 04</div>
+        <div class="pc-name">Bespoke New Build</div>
+        <div class="pc-range">£3,500+</div>
+        <div class="pc-unit">per sq ft · fully bespoke</div>
+        <ul class="pc-includes">
+          <li>Complete RIBA design service</li>
+          <li>The Complete House option</li>
+          <li>Materials sourcing &amp; spec</li>
+          <li>Bespoke furniture available</li>
+          <li>Full aftercare programme</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery-strip">
+    <div class="gs-img reveal"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80" alt=""><div class="gs-label">Highgate · Full refurb</div></div>
+    <div class="gs-img reveal d1"><img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=600&q=80" alt=""><div class="gs-label">Chelsea · Kitchen</div></div>
+    <div class="gs-img reveal d2"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=80" alt=""><div class="gs-label">Surrey · Extension</div></div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="tag" style="color:var(--forest)"><span style="display:block;width:22px;height:1px;background:var(--forest)"></span>Common questions</div>
+    <h2 class="display dark reveal d1" style="font-size:clamp(28px,3vw,44px);margin-bottom:0">What clients ask us.</h2>
+    <div class="faq-grid">
+      <div class="faq-item reveal"><div class="faq-q">Do I need planning permission?</div><div class="faq-a">It depends on the scope. Extensions over a certain size require planning. Internal refurbs usually don't. Listed buildings always need consent. We assess this in your first consultation and manage all applications on your behalf — included in our fee.</div></div>
+      <div class="faq-item reveal d1"><div class="faq-q">Can I live in the property during works?</div><div class="faq-a">For refurbs, it depends on the scope. For full renovations, we'd normally recommend moving out. We'll advise honestly based on your specific project and create a phased programme if staying is important.</div></div>
+      <div class="faq-item reveal d2"><div class="faq-q">How do fixed-price contracts work?</div><div class="faq-a">We price your project in full before work starts. Unless you change the brief, the price doesn't change. Variation orders require your written approval before any additional work proceeds. No surprises.</div></div>
+      <div class="faq-item reveal d3"><div class="faq-q">What warranties do you provide?</div><div class="faq-a">All new build work carries a 10-year structural warranty. Refurbs carry a 2-year defects liability period. We're also FMB members, which provides additional client protection through their dispute resolution service.</div></div>
+      <div class="faq-item reveal"><div class="faq-q">How long does a typical project take?</div><div class="faq-a">Flat refurb: 8–14 weeks. Full house renovation: 6–12 months. Extension: 4–8 months. New build: 12–24 months. These include design and planning. We provide a detailed programme before work starts.</div></div>
+      <div class="faq-item reveal d1"><div class="faq-q">Can you help with listed buildings?</div><div class="faq-a">Yes — this is one of our specialisms. We handle all listed building consent applications, work with heritage-approved craftsmen, and have extensive experience with English Heritage and local authority conservation officers.</div></div>
+    </div>
+  </section>
+
+  <!-- HOMEOWNER CTA -->
+  <div style="background:var(--forest);padding:72px 52px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-top:1px solid rgba(255,255,255,.06)">
+    <div>
+      <div class="tag muted reveal">Free consultation</div>
+      <h2 class="display light reveal d1" style="font-size:clamp(32px,3.8vw,52px)">Tell us about<br>your project.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.8;margin-top:16px;max-width:380px" class="reveal d2">No commitment. We'll listen, ask questions, and give you an honest assessment of what your project involves — and what it will cost.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="submitForm(this,event)">
+        <div class="form-row"><input class="ff light" type="text" placeholder="Your name"><input class="ff light" type="email" placeholder="Email address"></div>
+        <input class="ff light" type="text" placeholder="Property type &amp; location">
+        <input class="ff light" type="text" placeholder="Approximate budget">
+        <textarea class="ff light" placeholder="Tell us about what you'd like to do"></textarea>
+        <button type="submit" class="btn btn-g form-btn">Book free consultation <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+
+</div><!-- /homeowner -->
+
+<!-- ══════════════════════════════════════
+     LANDLORD JOURNEY
+══════════════════════════════════════ -->
+<div class="page" id="page-landlord">
+
+  <section class="j-hero" style="background:var(--land-accent)">
+    <img class="j-hero-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1600&q=80" alt="Landlords">
+    <div class="j-hero-panel" style="background:var(--land-accent);clip-path:polygon(0 0,100% 0,84% 100%,0 100%);position:absolute;left:0;top:0;bottom:0;width:48%;z-index:1"></div>
+    <div class="j-hero-content">
+      <div class="hero-lbl" style="color:#C9955A"><span style="display:block;width:28px;height:1px;background:#C9955A"></span>For Landlords</div>
+      <h1 class="display light reveal" style="font-size:clamp(48px,6.5vw,88px)">Reliable work.<br><em>Better yields.</em></h1>
+      <span class="hero-rule" style="background:#C9955A"></span>
+      <p class="hero-sub">Fixed-price contracts. No finger-pointing between trades. One contractor from design to handover. EPC compliance handled. Minimal void periods.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-g" onclick="show('contact');return false">Portfolio assessment <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="hero-ghost">Case studies →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EPC URGENT BAND -->
+  <div class="epc-band">
+    <div class="epc-text">"EPC C compliance is now a legal requirement for new tenancies. Landlords who don't act face fines of up to £30,000 and an inability to re-let. We handle EPC upgrades as a standalone service — assess, specify, and deliver in one appointment."</div>
+    <a href="#" class="btn btn-f epc-cta">EPC assessment →</a>
+  </div>
+
+  <!-- WHY LANDLORDS -->
+  <section style="padding:0;border-top:1px solid var(--rule)">
+    <div style="padding:56px 52px 40px;background:var(--white)">
+      <div class="tag reveal">Why landlords choose Ardivia</div>
+      <h2 class="display dark reveal d1" style="font-size:clamp(32px,3.8vw,52px)">One contractor.<br>Zero headaches.</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal"><div class="why-num">01</div><div class="why-title">No blame gap between architect and contractor</div><div class="why-body">When design and build are split between firms, disputes and delays happen at the handover point. Ardivia owns both — so there is no handover, and no gap for problems to fall into.</div></div>
+      <div class="why-card reveal d1"><div class="why-num">02</div><div class="why-title">Fixed-price contracts as standard</div><div class="why-body">Every landlord commission is fixed-price. We price in full before work starts. Variation orders require your written approval. You know exactly what you're spending before a single tradesman arrives.</div></div>
+      <div class="why-card reveal d2"><div class="why-num">03</div><div class="why-title">EPC upgrades built into every refurb</div><div class="why-body">We assess EPC rating at the start of every project and specify improvements — insulation, MVHR, heat pump integration, window upgrades — as an integrated part of the refurbishment, not a bolt-on.</div></div>
+      <div class="why-card reveal d3"><div class="why-num">04</div><div class="why-title">Minimum void periods, maximum tenancy quality</div><div class="why-body">A well-specified refurb attracts higher-quality tenants who stay longer. We work to a programme with void periods in mind — and our quality means you're not back on site in 18 months with snagging.</div></div>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="case-studies">
+    <div class="tag reveal">What we've delivered</div>
+    <h2 class="display dark reveal d1" style="font-size:clamp(32px,3.8vw,52px);margin-bottom:0">Landlord case studies.</h2>
+    <div class="cs-grid">
+      <div class="cs-card reveal">
+        <div class="cs-img"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=700&q=80" alt=""></div>
+        <div class="cs-body">
+          <div class="cs-type">HMO Conversion · North London</div>
+          <div class="cs-title">4-bed to 7-bed HMO — full HMO licence achieved</div>
+          <p style="font-size:13px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.65;margin-bottom:0">Single-family Victorian terrace converted to compliant 7-bed HMO. Fire compartmentation, new bathrooms, EPC upgraded from E to B. Licensed and tenanted within 6 weeks of completion.</p>
+          <div class="cs-outcomes">
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Rental income before</span><span class="cs-outcome-val">£2,200/mo</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Rental income after</span><span class="cs-outcome-val">£5,600/mo</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">EPC rating</span><span class="cs-outcome-val">E → B</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-card reveal d1">
+        <div class="cs-img"><img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=700&q=80" alt=""></div>
+        <div class="cs-body">
+          <div class="cs-type">Buy-to-Let Refurb · East London</div>
+          <div class="cs-title">Full flat refurb — rental uplift and EPC compliance</div>
+          <p style="font-size:13px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.65;margin-bottom:0">Two-bed flat in E8. Full refurb including kitchen, bathroom, flooring, and EPC upgrade from D to C. Completed in 9 weeks with zero void beyond works period.</p>
+          <div class="cs-outcomes">
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Rental income before</span><span class="cs-outcome-val">£1,650/mo</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Rental income after</span><span class="cs-outcome-val">£2,100/mo</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Works duration</span><span class="cs-outcome-val">9 weeks</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cs-card reveal d2">
+        <div class="cs-img"><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=80" alt=""></div>
+        <div class="cs-body">
+          <div class="cs-type">Block Upgrade · South London</div>
+          <div class="cs-title">12-unit block — common parts, fabric, and EPC programme</div>
+          <p style="font-size:13px;font-weight:300;color:rgba(232,226,213,.4);line-height:1.65;margin-bottom:0">12-unit residential block in SW9. Complete common parts refurb, external fabric works, and unit-by-unit EPC programme phased to minimise tenancy disruption.</p>
+          <div class="cs-outcomes">
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Units upgraded</span><span class="cs-outcome-val">12</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Average EPC uplift</span><span class="cs-outcome-val">2 bands</span></div>
+            <div class="cs-outcome-item"><span class="cs-outcome-label">Programme duration</span><span class="cs-outcome-val">24 weeks</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDLORD CTA -->
+  <div style="background:var(--land-accent);padding:72px 52px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-top:1px solid rgba(255,255,255,.07)">
+    <div>
+      <div class="tag" style="color:rgba(232,226,213,.4)"><span style="display:block;width:22px;height:1px;background:rgba(232,226,213,.25)"></span>Portfolio assessment</div>
+      <h2 class="display light reveal d1" style="font-size:clamp(32px,3.8vw,52px)">Tell us about<br>your portfolio.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.42);line-height:1.8;margin-top:16px;max-width:380px" class="reveal d2">We'll assess your current EPC ratings, identify yield uplift opportunities, and propose a refurb programme with full cost and return projections.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="submitForm(this,event)">
+        <div class="form-row"><input class="ff light" type="text" placeholder="Your name"><input class="ff light" type="email" placeholder="Email address"></div>
+        <input class="ff light" type="text" placeholder="Number of units / property address">
+        <input class="ff light" type="text" placeholder="Current EPC rating (if known)">
+        <textarea class="ff light" placeholder="Tell us what you're trying to achieve"></textarea>
+        <button type="submit" class="btn btn-g form-btn">Request portfolio assessment <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+
+</div><!-- /landlord -->
+
+<!-- ══════════════════════════════════════
+     DEVELOPER / INVESTOR JOURNEY
+══════════════════════════════════════ -->
+<div class="page" id="page-developer">
+
+  <section class="j-hero" style="background:var(--dev-accent)">
+    <img class="j-hero-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80" alt="Developers">
+    <div class="j-hero-panel" style="background:var(--dev-accent);clip-path:polygon(0 0,100% 0,84% 100%,0 100%);position:absolute;left:0;top:0;bottom:0;width:48%;z-index:1"></div>
+    <div class="j-hero-content">
+      <div class="hero-lbl" style="color:#4A8CB5"><span style="display:block;width:28px;height:1px;background:#4A8CB5"></span>Developers &amp; Investors</div>
+      <h1 class="display light reveal" style="font-size:clamp(48px,6.5vw,88px)">Speed.<br>Cost certainty.<br><em>Delivery.</em></h1>
+      <span class="hero-rule" style="background:#4A8CB5"></span>
+      <p class="hero-sub">In-house brigades. Fixed-price block contracts. Co-development and JV structures available. Full transparency on costs, programme, and performance.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-g" onclick="show('contact');return false">Investment enquiry <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="hero-ghost">View credentials →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN-HOUSE BRIGADE -->
+  <section class="brigade">
+    <div class="brigade-left">
+      <div class="tag muted reveal">Our structural advantage</div>
+      <h2 class="display light reveal d1" style="font-size:clamp(30px,3.5vw,48px)">No subcontractors.<br>Your build, our people.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.8;margin:20px 0 32px;max-width:420px" class="reveal d2">Most design-build firms subcontract labour. We don't. Our in-house brigades are directly employed by Ardivia — which means quality control is ours, programme reliability is ours, and there are no subcontractor markup layers in your costs.</p>
+      <a href="#" class="btn btn-ol reveal d2">Download credentials pack <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+    <div class="brigade-right">
+      <div class="brigade-metric">
+        <div class="bm-item reveal"><div class="bm-label">In-house workforce</div><div class="bm-value">85</div><div class="bm-note">Directly employed tradespeople across all disciplines</div></div>
+        <div class="bm-item reveal d1"><div class="bm-label">Max concurrent delivery</div><div class="bm-value">140 units</div><div class="bm-note">Current maximum delivery capacity across live projects</div></div>
+        <div class="bm-item reveal d2"><div class="bm-label">Average cost per unit</div><div class="bm-value">£48,000</div><div class="bm-note">Refurb to Ardivia standard, all-in. New build on request.</div></div>
+        <div class="bm-item reveal d3"><div class="bm-label">Programme delivery rate</div><div class="bm-value">97%</div><div class="bm-note">Percentage of projects delivered on or ahead of programme</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="cap-table">
+    <div class="tag muted reveal">Development capabilities</div>
+    <h2 class="display light reveal d1" style="font-size:clamp(32px,3.8vw,52px);margin-bottom:0">What we can<br>deliver for you.</h2>
+    <div class="cap-grid">
+      <div class="cap-card reveal">
+        <div class="cap-ghost">A</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 28V14L16 4l12 10v14M10 28V20h5v8M17 28V20h5v8"/></svg>
+        <div class="cap-name">New Build Residential</div>
+        <p class="cap-body">Single homes to blocks of flats. We design, build, and deliver. NHBC warranty as standard. Homes England relationships available for affordable housing elements.</p>
+      </div>
+      <div class="cap-card reveal d1">
+        <div class="cap-ghost">B</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 28h24M7 28V18l9-12 9 12v10M13 28v-7h6v7"/></svg>
+        <div class="cap-name">Block Refurbishment &amp; Conversion</div>
+        <p class="cap-body">Full block refurbs, office-to-residential conversion, commercial change of use. We handle planning, design, and delivery — one contract for the whole programme.</p>
+      </div>
+      <div class="cap-card reveal d2">
+        <div class="cap-ghost">C</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 26l4-4 4 4 4-5 4 5 4-4"/><path d="M4 16h24V6H4v10z"/></svg>
+        <div class="cap-name">Co-Development &amp; JV Structures</div>
+        <p class="cap-body">For the right sites and partners, we co-develop. We bring design, build, and delivery capability. You bring site, capital, or both. Structures vary — let's talk.</p>
+      </div>
+      <div class="cap-card reveal">
+        <div class="cap-ghost">D</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><rect x="4" y="8" width="24" height="18" rx="1"/><path d="M10 8V5h12v3M16 14v6M13 17h6"/></svg>
+        <div class="cap-name">Fixed-Price Block Contracts</div>
+        <p class="cap-body">We price your entire development in full before groundbreak. Fixed price, fixed programme. Variation orders require written approval. No surprises — ever.</p>
+      </div>
+      <div class="cap-card reveal d1">
+        <div class="cap-ghost">E</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><circle cx="16" cy="16" r="11"/><path d="M16 8v8l4 3"/></svg>
+        <div class="cap-name">Homes England &amp; S106 Delivery</div>
+        <p class="cap-body">Experience delivering affordable and shared-ownership elements under Homes England grant conditions. Full compliance with S106 obligations as a standard part of our project management.</p>
+      </div>
+      <div class="cap-card reveal d2">
+        <div class="cap-ghost">F</div>
+        <svg class="cap-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1"><path d="M6 26l4-4 3 3 5-7 4 4 4-5"/><path d="M4 8h24"/></svg>
+        <div class="cap-name">Financial Reporting &amp; Transparency</div>
+        <p class="cap-body">Cost-per-unit data, programme tracking, margin benchmarking, and monthly financial reporting as standard. We operate at institutional standard for institutional clients.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section class="pipeline">
+    <div class="tag reveal">Current scheme pipeline</div>
+    <h2 class="display dark reveal d1" style="font-size:clamp(32px,3.8vw,52px);margin-bottom:8px">Live and upcoming schemes.</h2>
+    <p class="body reveal d2" style="max-width:540px">Transparency builds confidence. Below is a selection of current and upcoming Ardivia schemes — indicative of the scale and type of work we deliver.</p>
+    <div class="pipeline-grid">
+      <div class="pl-card reveal">
+        <div class="pl-status live"><div class="pl-dot live"></div>On site</div>
+        <div class="pl-name">Tottenham Hale — 24-unit BTR block</div>
+        <div class="pl-details">
+          <div class="pl-detail"><span>Type</span><strong>New build BTR</strong></div>
+          <div class="pl-detail"><span>Units</span><strong>24</strong></div>
+          <div class="pl-detail"><span>GDV</span><strong>£8.4M</strong></div>
+          <div class="pl-detail"><span>Completion</span><strong>Q3 2025</strong></div>
+        </div>
+      </div>
+      <div class="pl-card reveal d1">
+        <div class="pl-status design"><div class="pl-dot design"></div>In design</div>
+        <div class="pl-name">Woolwich — Office-to-resi conversion, 18 units</div>
+        <div class="pl-details">
+          <div class="pl-detail"><span>Type</span><strong>Conversion</strong></div>
+          <div class="pl-detail"><span>Units</span><strong>18</strong></div>
+          <div class="pl-detail"><span>GDV</span><strong>£5.9M</strong></div>
+          <div class="pl-detail"><span>On site</span><strong>Q1 2026</strong></div>
+        </div>
+      </div>
+      <div class="pl-card reveal d2">
+        <div class="pl-status tender"><div class="pl-dot tender"></div>Going to tender</div>
+        <div class="pl-name">Harringay — 8-unit block refurbishment</div>
+        <div class="pl-details">
+          <div class="pl-detail"><span>Type</span><strong>BTL refurb programme</strong></div>
+          <div class="pl-detail"><span>Units</span><strong>8</strong></div>
+          <div class="pl-detail"><span>Contract value</span><strong>£920K</strong></div>
+          <div class="pl-detail"><span>Start</span><strong>Q2 2025</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEV CTA -->
+  <div style="background:var(--dev-accent);padding:72px 52px;display:grid;grid-template-columns:1fr 1fr;gap:80px;border-top:1px solid rgba(255,255,255,.07)">
+    <div>
+      <div class="tag" style="color:rgba(232,226,213,.38)"><span style="display:block;width:22px;height:1px;background:rgba(232,226,213,.2)"></span>Investment &amp; partnership enquiries</div>
+      <h2 class="display light reveal d1" style="font-size:clamp(28px,3.2vw,44px)">Serious parties<br>only. NDA available.</h2>
+      <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.38);line-height:1.8;margin-top:16px;max-width:380px" class="reveal d2">We engage with developers and investors directly. All enquiries are treated with discretion. An NDA can be executed before any detailed financial information is shared.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="submitForm(this,event)">
+        <div class="form-row"><input class="ff light" type="text" placeholder="Name"><input class="ff light" type="text" placeholder="Organisation"></div>
+        <input class="ff light" type="email" placeholder="Direct email address">
+        <input class="ff light" type="text" placeholder="Nature of enquiry (site / JV / investment / build contract)">
+        <textarea class="ff light" placeholder="Brief description of the opportunity or requirement"></textarea>
+        <button type="submit" class="btn btn-g form-btn">Submit in confidence <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </div>
+
+</div><!-- /developer -->
+
+<!-- ══════════════════════════════════════
+     SERVICES PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-services">
+
+  <div style="background:var(--forest);padding:96px 52px 80px;margin-top:64px">
+    <div class="tag muted reveal">All services — Ardivia</div>
+    <h1 class="display light reveal d1" style="font-size:clamp(48px,6.5vw,88px);margin-bottom:24px">Every service.<br>One <em>standard.</em></h1>
+    <p style="font-size:15px;font-weight:300;color:rgba(232,226,213,.48);max-width:540px;line-height:1.75" class="reveal d2">Fourteen capabilities. Three tiers. One team responsible for all of them. From initial design to the final piece of furniture placed — Ardivia holds it.</p>
+  </div>
+
+  <!-- TIER I DIVIDER -->
+  <div class="svc-tier-bar"><div class="stb-left"><div class="stb-num">I</div><div><div class="stb-title">Core Services — 01 to 05</div></div></div><div class="stb-sub">The foundation of every Ardivia commission</div></div>
+
+  <!-- 01 Architecture -->
+  <div class="svc-split">
+    <div class="svc-img"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80" alt="Architecture"><div class="svc-img-lbl">01 — Architecture &amp; Design</div></div>
+    <div class="svc-content">
+      <div class="svc-id reveal">01 — Core</div>
+      <h2 class="svc-title dark reveal d1">Architecture<br>&amp; Design</h2>
+      <p class="svc-body dark reveal d2">From RIBA Stage 1 brief through to technical design and planning permission. New build, extension, conversion, and listed building — all handled in-house by our RIBA-chartered team.</p>
+      <ul class="svc-features reveal d3"><li class="svc-feat dark">Concept through RIBA Stages 1–7</li><li class="svc-feat dark">Planning &amp; listed building consents</li><li class="svc-feat dark">Building regulations and technical design</li><li class="svc-feat dark">Structural and M&amp;E coordination</li></ul>
+      <div class="stags reveal d4"><span class="stag d">RIBA 1–7</span><span class="stag d">Planning</span><span class="stag d">Listed Buildings</span></div>
+    </div>
+  </div>
+
+  <!-- 02 Interior Architecture -->
+  <div class="svc-split" style="flex-direction:row-reverse">
+    <div class="svc-img" style="order:2"><img src="https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=900&q=80" alt="Interiors"><div class="svc-img-lbl">02 — Interior Architecture</div></div>
+    <div class="svc-content on-dark" style="order:1;border-left:none;border-right:1px solid rgba(255,255,255,.06)">
+      <div class="svc-id reveal" style="color:rgba(232,226,213,.35)">02 — Core</div>
+      <h2 class="svc-title light reveal d1">Interior<br>Architecture</h2>
+      <p class="svc-body light reveal d2">Space planning, material specification, bespoke joinery design, kitchen and bathroom architecture. Designed by the same team as the architecture — one language, one scheme, no coordination gap.</p>
+      <ul class="svc-features reveal d3"><li class="svc-feat light">Space planning and flow</li><li class="svc-feat light">Full material and finish specification</li><li class="svc-feat light">Bespoke joinery design</li><li class="svc-feat light">Colour and palette development</li></ul>
+    </div>
+  </div>
+
+  <!-- 03 04 05 Three-col -->
+  <div style="background:var(--ink);padding:60px 52px 0;border-top:1px solid rgba(255,255,255,.06)">
+    <div class="tag muted reveal">03 → 05 — Core Services</div>
+    <h2 class="display light reveal d1" style="font-size:clamp(30px,3.5vw,48px);margin-bottom:40px">Build, manage, deliver.</h2>
+  </div>
+  <div class="svc-3" style="background:var(--ink);padding:0 52px 60px;gap:2px;border-top:1px solid rgba(255,255,255,.05)">
+    <div class="s3c bg-ink reveal"><div class="s3c-ghost">03</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="22" height="22"/><path d="M3 10h22M10 10v15M3 16h7"/></svg><div class="s3c-name">Full Design &amp; Build</div><p class="s3c-desc">Architecture, interiors, PM, and construction. One contract. One price. One team.</p></div>
+    <div class="s3c bg-ink reveal d1"><div class="s3c-ghost">04</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><circle cx="14" cy="14" r="10"/><path d="M14 6v6l4 3"/></svg><div class="s3c-name">Project Management</div><p class="s3c-desc">Contractor procurement, programme, cost control, and site supervision. Dedicated PM on every project.</p></div>
+    <div class="s3c bg-ink reveal d2"><div class="s3c-ghost">05</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 22l4-5 4 4 5-6 4 5"/><circle cx="21" cy="7" r="4"/></svg><div class="s3c-name">Materials Sourcing</div><p class="s3c-desc">Rare stone, bronze, reclaimed timber — sourced through 18 years of artisan relationships.</p></div>
+  </div>
+
+  <!-- TIER II -->
+  <div class="svc-tier-bar" style="background:var(--linen);border-color:var(--rule)"><div class="stb-left"><div class="stb-num">II</div><div><div class="stb-title">Expanded Services — 06 to 10</div></div></div><div class="stb-sub">Every surface. Every opening. Every piece of furniture.</div></div>
+
+  <!-- 06 Windows & Doors -->
+  <div class="svc-split">
+    <div class="svc-img"><img src="https://images.unsplash.com/photo-1558618047-3c8d1f8b3d0e?w=900&q=80" alt="Windows"><div class="svc-img-lbl">06 — Windows &amp; Doors</div></div>
+    <div class="svc-content">
+      <div class="svc-id reveal">06 — Expanded</div>
+      <h2 class="svc-title dark reveal d1">Windows &amp; Doors<br>Restoration &amp;<br>Bespoke Manufacture</h2>
+      <p class="svc-body dark reveal d2">We restore original joinery where it can be saved — sash windows, casements, period ironmongery — and manufacture bespoke hardwood, steel, and bronze systems where it cannot. Every opening treated as an architectural statement.</p>
+      <ul class="svc-features reveal d3"><li class="svc-feat dark">Original sash window and casement restoration</li><li class="svc-feat dark">Bespoke hardwood windows — oak, accoya, iroko</li><li class="svc-feat dark">Steel Crittall-style systems to specification</li><li class="svc-feat dark">Bronze and patinated metal door systems</li><li class="svc-feat dark">Listed building consent coordination</li><li class="svc-feat dark">Secondary glazing for heritage buildings</li></ul>
+      <div class="stags reveal d4"><span class="stag d">Restoration</span><span class="stag d">Bespoke Joinery</span><span class="stag d">Steel Systems</span><span class="stag d">Heritage</span></div>
+    </div>
+  </div>
+
+  <div class="callout l"><div class="callout-q">"A window is not a hole in a wall. It is a lens through which architecture frames the world outside. We treat every opening as an architectural decision."</div><div class="callout-src">Ardivia · Windows &amp; Doors</div></div>
+
+  <!-- 07 Furniture -->
+  <div class="svc-split" style="flex-direction:row-reverse">
+    <div class="svc-img" style="order:2"><img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80" alt="Furniture"><div class="svc-img-lbl">07 — Bespoke Furniture</div></div>
+    <div class="svc-content on-dark" style="order:1;border-left:none;border-right:1px solid rgba(255,255,255,.06)">
+      <div class="svc-id reveal" style="color:rgba(232,226,213,.35)">07 — Expanded</div>
+      <h2 class="svc-title light reveal d1">Bespoke Furniture<br>Design &amp; Commissioning</h2>
+      <p class="svc-body light reveal d2">We design and commission bespoke furniture as an integrated part of every interior commission. Dining tables, built-in libraries, upholstered pieces, antique sourcing, and loose furniture procurement — all considered as part of the architecture.</p>
+      <ul class="svc-features reveal d3"><li class="svc-feat light">Bespoke dining tables, desks, case furniture</li><li class="svc-feat light">Built-in libraries, wardrobes, media units</li><li class="svc-feat light">Upholstered pieces to specification</li><li class="svc-feat light">Antique and vintage sourcing and restoration</li><li class="svc-feat light">Hardware specification: brass, bronze, blackened steel</li></ul>
+    </div>
+  </div>
+
+  <!-- 08 09 10 Cards -->
+  <div style="background:var(--white);padding:60px 52px 0;border-top:1px solid var(--rule)">
+    <div class="tag reveal">08 → 10 — Expanded Services</div>
+    <h2 class="display dark reveal d1" style="font-size:clamp(28px,3vw,44px);margin-bottom:40px">Light, heritage, acquisition.</h2>
+  </div>
+  <div class="svc-3" style="background:var(--white);padding:0 52px 60px;gap:2px">
+    <div class="s3c bg-white reveal"><div class="s3c-ghost">08</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><circle cx="14" cy="14" r="4"/><path d="M14 4v3M14 21v3M4 14H7M21 14h3M6 6l2 2M20 20l2 2M6 22l2-2M20 8l2-2"/></svg><div class="s3c-name">Architectural Lighting Design</div><p class="s3c-desc">Designed at RIBA Stage 2, not specified at fit-out. KNX, Lutron, circadian-aware. Architecturally invisible infrastructure.</p><div style="margin-top:12px" class="stags"><span class="stag d">KNX</span><span class="stag d">Lutron</span><span class="stag d">Circadian</span></div></div>
+    <div class="s3c bg-white reveal d1"><div class="s3c-ghost">09</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 24h20M7 24V13l7-8 7 8v11M11 24v-6h6v6"/></svg><div class="s3c-name">Heritage Restoration &amp; Masonry</div><p class="s3c-desc">Lime mortar, stonework, brickwork, chimney restoration, original plasterwork repair. Conservation-approved craftsmen only.</p><div style="margin-top:12px" class="stags"><span class="stag d">Lime Mortar</span><span class="stag d">Conservation</span></div></div>
+    <div class="s3c bg-white reveal d2"><div class="s3c-ghost">10</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 22h20M7 11h14M14 4v7M9 16h10M9 20h6"/><rect x="9" y="11" width="10" height="11"/></svg><div class="s3c-name">Property Acquisition Consultancy</div><p class="s3c-desc">We advise before you buy — identifying planning potential, heritage constraints, structural viability. Pre-purchase assessment guarantees the right building for your brief.</p><div style="margin-top:12px" class="stags"><span class="stag d">Pre-purchase</span><span class="stag d">Viability</span></div></div>
+  </div>
+
+  <!-- TIER III -->
+  <div class="svc-tier-bar" style="background:var(--dark);border-color:rgba(255,255,255,.06)"><div class="stb-left"><div class="stb-num" style="color:rgba(201,168,76,.2)">III</div><div><div class="stb-title" style="color:rgba(232,226,213,.35)">Premium Services — 11 to 14</div></div></div><div class="stb-sub" style="color:rgba(232,226,213,.28)">Rare capabilities for complete commissions</div></div>
+
+  <div style="background:var(--dark);padding:0 52px 60px;border-top:1px solid rgba(255,255,255,.05)">
+    <div class="svc-3" style="gap:2px;padding-top:40px">
+      <div class="s3c bg-ink reveal"><div class="s3c-ghost">11</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><path d="M4 22h20M7 8h14v14H7z"/><path d="M10 8V6h8v2"/></svg><div class="s3c-name">Art Advisory &amp; Curation</div><p class="s3c-desc">Commission brokerage, placement design, framing and installation. Art considered as the final material of every interior scheme.</p></div>
+      <div class="s3c bg-ink reveal d1"><div class="s3c-ghost">12</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><circle cx="14" cy="14" r="8"/><path d="M14 8v5l-3 4"/><circle cx="14" cy="14" r="3"/></svg><div class="s3c-name">Acoustic Design</div><p class="s3c-desc">Home cinemas, music rooms, open-plan privacy. Designed from structural drawings — architecturally invisible sound isolation and reverberation control.</p></div>
+      <div class="s3c bg-ink reveal d2"><div class="s3c-ghost">13</div><svg class="s3c-icon" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1"><path d="M14 3c0 0-7 6-7 11a7 7 0 0014 0C21 9 14 3 14 3z"/><path d="M10 16c2-3 5-4 7-2"/></svg><div class="s3c-name">Wellness Architecture</div><p class="s3c-desc">Spa, sauna, pool, and cold plunge designed as architecture — not contractor afterthoughts. Planned at structural stage.</p></div>
+    </div>
+    <div style="margin-top:2px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);padding:44px 40px;display:flex;align-items:center;justify-content:space-between;gap:40px">
+      <div>
+        <div style="font-size:9px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">14 — The Complete House</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,2.5vw,36px);font-weight:300;color:var(--linen);margin-bottom:10px">Energy sovereignty. Water independence. Estate ecology. Responsive architecture.</h3>
+        <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.7;max-width:540px">The highest expression of the Ardivia standard — applied to everything a house touches. The building generates its own power, manages its own water, sustains its own land, and responds to the people who live in it.</p>
+      </div>
+      <a href="#" class="btn btn-g" style="white-space:nowrap;flex-shrink:0">Discover Complete House <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+
+  <!-- POSITIONING BRAND LADDER -->
+  <div class="brand-table">
+    <div class="tag muted reveal">Strategic positioning</div>
+    <h2 class="display light reveal d1" style="font-size:clamp(28px,3vw,44px)">One company.<br>One contract.</h2>
+    <div class="bt-grid">
+      <div class="bt-row"><div class="bt-label">What we do</div><div class="bt-value light">Design, build and deliver residential properties — from a single flat to a full block</div></div>
+      <div class="bt-row"><div class="bt-label">How we do it</div><div class="bt-value gold">With in-house design teams and directly employed builder brigades — no subcontractor relay races</div></div>
+      <div class="bt-row"><div class="bt-label">Why it matters</div><div class="bt-value light">One point of accountability, faster delivery, fixed costs, and no blame gap between architect and contractor</div></div>
+      <div class="bt-row"><div class="bt-label">Who it's for</div><div class="bt-value light">Homeowners who want certainty · Landlords who want yield · Developers who want delivery</div></div>
+    </div>
+  </div>
+
+</div><!-- /services -->
+
+<!-- ══════════════════════════════════════
+     CONTACT PAGE
+══════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <section class="contact-page">
+    <div class="cp-left">
+      <div>
+        <div class="tag muted reveal" style="margin-bottom:28px">Get in touch</div>
+        <h1 class="display light reveal d1" style="font-size:clamp(44px,5.5vw,80px);line-height:.93;margin-bottom:32px">Let's start a<br><em>conversation.</em></h1>
+        <p style="font-size:14px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.8;max-width:400px;margin-bottom:48px" class="reveal d2">Whether you're a homeowner with an idea, a landlord with a portfolio, or a developer with a site — we'd like to hear from you. All enquiries treated with complete discretion.</p>
+      </div>
+      <div class="reveal d3">
+        <div class="cp-contact-row"><span class="cp-label">Office</span><span class="cp-val">14 Charlotte Street<br>Fitzrovia, London W1T 2LS</span></div>
+        <div class="cp-contact-row"><span class="cp-label">Email</span><span class="cp-val">hello@ardivia.co.uk</span></div>
+        <div class="cp-contact-row"><span class="cp-label">Phone</span><span class="cp-val">+44 20 7946 0000</span></div>
+        <div class="cp-contact-row"><span class="cp-label">Hours</span><span class="cp-val">Mon–Fri · 9am–6pm</span></div>
+      </div>
+    </div>
+    <div class="cp-right">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3vw,42px);font-weight:300;color:var(--forest);margin-bottom:8px" class="reveal">Tell us about your project.</div>
+      <p style="font-size:14px;font-weight:300;color:var(--mid);line-height:1.75;margin-bottom:28px" class="reveal d1">Select who you are below — your enquiry will reach the right person.</p>
+      <div class="cp-form-tabs reveal d1">
+        <button class="cft active" onclick="switchForm('homeowner',this)">Homeowner</button>
+        <button class="cft" onclick="switchForm('landlord',this)">Landlord</button>
+        <button class="cft" onclick="switchForm('developer',this)">Developer</button>
+      </div>
+      <form class="form-wrap reveal d2" onsubmit="submitForm(this,event)">
+        <div class="form-row"><input class="ff" type="text" placeholder="Your name"><input class="ff" type="email" placeholder="Email address"></input></div>
+        <input class="ff" type="text" id="project-field" placeholder="Property type &amp; location">
+        <input class="ff" type="text" id="budget-field" placeholder="Approximate budget or contract value">
+        <textarea class="ff" id="msg-field" placeholder="Tell us about your project"></textarea>
+        <button type="submit" class="btn btn-f form-btn">Send enquiry <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </section>
+</div><!-- /contact -->
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft">
+    <div>
+      <span class="flogo">Ardivia<sup>®</sup></span>
+      <p class="ftag">Design. Build. Deliver. From a single flat to a full block development — under one roof, with one contract.</p>
+      <div class="fsocials"><a href="#" class="fsoc">In</a><a href="#" class="fsoc">IG</a><a href="#" class="fsoc">Pi</a></div>
+    </div>
+    <div>
+      <div class="fct">Core Services</div>
+      <ul class="flinks"><li><a href="#">Architecture &amp; Design</a></li><li><a href="#">Interior Architecture</a></li><li><a href="#">Full Design &amp; Build</a></li><li><a href="#">Project Management</a></li><li><a href="#">Materials Sourcing</a></li></ul>
+    </div>
+    <div>
+      <div class="fct">Expanded Services</div>
+      <ul class="flinks"><li><a href="#">Windows &amp; Doors</a></li><li><a href="#">Bespoke Furniture</a></li><li><a href="#">Lighting Design</a></li><li><a href="#">Heritage Restoration</a></li><li><a href="#">Property Acquisition</a></li></ul>
+    </div>
+    <div>
+      <div class="fct">Client Journeys</div>
+      <ul class="flinks"><li><a href="#" onclick="show('homeowner');return false">Homeowners</a></li><li><a href="#" onclick="show('landlord');return false">Landlords</a></li><li><a href="#" onclick="show('developer');return false">Developers</a></li><li><a href="#">Projects</a></li><li><a href="#">About Ardivia</a></li></ul>
+    </div>
+    <div>
+      <div class="fct">Contact</div>
+      <ul class="flinks"><li><a href="#">hello@ardivia.co.uk</a></li><li><a href="#">+44 20 7946 0000</a></li><li><a href="#" style="line-height:1.7;margin-top:6px;display:block">14 Charlotte Street<br>Fitzrovia, London<br>W1T 2LS</a></li></ul>
+    </div>
+  </div>
+  <div class="fb">
+    <div class="fcopy">© 2025 Ardivia Ltd. Registered in England &amp; Wales. Co. No. 06712834. RIBA Chartered Practice · FMB Member · NHBC Registered.</div>
+    <div class="fleg"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX+'px'; cursor.style.top = e.clientY+'px';
+  setTimeout(()=>{ ring.style.left = e.clientX+'px'; ring.style.top = e.clientY+'px'; }, 50);
+});
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=> nav.classList.toggle('scrolled', window.scrollY > 60));
+
+// Page switching
+function show(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if(pg) { pg.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  const tab = document.querySelector(`.ptab[data-page="${id}"]`);
+  if(tab) tab.classList.add('active');
+  setTimeout(()=> {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, {threshold:0.08});
+    document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el => obs.observe(el));
+  }, 60);
+  return false;
+}
+
+// Tab clicks
+document.querySelectorAll('.ptab').forEach(tab => {
+  tab.addEventListener('click', ()=> show(tab.dataset.page));
+});
+
+// Reveal on scroll
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, {threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Form submit
+function submitForm(form, e) {
+  e.preventDefault();
+  const btn = form.querySelector('.form-btn');
+  btn.textContent = "Sent — we'll be in touch shortly.";
+  btn.style.background = '#7A8B6F';
+}
+
+// Contact form tabs
+function switchForm(type, btn) {
+  document.querySelectorAll('.cft').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const fields = {
+    homeowner: { project:'Property type &amp; location', budget:'Approximate budget', msg:'Tell us about your project' },
+    landlord:  { project:'Property address / number of units', budget:'Current EPC rating (if known)', msg:'Tell us what you\'re trying to achieve' },
+    developer: { project:'Site address or scheme description', budget:'Contract value or GDV estimate', msg:'Nature of enquiry (site / JV / build contract)' }
+  };
+  const f = fields[type];
+  if(f) {
+    document.getElementById('project-field').placeholder = f.project;
+    document.getElementById('budget-field').placeholder = f.budget;
+    document.getElementById('msg-field').placeholder = f.msg;
+  }
+}
+</script>
+</body>
+</html>

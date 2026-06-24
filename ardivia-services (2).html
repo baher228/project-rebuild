@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardivia — Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ══ DESIGN TOKENS ══ */
+:root {
+  --forest:  #26342B;
+  --sage:    #7A8B6F;
+  --gold:    #C9A84C;
+  --linen:   #E8E2D5;
+  --white:   #F5F3EE;
+  --ink:     #111111;
+  --mid:     #555555;
+  --rule:    #D4CEC4;
+  --dark:    #1A1A1A;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+.cursor { position: fixed; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); }
+.cursor-ring { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(201,168,76,.4); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .25s, height .25s; }
+body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 48px; height: 48px; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 52px; height: 64px; border-bottom: 1px solid transparent; transition: background .3s, border-color .3s; }
+nav.scrolled { background: rgba(245,243,238,.97); backdrop-filter: blur(12px); border-bottom-color: var(--rule); }
+.nav-logo { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--forest); text-decoration: none; }
+.nav-logo sup { color: var(--gold); font-size: 8px; letter-spacing: 0; vertical-align: super; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 11px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); text-decoration: none; opacity: .5; transition: opacity .2s; cursor: none; }
+.nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--forest); }
+.nav-cta { font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--white); background: var(--forest); border: none; padding: 10px 24px; cursor: none; transition: background .2s; }
+.nav-cta:hover { background: var(--ink); }
+
+/* ══ PAGE HERO ══ */
+.page-hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  margin-top: 64px;
+  border-bottom: 1px solid var(--rule);
+}
+.ph-left {
+  background: var(--forest);
+  padding: 80px 64px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.ph-top {}
+.ph-label { font-size: 10px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+.ph-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); display: block; }
+.ph-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 6.5vw, 96px); font-weight: 300; line-height: .93;
+  color: var(--linen); letter-spacing: -.01em;
+}
+.ph-title em { font-style: italic; }
+.ph-bottom {}
+.ph-rule { width: 40px; height: 1px; background: rgba(232,226,213,.2); margin-bottom: 24px; }
+.ph-sub { font-size: 15px; font-weight: 300; line-height: 1.75; color: rgba(232,226,213,.5); max-width: 440px; margin-bottom: 32px; }
+.ph-stat-row { display: flex; gap: 48px; }
+.ph-stat {}
+.ph-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 300; color: var(--linen); line-height: 1; }
+.ph-stat-label { font-size: 9px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: rgba(232,226,213,.35); margin-top: 4px; }
+
+.ph-right {
+  background: var(--white);
+  padding: 80px 64px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.ph-toc-label { font-size: 10px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--mid); margin-bottom: 28px; opacity: .5; }
+.ph-toc { display: flex; flex-direction: column; gap: 0; }
+.toc-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--rule);
+  text-decoration: none; cursor: none; transition: background .2s;
+}
+.toc-item:first-child { border-top: 1px solid var(--rule); }
+.toc-item:hover .toc-name { color: var(--forest); }
+.toc-item:hover .toc-arrow { opacity: 1; transform: translateX(4px); }
+.toc-left { display: flex; align-items: baseline; gap: 14px; }
+.toc-num { font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 300; color: rgba(0,0,0,.25); width: 28px; }
+.toc-name { font-size: 13px; font-weight: 400; color: var(--ink); transition: color .2s; }
+.toc-tier {
+  font-size: 8.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+  padding: 3px 8px; border: 1px solid var(--rule);
+}
+.toc-tier.core { color: var(--forest); border-color: rgba(38,52,43,.25); }
+.toc-tier.expand { color: var(--sage); border-color: rgba(122,139,111,.3); }
+.toc-tier.premium { color: var(--gold); border-color: rgba(201,168,76,.3); }
+.toc-arrow { font-size: 12px; color: var(--gold); opacity: 0; transition: opacity .2s, transform .2s; }
+
+/* ══ SHARED ATOMS ══ */
+.section-tag { font-size: 10px; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.section-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); display: block; }
+.section-tag.dark { color: rgba(232,226,213,.4); }
+.section-tag.dark::before { background: rgba(232,226,213,.25); }
+h2.sh { font-family: 'Cormorant Garamond', serif; font-weight: 300; line-height: 1.02; letter-spacing: -.01em; }
+h2.sh.on-dark { color: var(--linen); }
+h2.sh.on-light { color: var(--forest); }
+p.sb { font-size: 14px; font-weight: 300; line-height: 1.8; }
+p.sb.on-dark { color: rgba(232,226,213,.5); }
+p.sb.on-light { color: var(--mid); }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 30px; font-size: 11px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; transition: all .2s; cursor: none; border: none; }
+.btn-forest { background: var(--forest); color: var(--linen); }
+.btn-forest:hover { background: var(--ink); }
+.btn-gold { background: var(--gold); color: var(--forest); }
+.btn-gold:hover { background: #d4b45a; }
+.btn-outline-dark { background: transparent; color: var(--linen); border: 1px solid rgba(232,226,213,.2); }
+.btn-outline-dark:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.40s} .d6{transition-delay:.48s}
+
+/* ══ TIER DIVIDERS ══ */
+.tier-divider {
+  background: var(--white); padding: 32px 52px;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tier-divider.dark-bg { background: var(--dark); border-color: rgba(255,255,255,.06); }
+.td-left { display: flex; align-items: center; gap: 20px; }
+.td-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300;
+  color: var(--gold); line-height: 1; opacity: .25;
+}
+.td-title { font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--mid); }
+.tier-divider.dark-bg .td-title { color: rgba(232,226,213,.35); }
+.td-right { font-size: 13px; font-weight: 300; color: var(--mid); font-style: italic; font-family: 'Crimson Text', serif; }
+.tier-divider.dark-bg .td-right { color: rgba(232,226,213,.3); }
+
+/* ══ SERVICE LAYOUTS ══ */
+
+/* Full-bleed split: image left, content right */
+.svc-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.svc-split.reverse { }
+.svc-split.reverse .svc-img { order: 2; }
+.svc-split.reverse .svc-content { order: 1; }
+.svc-img { position: relative; overflow: hidden; min-height: 560px; }
+.svc-img img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.7) brightness(.85); display: block; transition: transform .8s ease; }
+.svc-split:hover .svc-img img { transform: scale(1.03); }
+.svc-img-label {
+  position: absolute; bottom: 20px; left: 24px;
+  font-size: 9px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(232,226,213,.45); background: rgba(26,31,26,.7);
+  padding: 5px 12px;
+}
+.svc-content {
+  padding: 72px 64px;
+  display: flex; flex-direction: column; justify-content: center;
+  border-left: 1px solid var(--rule);
+}
+.svc-split.reverse .svc-content { border-left: none; border-right: 1px solid var(--rule); }
+.svc-content.on-dark { background: var(--forest); border-color: rgba(255,255,255,.06) !important; }
+.svc-content.on-dark-mid { background: var(--dark); border-color: rgba(255,255,255,.06) !important; }
+.svc-id { font-size: 9px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.svc-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px,3.5vw,48px); font-weight: 300; line-height: 1.04; margin-bottom: 20px; }
+.svc-title.light { color: var(--linen); }
+.svc-title.dark { color: var(--forest); }
+.svc-body { font-size: 14px; font-weight: 300; line-height: 1.8; margin-bottom: 24px; }
+.svc-body.light { color: rgba(232,226,213,.5); }
+.svc-body.dark { color: var(--mid); }
+.svc-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 8px; }
+.svc-feature { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; font-weight: 300; line-height: 1.55; }
+.svc-feature.light { color: rgba(232,226,213,.5); }
+.svc-feature.dark { color: var(--mid); }
+.svc-feature::before { content: '—'; color: var(--gold); flex-shrink: 0; font-family: 'Cormorant Garamond', serif; margin-top: 1px; }
+.svc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+.stag { font-size: 9px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border: 1px solid; }
+.stag.light { color: rgba(201,168,76,.6); border-color: rgba(201,168,76,.2); }
+.stag.dark { color: var(--forest); border-color: rgba(38,52,43,.25); }
+
+/* Three-col card grid */
+.svc-card-grid {
+  padding: 80px 52px;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 2px;
+}
+.svc-card-grid.dark-bg { background: var(--dark); }
+.svc-card-grid.forest-bg { background: var(--forest); }
+.svc-card-grid.white-bg { background: var(--white); border-top: 1px solid var(--rule); }
+.svc-card-grid-header { grid-column: 1 / -1; margin-bottom: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; padding-bottom: 32px; border-bottom: 1px solid; }
+.svc-card-grid.dark-bg .svc-card-grid-header { border-bottom-color: rgba(255,255,255,.07); }
+.svc-card-grid.white-bg .svc-card-grid-header { border-bottom-color: var(--rule); }
+.svc-card-grid.forest-bg .svc-card-grid-header { border-bottom-color: rgba(255,255,255,.07); }
+.scc { padding: 40px 36px; cursor: none; position: relative; transition: background .25s; overflow: hidden; }
+/* variant colours */
+.svc-card-grid.dark-bg .scc { background: #111; border-top: 2px solid transparent; }
+.svc-card-grid.dark-bg .scc:hover { background: #1a1a1a; border-top-color: var(--gold); }
+.svc-card-grid.forest-bg .scc { background: var(--dark-sage, #3D4A38); border-top: 2px solid transparent; }
+.svc-card-grid.forest-bg .scc:hover { background: var(--forest); border-top-color: var(--gold); }
+.svc-card-grid.white-bg .scc { background: var(--white); border-top: 2px solid transparent; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.svc-card-grid.white-bg .scc:hover { background: var(--linen); border-top-color: var(--forest); }
+.scc-ghost { font-family: 'Cormorant Garamond', serif; font-size: 72px; font-weight: 300; color: rgba(255,255,255,.04); position: absolute; top: 8px; right: 16px; line-height: 1; }
+.svc-card-grid.white-bg .scc-ghost { color: rgba(0,0,0,.04); }
+.scc-icon { width: 30px; height: 30px; margin-bottom: 22px; }
+.svc-card-grid.dark-bg .scc-icon, .svc-card-grid.forest-bg .scc-icon { color: rgba(232,226,213,.3); }
+.svc-card-grid.white-bg .scc-icon { color: var(--sage); }
+.scc-name { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-bottom: 10px; line-height: 1.2; }
+.svc-card-grid.dark-bg .scc-name, .svc-card-grid.forest-bg .scc-name { color: var(--linen); }
+.svc-card-grid.white-bg .scc-name { color: var(--forest); }
+.scc-desc { font-size: 13px; font-weight: 300; line-height: 1.7; }
+.svc-card-grid.dark-bg .scc-desc, .svc-card-grid.forest-bg .scc-desc { color: rgba(232,226,213,.38); }
+.svc-card-grid.white-bg .scc-desc { color: var(--mid); }
+.scc-link { font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 6px; margin-top: 20px; opacity: 0; transition: opacity .2s; }
+.scc:hover .scc-link { opacity: 1; }
+
+/* Feature callout — full width strip */
+.callout {
+  padding: 60px 52px;
+  display: flex; align-items: center; justify-content: space-between; gap: 60px;
+  border-top: 1px solid; border-bottom: 1px solid;
+}
+.callout.forest { background: var(--forest); border-color: rgba(255,255,255,.07); }
+.callout.linen { background: var(--linen); border-color: var(--rule); }
+.callout.gold { background: var(--gold); border-color: #b89435; }
+.callout-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px,2.5vw,32px); font-weight: 300; font-style: italic; line-height: 1.35; max-width: 680px; }
+.callout.forest .callout-text { color: var(--linen); }
+.callout.linen .callout-text { color: var(--forest); }
+.callout.gold .callout-text { color: var(--forest); }
+.callout-source { font-size: 10px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+.callout.forest .callout-source { color: rgba(232,226,213,.3); }
+.callout.linen .callout-source { color: rgba(38,52,43,.45); }
+
+/* Comparison: "we don't do X, we do Y" */
+.lang-table { background: var(--dark); padding: 80px 52px; border-top: 1px solid rgba(255,255,255,.06); }
+.lang-table-header { margin-bottom: 40px; }
+.lang-grid { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; border: 1px solid rgba(255,255,255,.06); }
+.lang-col-head {
+  background: rgba(255,255,255,.04); padding: 14px 28px;
+  font-size: 9px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase;
+}
+.lang-col-head.left { color: rgba(232,226,213,.3); border-right: 1px solid rgba(255,255,255,.06); }
+.lang-col-head.mid { background: transparent; border-right: 1px solid rgba(255,255,255,.06); }
+.lang-col-head.right { color: var(--gold); }
+.lang-row { display: contents; }
+.lang-row > div { padding: 16px 28px; border-top: 1px solid rgba(255,255,255,.05); font-size: 14px; font-weight: 300; }
+.lang-row .lang-old { color: rgba(232,226,213,.25); text-decoration: line-through; text-decoration-color: rgba(232,226,213,.15); border-right: 1px solid rgba(255,255,255,.05); font-family: 'Crimson Text', serif; }
+.lang-row .lang-mid { display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 16px; border-right: 1px solid rgba(255,255,255,.05); }
+.lang-row .lang-new { color: var(--linen); font-family: 'Crimson Text', serif; font-style: italic; }
+
+/* CTA section */
+.cta-section {
+  background: var(--white); padding: 96px 52px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  border-top: 1px solid var(--rule);
+}
+.cta-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(38px,4.8vw,68px); line-height: .96; color: var(--forest); margin-bottom: 0; }
+.cta-title em { font-style: italic; color: var(--sage); display: block; }
+.cta-body { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.8; margin-bottom: 36px; }
+.form-cta { display: flex; flex-direction: column; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-field { border: none; border-bottom: 1px solid var(--rule); background: transparent; padding: 13px 0; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 300; color: var(--forest); outline: none; width: 100%; margin-bottom: 12px; transition: border-color .2s; cursor: none; }
+.form-field::placeholder { color: rgba(0,0,0,.28); font-size: 13px; }
+.form-field:focus { border-bottom-color: var(--forest); }
+textarea.form-field { resize: none; height: 72px; }
+.form-btn { align-self: flex-start; margin-top: 12px; background: var(--forest); color: var(--linen); border: none; padding: 14px 40px; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; cursor: none; transition: background .2s; display: flex; align-items: center; gap: 10px; }
+.form-btn:hover { background: var(--ink); }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 72px 52px 40px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.footer-logo { font-size: 13px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--linen); margin-bottom: 14px; display: block; }
+.footer-logo sup { color: var(--gold); font-size: 8px; }
+.footer-tag { font-size: 13px; font-weight: 300; color: rgba(232,226,213,.28); line-height: 1.75; max-width: 240px; margin-bottom: 24px; }
+.footer-socials { display: flex; gap: 8px; }
+.social-btn { width: 32px; height: 32px; border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; text-decoration: none; color: rgba(232,226,213,.3); font-size: 10px; font-weight: 500; transition: all .2s; cursor: none; }
+.social-btn:hover { border-color: var(--gold); color: var(--gold); }
+.footer-col-title { font-size: 10px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: 13px; font-weight: 300; color: rgba(232,226,213,.28); text-decoration: none; transition: color .2s; cursor: none; }
+.footer-links a:hover { color: var(--linen); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: 10px; font-weight: 300; color: rgba(232,226,213,.15); letter-spacing: .04em; }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 10px; font-weight: 300; color: rgba(232,226,213,.15); text-decoration: none; transition: color .2s; cursor: none; }
+.footer-legal a:hover { color: rgba(232,226,213,.45); }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Ardivia<sup>®</sup></a>
+  <ul class="nav-links">
+    <li><a href="#">Studio</a></li>
+    <li><a href="#" class="active">Services</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">Complete House</a></li>
+    <li><a href="#">Process</a></li>
+    <li><a href="#">Journal</a></li>
+  </ul>
+  <button class="nav-cta">Begin Your Project</button>
+</nav>
+
+<!-- ══ PAGE HERO ══ -->
+<section class="page-hero">
+  <div class="ph-left">
+    <div class="ph-top">
+      <div class="ph-label reveal">Services — Ardivia</div>
+      <h1 class="ph-title reveal d1">Every<br>service.<br>One <em>standard.</em></h1>
+    </div>
+    <div class="ph-bottom reveal d2">
+      <div class="ph-rule"></div>
+      <p class="ph-sub">From the first line drawn to the final piece of furniture placed, Ardivia offers a complete suite of services — all held to an identical standard of precision and care.</p>
+      <div class="ph-stat-row">
+        <div class="ph-stat"><div class="ph-stat-num">14</div><div class="ph-stat-label">Service categories</div></div>
+        <div class="ph-stat"><div class="ph-stat-num">3</div><div class="ph-stat-label">Capability tiers</div></div>
+        <div class="ph-stat"><div class="ph-stat-num">1</div><div class="ph-stat-label">Point of accountability</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="ph-right">
+    <div>
+      <div class="ph-toc-label">All services</div>
+      <nav class="ph-toc">
+        <a class="toc-item" href="#architecture"><div class="toc-left"><span class="toc-num">01</span><span class="toc-name">Architecture &amp; Design</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier core">Core</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#interiors"><div class="toc-left"><span class="toc-num">02</span><span class="toc-name">Interior Architecture</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier core">Core</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#build"><div class="toc-left"><span class="toc-num">03</span><span class="toc-name">Full Design &amp; Build</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier core">Core</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#pm"><div class="toc-left"><span class="toc-num">04</span><span class="toc-name">Project Management</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier core">Core</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#materials"><div class="toc-left"><span class="toc-num">05</span><span class="toc-name">Materials Sourcing &amp; Specification</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier core">Core</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#windows"><div class="toc-left"><span class="toc-num">06</span><span class="toc-name">Windows &amp; Doors — Restoration &amp; Bespoke</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier expand">Expanded</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#furniture"><div class="toc-left"><span class="toc-num">07</span><span class="toc-name">Bespoke Furniture Design &amp; Commissioning</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier expand">Expanded</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#lighting"><div class="toc-left"><span class="toc-num">08</span><span class="toc-name">Architectural Lighting Design</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier expand">Expanded</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#heritage"><div class="toc-left"><span class="toc-num">09</span><span class="toc-name">Heritage Restoration &amp; Masonry</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier expand">Expanded</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#acquisition"><div class="toc-left"><span class="toc-num">10</span><span class="toc-name">Property Acquisition Consultancy</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier expand">Expanded</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#art"><div class="toc-left"><span class="toc-num">11</span><span class="toc-name">Art Advisory &amp; Curation</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier premium">Premium</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#acoustic"><div class="toc-left"><span class="toc-num">12</span><span class="toc-name">Acoustic Design</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier premium">Premium</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#wellness"><div class="toc-left"><span class="toc-num">13</span><span class="toc-name">Wellness Architecture</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier premium">Premium</span><span class="toc-arrow">→</span></div></a>
+        <a class="toc-item" href="#complete"><div class="toc-left"><span class="toc-num">14</span><span class="toc-name">The Complete House</span></div><div style="display:flex;gap:10px;align-items:center"><span class="toc-tier premium">Premium</span><span class="toc-arrow">→</span></div></a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TIER 1: CORE SERVICES ══ -->
+<div class="tier-divider" id="architecture">
+  <div class="td-left">
+    <div class="td-num">I</div>
+    <div>
+      <div class="td-title">Core Services — The Foundation</div>
+      <div style="font-size:12px;font-weight:300;color:var(--mid);margin-top:2px">What Ardivia has always done. The bedrock of every commission.</div>
+    </div>
+  </div>
+  <div class="td-right">01 → 05</div>
+</div>
+
+<!-- 01 Architecture & Design -->
+<div class="svc-split">
+  <div class="svc-img">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80" alt="Architecture">
+    <div class="svc-img-label">01 — Architecture &amp; Design</div>
+  </div>
+  <div class="svc-content">
+    <div class="svc-id reveal">01 — Core Service</div>
+    <h2 class="svc-title dark reveal d1">Architecture<br>&amp; Design</h2>
+    <p class="svc-body dark reveal d2">Architecture conceived around the way you live. We take the time to understand not just what you want a building to look like, but how you move through it, where the light falls, and what it should feel like in forty years.</p>
+    <ul class="svc-features reveal d3">
+      <li class="svc-feature dark">Concept design through RIBA Stages 1–7</li>
+      <li class="svc-feature dark">Planning permission and listed building consents</li>
+      <li class="svc-feature dark">Building regulations and technical design</li>
+      <li class="svc-feature dark">Structural and M&amp;E coordination</li>
+      <li class="svc-feature dark">New build, extension, and full conversion</li>
+    </ul>
+    <div class="svc-tags reveal d4">
+      <span class="stag dark">New Build</span>
+      <span class="stag dark">Extension</span>
+      <span class="stag dark">Conversion</span>
+      <span class="stag dark">RIBA 1–7</span>
+      <span class="stag dark">Planning</span>
+    </div>
+    <div class="reveal d4" style="margin-top:28px"><a href="#" class="btn btn-forest">View architectural projects <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</div>
+
+<!-- 02 Interior Architecture -->
+<div class="svc-split reverse" id="interiors">
+  <div class="svc-img">
+    <img src="https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=900&q=80" alt="Interior Architecture">
+    <div class="svc-img-label">02 — Interior Architecture</div>
+  </div>
+  <div class="svc-content on-dark">
+    <div class="svc-id reveal" style="color:rgba(232,226,213,.35)">02 — Core Service</div>
+    <h2 class="svc-title light reveal d1">Interior<br>Architecture</h2>
+    <p class="svc-body light reveal d2">Interior architecture is not decoration. It is the spatial organisation of how a building works inside — the proportion of rooms, the flow between them, the relationship between light and surface. We do not distinguish between "architecture" and "interiors." They are one discipline.</p>
+    <ul class="svc-features reveal d3">
+      <li class="svc-feature light">Space planning and spatial sequencing</li>
+      <li class="svc-feature light">Material and finish specification throughout</li>
+      <li class="svc-feature light">Bespoke joinery design and detailing</li>
+      <li class="svc-feature light">Kitchen and bathroom architecture</li>
+      <li class="svc-feature light">Furniture layout and proportion studies</li>
+      <li class="svc-feature light">Colour, texture, and palette development</li>
+    </ul>
+    <div class="reveal d4" style="margin-top:28px"><a href="#" class="btn btn-outline-dark">View interior projects <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+  </div>
+</div>
+
+<!-- 03 04 05 — card grid -->
+<div class="svc-card-grid dark-bg" id="build">
+  <div class="svc-card-grid-header">
+    <div>
+      <div class="section-tag dark reveal">03 → 05 — Core Services</div>
+      <h2 class="sh on-dark reveal d1" style="font-size:clamp(34px,4vw,52px)">Design, build<br>&amp; stewardship.</h2>
+    </div>
+    <p class="sb on-dark reveal d2">The three services that transform a design from drawings into reality — and ensure it stays that way long after handover.</p>
+  </div>
+  <div class="scc reveal" id="pm">
+    <div class="scc-ghost">03</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="24" height="24"/><path d="M3 10h24M10 10v17M3 17h7"/></svg>
+    <div class="scc-name">Full Design &amp; Build</div>
+    <p class="scc-desc">Architecture, interiors, project management, and construction under one contract. One fee. One point of contact. No ambiguity about who owns the outcome.</p>
+    <div class="svc-tags" style="margin-top:16px"><span class="stag light">Single Contract</span><span class="stag light">Fixed Price</span></div>
+    <a href="#" class="scc-link">Explore →</a>
+  </div>
+  <div class="scc reveal d1">
+    <div class="scc-ghost">04</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><circle cx="15" cy="15" r="11"/><path d="M15 6v4M15 20v4M6 15h4M20 15h4"/><circle cx="15" cy="15" r="4"/></svg>
+    <div class="scc-name">Project Management</div>
+    <p class="scc-desc">Full stewardship of the construction process — contractor procurement, programme management, cost control, and site supervision — with a dedicated Ardivia principal on every project.</p>
+    <div class="svc-tags" style="margin-top:16px"><span class="stag light">Programme</span><span class="stag light">Cost Control</span><span class="stag light">Site</span></div>
+    <a href="#" class="scc-link">Explore →</a>
+  </div>
+  <div class="scc reveal d2" id="materials">
+    <div class="scc-ghost">05</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 25l5-6 4 4 5-7 5 6"/><circle cx="23" cy="8" r="4"/></svg>
+    <div class="scc-name">Materials Sourcing &amp; Specification</div>
+    <p class="scc-desc">Rare marble, aged bronze, hand-fired tile, reclaimed timber — sourced through twenty years of relationships with quarries, foundries, and artisan workshops across Britain and Europe.</p>
+    <div class="svc-tags" style="margin-top:16px"><span class="stag light">Artisan Network</span><span class="stag light">Heritage</span></div>
+    <a href="#" class="scc-link">Explore →</a>
+  </div>
+</div>
+
+<!-- ══ TIER 2: EXPANDED SERVICES ══ -->
+<div class="tier-divider" id="windows">
+  <div class="td-left">
+    <div class="td-num">II</div>
+    <div>
+      <div class="td-title">Expanded Services — Craft &amp; Completeness</div>
+      <div style="font-size:12px;font-weight:300;color:var(--mid);margin-top:2px">Every surface, every opening, every piece of furniture. Ardivia, all the way.</div>
+    </div>
+  </div>
+  <div class="td-right">06 → 10</div>
+</div>
+
+<!-- 06 Windows & Doors -->
+<div class="svc-split">
+  <div class="svc-img">
+    <img src="https://images.unsplash.com/photo-1558618047-3c8d1f8b3d0e?w=900&q=80" alt="Windows and doors">
+    <div class="svc-img-label">06 — Windows &amp; Doors</div>
+  </div>
+  <div class="svc-content">
+    <div class="svc-id reveal">06 — Expanded Service</div>
+    <h2 class="svc-title dark reveal d1">Windows &amp; Doors<br>— Restoration &amp;<br>Bespoke Manufacture</h2>
+    <p class="svc-body dark reveal d2">Original joinery is among the first things lost in a renovation — and among the most costly to replace badly. We restore original windows and doors where they can be saved, and manufacture exact-match or architecturally-considered new joinery where they cannot. Every opening is an architectural statement.</p>
+    <p class="svc-body dark reveal d2" style="margin-top:-8px">For listed buildings, we work with English Heritage-approved joiners using traditional mortise-and-tenon construction, period glass, and historically accurate ironmongery. For contemporary commissions, we design bespoke steel, bronze, and hardwood systems from first principles.</p>
+    <ul class="svc-features reveal d3">
+      <li class="svc-feature dark">Original sash window and casement restoration</li>
+      <li class="svc-feature dark">Period ironmongery matching and sourcing</li>
+      <li class="svc-feature dark">Draught-proofing and thermal upgrading of original frames</li>
+      <li class="svc-feature dark">Bespoke hardwood windows — oak, accoya, iroko</li>
+      <li class="svc-feature dark">Steel Crittall-style systems, designed to specification</li>
+      <li class="svc-feature dark">Bronze and patinated metal door systems</li>
+      <li class="svc-feature dark">Pivot doors, concealed frames, and flush threshold details</li>
+      <li class="svc-feature dark">Listed building consent coordination for all joinery works</li>
+      <li class="svc-feature dark">Secondary glazing for heritage buildings</li>
+    </ul>
+    <div class="svc-tags reveal d4">
+      <span class="stag dark">Restoration</span>
+      <span class="stag dark">Listed Buildings</span>
+      <span class="stag dark">Bespoke Joinery</span>
+      <span class="stag dark">Steel Systems</span>
+      <span class="stag dark">Bronze</span>
+      <span class="stag dark">Heritage Approved</span>
+    </div>
+  </div>
+</div>
+
+<!-- Windows callout -->
+<div class="callout forest">
+  <div class="callout-text">"A window is not a hole in a wall. It is a lens through which architecture frames the world outside. We treat every opening with the same intelligence we bring to every room."</div>
+  <div class="callout-source">Ardivia — Windows &amp; Doors Standard</div>
+</div>
+
+<!-- 07 Furniture -->
+<div class="svc-split reverse" id="furniture">
+  <div class="svc-img">
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80" alt="Bespoke furniture">
+    <div class="svc-img-label">07 — Bespoke Furniture</div>
+  </div>
+  <div class="svc-content on-dark">
+    <div class="svc-id reveal" style="color:rgba(232,226,213,.35)">07 — Expanded Service</div>
+    <h2 class="svc-title light reveal d1">Bespoke Furniture<br>Design &amp;<br>Commissioning</h2>
+    <p class="svc-body light reveal d2">A house is not finished when the building work is done. The furniture that occupies a space is as much a part of the architecture as the walls themselves. We design and commission bespoke furniture as an integrated part of every interior commission — not as an afterthought, and not through a third party.</p>
+    <p class="svc-body light reveal d2" style="margin-top:-8px">We also offer standalone furniture consultancy for clients who have completed builds and need considered pieces designed to their exact space, palette, and way of living.</p>
+    <ul class="svc-features reveal d3">
+      <li class="svc-feature light">Bespoke dining tables, desks, and case furniture</li>
+      <li class="svc-feature light">Built-in joinery: libraries, wardrobes, media units</li>
+      <li class="svc-feature light">Upholstered pieces: sofas, headboards, benches — to specification</li>
+      <li class="svc-feature light">Antique and vintage furniture sourcing and restoration</li>
+      <li class="svc-feature light">Loose furniture selection and procurement for full schemes</li>
+      <li class="svc-feature light">Hardware and finish specification: brass, bronze, blackened steel</li>
+      <li class="svc-feature light">Workshop visits and craft production oversight</li>
+      <li class="svc-feature light">Coordination with British furniture makers and European ateliers</li>
+    </ul>
+    <div class="svc-tags reveal d4">
+      <span class="stag light">Bespoke</span>
+      <span class="stag light">Built-in Joinery</span>
+      <span class="stag light">Upholstery</span>
+      <span class="stag light">Antique Sourcing</span>
+      <span class="stag light">Atelier Network</span>
+    </div>
+  </div>
+</div>
+
+<!-- Furniture callout -->
+<div class="callout linen">
+  <div class="callout-text">"We do not send our clients to a furniture showroom. We sit with them, understand how they live, and design pieces that could not exist in any other house."</div>
+  <div class="callout-source">Ardivia — Furniture Standard</div>
+</div>
+
+<!-- 08 09 10 — three column cards -->
+<div class="svc-card-grid white-bg" id="lighting">
+  <div class="svc-card-grid-header">
+    <div>
+      <div class="section-tag reveal">08 → 10 — Expanded Services</div>
+      <h2 class="sh on-light reveal d1" style="font-size:clamp(32px,3.8vw,50px)">Light, heritage<br>&amp; acquisition.</h2>
+    </div>
+    <p class="sb on-light reveal d2">Three capabilities that complete the Ardivia offer — and keep your project entirely within a single relationship from first property search to final light level set.</p>
+  </div>
+  <div class="scc reveal" id="lighting-card">
+    <div class="scc-ghost">08</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 4v3M15 23v3M4 15H7M23 15h3M7 7l2 2M21 21l2 2M7 23l2-2M21 9l2-2"/><circle cx="15" cy="15" r="5"/></svg>
+    <div class="scc-name">Architectural Lighting Design</div>
+    <p class="scc-desc">Lighting designed from the structural drawings — not specified at the end. Layered ambient, task, and accent systems. Circadian-aware schemes for health and wellbeing. Full KNX and Lutron integration.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag dark">KNX</span><span class="stag dark">Lutron</span><span class="stag dark">Circadian</span></div>
+    <a href="#" class="scc-link">Read more →</a>
+  </div>
+  <div class="scc reveal d1" id="heritage">
+    <div class="scc-ghost">09</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 25h20M8 25V13l7-9 7 9v12"/><path d="M12 25v-6h6v6"/><path d="M5 13h20"/></svg>
+    <div class="scc-name">Heritage Restoration &amp; Masonry</div>
+    <p class="scc-desc">Stonework, brickwork, lime mortar pointing, chimney and stack restoration, original plasterwork repair and reinstatement. All works conducted by conservation-approved specialist craftsmen.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag dark">Lime Mortar</span><span class="stag dark">Listed</span><span class="stag dark">Conservation</span></div>
+    <a href="#" class="scc-link">Read more →</a>
+  </div>
+  <div class="scc reveal d2" id="acquisition">
+    <div class="scc-ghost">10</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 25h20M8 12h14M15 4v8M10 18h10M10 22h6"/><rect x="10" y="12" width="10" height="13"/></svg>
+    <div class="scc-name">Property Acquisition Consultancy</div>
+    <p class="scc-desc">Our site knowledge is unmatched. We advise clients on property acquisition before purchase — identifying planning potential, heritage constraints, structural viability, and design opportunity. We guarantee the commission and remove the risk of buying the wrong building.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag dark">Pre-purchase</span><span class="stag dark">Planning</span><span class="stag dark">Viability</span></div>
+    <a href="#" class="scc-link">Read more →</a>
+  </div>
+</div>
+
+<!-- ══ TIER 3: PREMIUM ADJACENCIES ══ -->
+<div class="tier-divider dark-bg" id="art">
+  <div class="td-left">
+    <div class="td-num" style="color:rgba(201,168,76,.2)">III</div>
+    <div>
+      <div class="td-title">Premium Services — Rare Capabilities</div>
+      <div style="font-size:12px;font-weight:300;color:rgba(232,226,213,.3);margin-top:2px">For clients who want Ardivia's involvement to extend into every dimension of a commission.</div>
+    </div>
+  </div>
+  <div class="td-right">11 → 14</div>
+</div>
+
+<!-- 11 12 Art & Acoustic — split -->
+<div class="svc-split" style="background:var(--dark);border-bottom:1px solid rgba(255,255,255,.06)">
+  <div class="svc-img">
+    <img src="https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=900&q=80" alt="Art advisory">
+    <div class="svc-img-label">11 — Art Advisory &amp; Curation</div>
+  </div>
+  <div class="svc-content on-dark-mid" style="background:var(--dark)">
+    <div class="svc-id reveal" style="color:rgba(232,226,213,.28)">11 — Premium Service</div>
+    <h2 class="svc-title light reveal d1">Art Advisory<br>&amp; Curation</h2>
+    <p class="svc-body light reveal d2">Ardivia already curates every material in a room. Art is simply the final material — and the one that most powerfully communicates who lives there. We advise on the acquisition, placement, and commissioning of art as an integral part of every interior scheme we complete.</p>
+    <ul class="svc-features reveal d3">
+      <li class="svc-feature light">Art advisory for residential interiors</li>
+      <li class="svc-feature light">Commission brokerage with British and international artists</li>
+      <li class="svc-feature light">Placement design: scale, light, sightline studies</li>
+      <li class="svc-feature light">Framing, hanging, and installation specification</li>
+      <li class="svc-feature light">Private collection audit and rehang</li>
+      <li class="svc-feature light">Relationship with leading London galleries</li>
+    </ul>
+    <div class="svc-tags reveal d4">
+      <span class="stag light">Advisory</span>
+      <span class="stag light">Commission Brokerage</span>
+      <span class="stag light">Placement Design</span>
+    </div>
+  </div>
+</div>
+
+<!-- 12 Acoustic + 13 Wellness — cards on dark -->
+<div class="svc-card-grid forest-bg" style="gap:2px" id="acoustic">
+  <div class="svc-card-grid-header" style="border-bottom-color:rgba(255,255,255,.07)">
+    <div>
+      <div class="section-tag dark reveal">12 &amp; 13 — Premium Services</div>
+      <h2 class="sh on-dark reveal d1" style="font-size:clamp(32px,3.8vw,50px)">Acoustic &amp;<br>Wellness Architecture.</h2>
+    </div>
+    <p class="sb on-dark reveal d2">Two disciplines increasingly expected in high-end residential commissions — and both best designed in at structural stage, not retrofitted after the build.</p>
+  </div>
+  <div class="scc reveal" id="acoustic-card" style="grid-column:span 1">
+    <div class="scc-ghost">12</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M8 10c0 0 0 10 7 10s7-10 7-10"/><path d="M15 4v6M15 20v6M4 15h4M22 15h4"/><circle cx="15" cy="15" r="3"/></svg>
+    <div class="scc-name">Acoustic Design</div>
+    <p class="scc-desc">Home cinemas, music rooms, open-plan living with domestic privacy, and recording environments designed from the structural drawings. Reverberation modelling, sound isolation specification, and absorbent surface detailing — all architecturally invisible.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag light">Cinema</span><span class="stag light">Music Room</span><span class="stag light">Privacy</span></div>
+    <a href="#" class="scc-link">Read more →</a>
+  </div>
+  <div class="scc reveal d1" id="wellness">
+    <div class="scc-ghost">13</div>
+    <svg class="scc-icon" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><path d="M15 4c0 0-8 5-8 12a8 8 0 0016 0C23 9 15 4 15 4z"/><path d="M11 18c2-3 6-4 8-2"/></svg>
+    <div class="scc-name">Wellness Architecture</div>
+    <p class="scc-desc">Spa, sauna, steam, cold plunge, and pool design as architectural commissions — not contractor-led afterthoughts. We design wellness infrastructure into the fabric of the building from planning stage, with the same rigour we apply to every other room.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag light">Spa</span><span class="stag light">Pool</span><span class="stag light">Sauna</span><span class="stag light">Cold Plunge</span></div>
+    <a href="#" class="scc-link">Read more →</a>
+  </div>
+  <div class="scc reveal d2" id="complete" style="background:rgba(0,0,0,.2)">
+    <div class="scc-ghost" style="color:rgba(201,168,76,.1)">14</div>
+    <svg class="scc-icon" style="color:var(--gold)" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="24" height="24"/><path d="M3 15h24M15 3v24M9 9h6v6H9zM15 15h6v6h-6z"/></svg>
+    <div class="scc-name" style="color:var(--linen)">The Complete House</div>
+    <p class="scc-desc" style="color:rgba(201,168,76,.55)">Estate ecology. Energy sovereignty. Water independence. Responsive architecture. The highest expression of the Ardivia standard — applied to everything a house touches.</p>
+    <div class="svc-tags" style="margin-top:14px"><span class="stag light">Energy</span><span class="stag light">Water</span><span class="stag light">Landscape</span><span class="stag light">KNX</span></div>
+    <a href="#" class="scc-link" style="opacity:1;color:var(--gold)">Discover The Complete House →</a>
+  </div>
+</div>
+
+<!-- ══ LANGUAGE TABLE ══ -->
+<div class="lang-table">
+  <div class="lang-table-header">
+    <div class="section-tag dark reveal">How we think about service</div>
+    <h2 class="sh on-dark reveal d1" style="font-size:clamp(32px,3.5vw,48px);margin-top:12px">The vocabulary<br>of a complete studio.</h2>
+  </div>
+  <div class="lang-grid">
+    <div class="lang-col-head left">Industry standard language</div>
+    <div class="lang-col-head mid"></div>
+    <div class="lang-col-head right">The Ardivia standard</div>
+    <div class="lang-row"><div class="lang-old">Architect + separate interior designer</div><div class="lang-mid">→</div><div class="lang-new">One integrated design team. One design language throughout.</div></div>
+    <div class="lang-row"><div class="lang-old">Contractor appointed at tender stage</div><div class="lang-mid">→</div><div class="lang-new">Ardivia's trusted network, curated over twenty years. No strangers on site.</div></div>
+    <div class="lang-row"><div class="lang-old">Furniture sourced from showrooms after completion</div><div class="lang-mid">→</div><div class="lang-new">Bespoke pieces commissioned as part of the architectural brief, from day one.</div></div>
+    <div class="lang-row"><div class="lang-old">Joinery subcontracted to the main contractor</div><div class="lang-mid">→</div><div class="lang-new">Windows, doors, and built-ins designed by Ardivia and manufactured by appointed craftsmen.</div></div>
+    <div class="lang-row"><div class="lang-old">Lighting consultant engaged at fit-out stage</div><div class="lang-mid">→</div><div class="lang-new">Lighting designed at RIBA Stage 2. Infrastructure built in. Scenes designed with the architecture.</div></div>
+    <div class="lang-row"><div class="lang-old">Property found, then architects appointed</div><div class="lang-mid">→</div><div class="lang-new">Ardivia advises before purchase. We identify the right building before you buy the wrong one.</div></div>
+    <div class="lang-row"><div class="lang-old">"Smart home" technology retrofitted by AV company</div><div class="lang-mid">→</div><div class="lang-new">Responsive architecture: KNX designed in at structural stage. Architecturally invisible. Future-proof.</div></div>
+  </div>
+</div>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div>
+    <div class="section-tag reveal">Begin a commission</div>
+    <h2 class="cta-title reveal d1">
+      One studio.<br>Every service.<br><em>Your project.</em>
+    </h2>
+  </div>
+  <div>
+    <p class="cta-body reveal">We take on a limited number of projects each year. If you have a commission in mind — however early in the process — we'd welcome a conversation. All enquiries are treated with complete discretion.</p>
+    <form class="form-cta reveal d1">
+      <div class="form-row">
+        <input class="form-field" type="text" placeholder="Your name">
+        <input class="form-field" type="email" placeholder="Email address">
+      </div>
+      <div class="form-row">
+        <input class="form-field" type="text" placeholder="Service(s) of interest">
+        <input class="form-field" type="text" placeholder="Approximate budget">
+      </div>
+      <textarea class="form-field" placeholder="Tell us about your project"></textarea>
+      <button type="submit" class="form-btn">Send enquiry <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </form>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo">Ardivia<sup>®</sup></span>
+      <p class="footer-tag">Bespoke design and build for those who demand the extraordinary. London &amp; beyond.</p>
+      <div class="footer-socials"><a href="#" class="social-btn">In</a><a href="#" class="social-btn">IG</a><a href="#" class="social-btn">Pi</a></div>
+    </div>
+    <div>
+      <div class="footer-col-title">Core Services</div>
+      <ul class="footer-links">
+        <li><a href="#">Architecture &amp; Design</a></li>
+        <li><a href="#">Interior Architecture</a></li>
+        <li><a href="#">Full Design &amp; Build</a></li>
+        <li><a href="#">Project Management</a></li>
+        <li><a href="#">Materials Sourcing</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Expanded Services</div>
+      <ul class="footer-links">
+        <li><a href="#">Windows &amp; Doors</a></li>
+        <li><a href="#">Bespoke Furniture</a></li>
+        <li><a href="#">Lighting Design</a></li>
+        <li><a href="#">Heritage Restoration</a></li>
+        <li><a href="#">Property Acquisition</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Premium Services</div>
+      <ul class="footer-links">
+        <li><a href="#">Art Advisory</a></li>
+        <li><a href="#">Acoustic Design</a></li>
+        <li><a href="#">Wellness Architecture</a></li>
+        <li><a href="#" style="color:var(--gold)">The Complete House</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Ardivia Ltd. Registered in England &amp; Wales. Co. No. 06712834. RIBA Chartered Practice.</div>
+    <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+  setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 50);
+});
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+document.querySelector('.form-cta').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-btn');
+  btn.textContent = "Sent — we'll be in touch.";
+  btn.style.background = 'var(--sage)';
+});
+</script>
+</body>
+</html>

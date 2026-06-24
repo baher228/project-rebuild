@@ -3,15 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/studio", label: "Studio" },
-  { href: "/services", label: "Services" },
+  { href: "/services", label: "What We Do" },
   { href: "/projects", label: "Projects" },
-  { href: "/process", label: "Process" },
-  { href: "/clients", label: "Clients" },
-  { href: "/journal", label: "Journal" },
+  { href: "/studio", label: "About Us" },
+  { href: "/journal", label: "Insights" },
 ] as const;
 
 export function SiteNav() {
@@ -31,11 +30,16 @@ export function SiteNav() {
   }, [pathname]);
 
   return (
-    <nav className={`av-nav${scrolled ? " scrolled" : ""}`}>
+    <motion.nav
+      className={`av-nav${scrolled ? " scrolled" : ""}`}
+      initial={{ y: -28, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+    >
       <Link href="/" className="av-logo">
-        Ardi<span>v</span>ia
+        Ardi<span>v</span>ia<sup>®</sup>
       </Link>
-      <ul className={`av-links${open ? " open" : ""}`}>
+      <ul className="av-links">
         {links.map((link) => (
           <li key={link.href}>
             <Link href={link.href} className={pathname === link.href ? "active" : ""}>
@@ -45,7 +49,7 @@ export function SiteNav() {
         ))}
       </ul>
       <Link href="/contact" className="av-cta">
-        Begin Your Project
+        Start a Conversation
       </Link>
       <button
         className="av-burger"
@@ -68,6 +72,28 @@ export function SiteNav() {
           )}
         </svg>
       </button>
-    </nav>
+      <AnimatePresence>
+        {open ? (
+          <motion.ul
+            className="av-links-mobile"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22 }}
+          >
+            {links.map((link) => (
+              <li key={link.href}>
+                <Link href={link.href} className={pathname === link.href ? "active" : ""}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/contact">Start a Conversation</Link>
+            </li>
+          </motion.ul>
+        ) : null}
+      </AnimatePresence>
+    </motion.nav>
   );
 }

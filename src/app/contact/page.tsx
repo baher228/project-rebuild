@@ -1,161 +1,68 @@
 import type { Metadata } from "next";
 
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { ContactProjectForm } from "@/components/ContactProjectForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Start a Conversation",
   description:
-    "Get in touch with Ardivia. 14 Charlotte Street, Fitzrovia, London. All enquiries treated with complete discretion.",
+    "Tell Ardivia about your residential project, property portfolio or development opportunity.",
 };
 
 export default function ContactPage() {
   return (
-    <main>
-      <div className="contact-page">
-        <div className="contact-left">
-          <div className="section-eyebrow reveal" style={{ marginBottom: 32 }}>
-            Get in touch
+    <main className="integrated-contact">
+      <section className="ic-shell">
+        <div className="ic-left">
+          <div>
+            <div className="ic-tag reveal">Get in touch</div>
+            <h1 className="ic-title reveal d1">
+              Let&apos;s start a
+              <br />
+              <em>conversation.</em>
+            </h1>
+            <p className="ic-intro reveal d2">
+              Whether you&apos;re a homeowner with an idea, a landlord with a portfolio, or a
+              developer with a site — we&apos;d like to hear from you. All enquiries treated with
+              complete discretion.
+            </p>
           </div>
-          <h1
-            className="section-title reveal d1"
-            style={{
-              fontSize: "clamp(44px,5vw,72px)",
-              color: "var(--linen)",
-              marginBottom: 40,
-              lineHeight: 0.96,
-            }}
-          >
-            Let&apos;s begin
-            <br />
-            your <em style={{ fontStyle: "italic", color: "var(--gold)" }}>project.</em>
-          </h1>
-          <p
-            className="reveal d2"
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 17,
-              color: "rgba(232,226,213,.55)",
-              lineHeight: 1.85,
-              marginBottom: 56,
-            }}
-          >
-            We take on a limited number of projects each year to ensure every client receives our
-            full attention. All enquiries are treated with complete discretion.
-          </p>
-          <div className="reveal d3">
-            {[
-              {
-                label: "Office",
-                val: (
-                  <>
-                    14 Charlotte Street
-                    <br />
-                    Fitzrovia, London W1T 2LS
-                  </>
-                ),
-              },
-              {
-                label: "Email",
-                val: (
-                  <a
-                    href="mailto:hello@ardivia.co.uk"
-                    style={{ color: "inherit", textDecoration: "none" }}
-                  >
-                    hello@ardivia.co.uk
-                  </a>
-                ),
-              },
-              {
-                label: "Phone",
-                val: (
-                  <a href="tel:+442079460000" style={{ color: "inherit", textDecoration: "none" }}>
-                    +44 20 7946 0000
-                  </a>
-                ),
-              },
-              {
-                label: "Hours",
-                val: (
-                  <>
-                    Monday - Friday
-                    <br />
-                    9:00am - 6:00pm
-                  </>
-                ),
-              },
-              { label: "Social", val: "Instagram - LinkedIn - Pinterest" },
-            ].map((row) => (
-              <div className="contact-detail-row" key={row.label}>
-                <span className="contact-detail-label">{row.label}</span>
-                <span className="contact-detail-val">{row.val}</span>
-              </div>
-            ))}
+
+          <div className="ic-details reveal d3">
+            <div className="ic-detail-row">
+              <span className="ic-detail-label">Office</span>
+              <span className="ic-detail-value">
+                14 Charlotte Street
+                <br />
+                Fitzrovia, London W1T 2LS
+              </span>
+            </div>
+            <div className="ic-detail-row">
+              <span className="ic-detail-label">Email</span>
+              <a className="ic-detail-value" href="mailto:hello@ardivia.co.uk">
+                hello@ardivia.co.uk
+              </a>
+            </div>
+            <div className="ic-detail-row">
+              <span className="ic-detail-label">Phone</span>
+              <a className="ic-detail-value" href="tel:+442079460000">
+                +44 20 7946 0000
+              </a>
+            </div>
+            <div className="ic-detail-row">
+              <span className="ic-detail-label">Hours</span>
+              <span className="ic-detail-value">Mon–Fri · 9am–6pm</span>
+            </div>
           </div>
         </div>
-        <div className="contact-right">
-          <h2
-            className="section-title reveal"
-            style={{
-              fontSize: "clamp(36px,3.5vw,52px)",
-              color: "var(--forest)",
-              marginBottom: 12,
-              lineHeight: 1.05,
-            }}
-          >
-            Start the
-            <br />
-            conversation.
-          </h2>
-          <p
-            className="reveal d1"
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 17,
-              color: "rgba(26,31,26,.55)",
-              lineHeight: 1.75,
-              marginBottom: 48,
-            }}
-          >
-            Tell us about your project - however early in the process. We&apos;ll respond within one
-            business day.
+
+        <div className="ic-right">
+          <h2 className="ic-form-title reveal">Tell us about your project.</h2>
+          <p className="ic-form-intro reveal d1">
+            Select who you are below — your enquiry will reach the right person.
           </p>
-          <EnquiryForm
-            fields={[
-              { name: "name", placeholder: "Your name" },
-              { name: "email", type: "email", placeholder: "Email address" },
-              { name: "phone", type: "tel", placeholder: "Phone number", full: true },
-              { name: "type", placeholder: "Project type" },
-              { name: "budget", placeholder: "Approximate budget" },
-              { name: "location", placeholder: "Project location", full: true },
-              { name: "message", placeholder: "Tell us about your project", textarea: true },
-              {
-                name: "referral",
-                placeholder: "How did you hear about Ardivia?",
-                options: [
-                  "Referral from a client",
-                  "Press or editorial",
-                  "Instagram",
-                  "Pinterest",
-                  "Google search",
-                  "Other",
-                ],
-              },
-            ]}
-          />
-          <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 14,
-              color: "rgba(26,31,26,.4)",
-              lineHeight: 1.65,
-              marginTop: 20,
-            }}
-          >
-            Your enquiry is treated with complete discretion. We never share your details with third
-            parties.
-          </p>
+          <ContactProjectForm />
         </div>
-      </div>
+      </section>
     </main>
   );
 }

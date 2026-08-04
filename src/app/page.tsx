@@ -16,39 +16,6 @@ const trust = [
   ["RIBA", "Chartered practice · FMB · NHBC"],
 ] as const;
 
-const journeys = [
-  {
-    className: "home",
-    image: "https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=800&q=80",
-    alt: "A considered contemporary home interior",
-    audience: "For homeowners & general public",
-    title: "I want my home transformed.",
-    description:
-      "Flat refurbs, extensions, full renovations, home offices, and bespoke design — in plain English, with one team responsible for everything.",
-    cta: "Explore homeowner services",
-  },
-  {
-    className: "land",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
-    alt: "A completed high-end residential refurbishment",
-    audience: "For landlords & letting investors",
-    title: "I need reliable work that maximises yield.",
-    description:
-      "HMO conversions, buy-to-let refurbs, EPC upgrades, block improvements — fixed price, no void periods, one contractor from design to handover.",
-    cta: "Explore landlord services",
-  },
-  {
-    className: "dev",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80",
-    alt: "A large urban residential development",
-    audience: "For property developers & investors",
-    title: "I'm developing residential property at scale.",
-    description:
-      "Block contracts, co-development, JV structures, new build and refurb — in-house brigades, fixed costs, programme certainty, and real financial transparency.",
-    cta: "Explore developer services",
-  },
-] as const;
-
 export default function HomePage() {
   return (
     <main className="integrated-home">
@@ -101,44 +68,6 @@ export default function HomePage() {
             <div className="ih-trust-label">{label}</div>
           </div>
         ))}
-      </section>
-
-      <section className="ih-journeys">
-        <div className="ih-journeys-header">
-          <div>
-            <div className="ih-tag reveal">Who we work with</div>
-            <h2 className="ih-display ih-display-dark reveal d1">
-              Your journey
-              <br />
-              starts here.
-            </h2>
-          </div>
-          <p className="ih-body reveal d2">
-            We serve three distinct client types. Choose your path — or explore everything we do.
-          </p>
-        </div>
-
-        <div className="ih-journey-cards">
-          {journeys.map((journey, index) => (
-            <Link
-              href="/services"
-              key={journey.title}
-              className={`ih-journey-card ${journey.className} reveal${index ? ` d${index}` : ""}`}
-            >
-              <span className="ih-card-accent" />
-              <img className="ih-card-image" src={journey.image} alt={journey.alt} />
-              <span className="ih-card-overlay" />
-              <span className="ih-card-body">
-                <span className="ih-card-audience">{journey.audience}</span>
-                <span className="ih-card-title">{journey.title}</span>
-                <span className="ih-card-description">{journey.description}</span>
-                <span className="ih-card-cta">
-                  {journey.cta} <ArrowIcon />
-                </span>
-              </span>
-            </Link>
-          ))}
-        </div>
       </section>
 
       <section className="ih-featured">

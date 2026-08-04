@@ -84,19 +84,6 @@ function CardIcon({ type }: { type: string }) {
 export default function ServicesPage() {
   return (
     <main className="integrated-services">
-      <nav className="services-subheader" aria-label="Ardivia sections">
-        <Link href="/">Homepage</Link>
-        <span className="services-subheader-separator" aria-hidden="true" />
-        <span>Homeowners</span>
-        <span>Landlords</span>
-        <span>Developers &amp; Investors</span>
-        <span className="services-subheader-separator" aria-hidden="true" />
-        <Link href="/services" className="active" aria-current="page">
-          All Services
-        </Link>
-        <Link href="/contact">Contact</Link>
-      </nav>
-
       <header className="services-hero">
         <div className="tag muted reveal">All services — Ardivia</div>
         <h1 className="display light reveal d1">

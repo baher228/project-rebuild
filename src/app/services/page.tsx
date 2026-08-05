@@ -100,9 +100,8 @@ export default function ServicesPage() {
       <section aria-labelledby="core-services">
         <div className="svc-tier-bar">
           <div className="stb-left">
-            <div className="stb-num">I</div>
             <h2 className="stb-title" id="core-services">
-              Core Services — 01 to 05
+              Core Services
             </h2>
           </div>
           <div className="stb-sub">The foundation of every Ardivia commission</div>
@@ -114,10 +113,8 @@ export default function ServicesPage() {
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80"
               alt="Contemporary architecture by Ardivia"
             />
-            <div className="svc-img-lbl">01 — Architecture &amp; Design</div>
           </div>
           <div className="svc-content">
-            <div className="svc-id reveal">01 — Core</div>
             <h3 className="svc-title dark reveal d1">
               Architecture
               <br />
@@ -148,10 +145,8 @@ export default function ServicesPage() {
               src="https://images.unsplash.com/photo-1618221118493-9cfa1a1c00da?w=900&q=80"
               alt="Ardivia interior architecture"
             />
-            <div className="svc-img-lbl">02 — Interior Architecture</div>
           </div>
           <div className="svc-content on-dark">
-            <div className="svc-id muted reveal">02 — Core</div>
             <h3 className="svc-title light reveal d1">
               Interior
               <br />
@@ -172,12 +167,10 @@ export default function ServicesPage() {
         </article>
 
         <div className="svc-three-heading dark-section">
-          <div className="tag muted reveal">03 → 05 — Core Services</div>
           <h2 className="display light reveal d1">Build, manage, deliver.</h2>
         </div>
         <div className="svc-3 dark-section">
           <article className="s3c bg-ink reveal">
-            <div className="s3c-ghost">03</div>
             <CardIcon type="build" />
             <h3 className="s3c-name">Full Design &amp; Build</h3>
             <p className="s3c-desc">
@@ -185,7 +178,6 @@ export default function ServicesPage() {
             </p>
           </article>
           <article className="s3c bg-ink reveal d1">
-            <div className="s3c-ghost">04</div>
             <CardIcon type="management" />
             <h3 className="s3c-name">Project Management</h3>
             <p className="s3c-desc">
@@ -194,7 +186,6 @@ export default function ServicesPage() {
             </p>
           </article>
           <article className="s3c bg-ink reveal d2">
-            <div className="s3c-ghost">05</div>
             <CardIcon type="materials" />
             <h3 className="s3c-name">Materials Sourcing</h3>
             <p className="s3c-desc">

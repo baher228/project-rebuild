@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardivia — Property Improvement Specialists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#26342B;--sage:#7A8B6F;--gold:#C9A84C;--linen:#E8E2D5;--white:#F5F3EE;
+  --ink:#111;--mid:#555;--rule:#D4CEC4;--dark:#1A1A1A;--darksage:#3D4A38;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;cursor:none}
+.cursor{position:fixed;width:6px;height:6px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+body:has(a:hover) .cursor-ring,body:has(button:hover) .cursor-ring{width:48px;height:48px}
+@media (hover:none){body{cursor:auto}.cursor,.cursor-ring{display:none}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 52px;height:66px;border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+nav.scrolled{background:rgba(245,243,238,.97);backdrop-filter:blur(12px);border-bottom-color:var(--rule)}
+.nav-logo{font-size:14px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);text-decoration:none}
+.nav-logo sup{color:var(--gold);font-size:8px;vertical-align:super;font-weight:400}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{font-size:11px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:.55;transition:opacity .2s;cursor:none}
+.nav-links a:hover,.nav-links a.active{opacity:1}
+.nav-cta{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--white);background:var(--forest);border:none;padding:11px 22px;cursor:none;transition:background .2s}
+.nav-cta:hover{background:var(--ink)}
+.nav-toggle{display:none}
+
+/* ATOMS */
+.tag{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.tag::before{content:'';width:22px;height:1px;background:var(--gold);display:block}
+.tag.muted{color:rgba(232,226,213,.42)}.tag.muted::before{background:rgba(232,226,213,.28)}
+.tag.center{justify-content:center}
+h1.disp,h2.disp,h3.disp{font-family:'Cormorant Garamond',serif;font-weight:300;line-height:1.0;letter-spacing:-.01em}
+.disp em{font-style:italic}.disp.light{color:var(--linen)}.disp.dark{color:var(--forest)}.disp.ink{color:var(--ink)}
+p.body{font-size:15px;font-weight:300;line-height:1.8;color:var(--mid)}
+p.body.light{color:rgba(232,226,213,.55)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:all .2s;cursor:none;border:none;font-family:'DM Sans',sans-serif}
+.btn-f{background:var(--forest);color:var(--linen)}.btn-f:hover{background:var(--ink)}
+.btn-g{background:var(--gold);color:var(--forest)}.btn-g:hover{background:#d4b45a}
+.btn-ol{background:transparent;color:var(--linen);border:1px solid rgba(232,226,213,.25)}.btn-ol:hover{border-color:var(--gold);color:var(--gold)}
+.btn-old{background:transparent;color:var(--forest);border:1px solid rgba(38,52,43,.3)}.btn-old:hover{background:var(--forest);color:var(--linen);border-color:var(--forest)}
+.arrow{width:13px;height:13px}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}.d5{transition-delay:.4s}
+.page{display:none}.page.active{display:block}
+section{position:relative}
+
+/* ═══════════ HERO ═══════════ */
+.hero{height:100vh;min-height:640px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;background:var(--forest)}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5) saturate(.62)}
+.hero-panel{position:absolute;left:0;top:0;bottom:0;width:52%;background:var(--forest);clip-path:polygon(0 0,100% 0,84% 100%,0 100%);z-index:1}
+.hero-wm{position:absolute;bottom:-24px;right:-16px;z-index:1;font-size:clamp(80px,15vw,220px);font-weight:600;letter-spacing:-.04em;text-transform:uppercase;color:rgba(245,243,238,.045);line-height:1;pointer-events:none;user-select:none}
+.hero-content{position:relative;z-index:2;padding:0 52px 76px;max-width:760px}
+.hero-lbl{font-size:10px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:26px;display:flex;align-items:center;gap:12px}
+.hero-lbl::before{content:'';width:28px;height:1px;background:var(--gold);display:block}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,7vw,102px);font-weight:300;color:var(--linen);line-height:.94;letter-spacing:-.01em}
+.hero h1 em{font-style:italic}
+.hero-rule{width:1px;height:44px;background:var(--gold);margin:24px 0 24px 2px;display:block}
+.hero-sub{font-size:16px;font-weight:300;color:rgba(232,226,213,.62);line-height:1.7;max-width:500px;margin-bottom:40px}
+.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.scroll-hint{position:absolute;bottom:36px;right:52px;z-index:3;display:flex;flex-direction:column;align-items:center;gap:9px}
+.scroll-hint span{font-size:8px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:44px;background:var(--gold);animation:sp 2.4s ease-in-out infinite;opacity:.5}
+@keyframes sp{0%,100%{transform:scaleY(1);opacity:.5}50%{transform:scaleY(.5);opacity:.2}}
+
+/* ═══════════ PROMISE STRIP ═══════════ */
+.promise{background:var(--linen);padding:60px 52px;border-bottom:1px solid var(--rule);text-align:center}
+.promise-q{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.2vw,44px);font-weight:300;color:var(--forest);line-height:1.3;max-width:960px;margin:0 auto}
+.promise-q em{font-style:italic;color:var(--sage)}
+
+/* ═══════════ TRUST BAR ═══════════ */
+.trust{background:var(--white);display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--rule)}
+.trust-item{padding:32px 40px;border-right:1px solid var(--rule);text-align:center}
+.trust-item:last-child{border-right:none}
+.trust-num{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;color:var(--forest);line-height:1;margin-bottom:5px}
+.trust-lbl{font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(38,52,43,.4)}
+
+/* ═══════════ PILLARS (core UX) ═══════════ */
+.pillars{background:var(--white);padding:88px 52px 0}
+.pillars-hdr{text-align:center;max-width:680px;margin:0 auto 56px}
+.pillars-hdr h2{font-size:clamp(34px,4.4vw,60px);margin-bottom:20px}
+.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--rule)}
+.pillar{position:relative;overflow:hidden;min-height:400px;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;background:var(--forest)}
+.pillar-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.52) saturate(.6);transition:transform .8s ease,filter .4s}
+.pillar:hover .pillar-bg{transform:scale(1.05);filter:brightness(.42) saturate(.55)}
+.pillar-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(26,31,26,.5) 0%,rgba(26,31,26,0) 60%);z-index:1}
+.pillar-num{position:absolute;top:28px;left:32px;z-index:2;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--gold)}
+.pillar-body{position:relative;z-index:2;padding:40px 36px}
+.pillar-name{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--linen);line-height:1.1;margin-bottom:12px}
+.pillar-desc{font-size:14px;font-weight:300;color:rgba(232,226,213,.62);line-height:1.65;margin-bottom:20px;max-width:400px}
+.pillar-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.ptag{font-size:9.5px;font-weight:400;letter-spacing:.06em;color:rgba(232,226,213,.55);border:1px solid rgba(232,226,213,.18);padding:4px 10px}
+.pillar-link{font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:8px;transition:gap .2s}
+.pillar:hover .pillar-link{gap:14px}
+.pillar-accent{position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s;z-index:2}
+.pillar:hover .pillar-accent{transform:scaleX(1)}
+/* PM pillar spans full width */
+.pillar.wide{grid-column:1 / -1;min-height:300px}
+
+/* ═══════════ HOW IT WORKS ═══════════ */
+.how{background:var(--ink);padding:88px 52px}
+.how-hdr{text-align:center;max-width:620px;margin:0 auto 60px}
+.how-hdr h2{font-size:clamp(32px,4vw,54px);margin-bottom:18px}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative}
+.how-step{background:transparent;padding:0 24px;text-align:center;position:relative}
+.how-step-num{width:56px;height:56px;border-radius:50%;border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);transition:background .3s,border-color .3s}
+.how-step:hover .how-step-num{background:var(--gold);border-color:var(--gold);color:var(--forest)}
+.how-step-title{font-size:15px;font-weight:500;color:var(--linen);margin-bottom:10px}
+.how-step-desc{font-size:13px;font-weight:300;color:rgba(232,226,213,.42);line-height:1.7}
+
+/* ═══════════ FEATURED / BEFORE-AFTER ═══════════ */
+.featured{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule)}
+.feat-img{position:relative;overflow:hidden;min-height:540px}
+.feat-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.72);display:block;transition:transform .7s}
+.featured:hover .feat-img img{transform:scale(1.03)}
+.feat-badge{position:absolute;top:22px;left:22px;font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);background:var(--gold);padding:6px 14px}
+.feat-content{background:var(--white);padding:80px 64px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--rule)}
+.feat-type{font-size:9px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.feat-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.4vw,46px);font-weight:300;color:var(--forest);line-height:1.05;margin-bottom:18px}
+.feat-body{font-size:14px;font-weight:300;color:var(--mid);line-height:1.8;margin-bottom:28px}
+.feat-stats{display:flex;gap:36px;margin-bottom:32px;padding:22px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.feat-stat-num{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--forest);line-height:1}
+.feat-stat-lbl{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(38,52,43,.4);margin-top:4px}
+
+/* ═══════════ VALUE / ONE COMPANY ═══════════ */
+.value{background:var(--forest);padding:88px 52px}
+.value-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.value-list{display:flex;flex-direction:column;gap:2px;margin-top:8px}
+.value-row{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(255,255,255,.08);align-items:flex-start}
+.value-row:first-child{border-top:1px solid rgba(255,255,255,.08)}
+.value-icon{width:22px;height:22px;color:var(--gold);flex-shrink:0;margin-top:2px}
+.value-row-title{font-size:15px;font-weight:500;color:var(--linen);margin-bottom:5px}
+.value-row-desc{font-size:13px;font-weight:300;color:rgba(232,226,213,.45);line-height:1.65}
+
+/* ═══════════ TESTIMONIALS ═══════════ */
+.testi{background:var(--linen);padding:88px 52px;text-align:center}
+.testi-q{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.4vw,46px);font-weight:300;font-style:italic;color:var(--forest);line-height:1.4;max-width:900px;margin:0 auto 32px}
+.testi-author{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--forest)}
+.testi-role{font-size:13px;font-weight:300;color:var(--mid);margin-top:5px}
+.testi-line{width:32px;height:1px;background:var(--gold);margin:0 auto 16px}
+
+/* ═══════════ CTA ═══════════ */
+.cta{background:var(--ink);padding:88px 52px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.cta h2{font-size:clamp(34px,4.2vw,58px);margin-bottom:0}
+.cta-sub{font-size:14px;font-weight:300;color:rgba(232,226,213,.5);line-height:1.8;margin-top:20px;max-width:400px}
+.form-wrap{display:flex;flex-direction:column}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ff{border:none;border-bottom:1px solid rgba(232,226,213,.2);background:transparent;padding:13px 0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;color:var(--linen);outline:none;width:100%;margin-bottom:12px;transition:border-color .2s;cursor:none}
+.ff::placeholder{color:rgba(232,226,213,.32);font-size:13px}
+.ff:focus{border-bottom-color:var(--gold)}
+select.ff{appearance:none;background:transparent;color:rgba(232,226,213,.55)}
+select.ff option{background:var(--ink);color:var(--linen)}
+textarea.ff{resize:none;height:66px}
+
+/* ═══════════ SERVICES PAGE ═══════════ */
+.svc-hero{background:var(--forest);padding:120px 52px 72px;border-bottom:1px solid rgba(255,255,255,.06)}
+.svc-hero h1{font-size:clamp(46px,6.5vw,90px);margin-bottom:22px}
+.svc-hero p{font-size:16px;font-weight:300;color:rgba(232,226,213,.55);max-width:560px;line-height:1.7}
+
+.svc-block{border-bottom:1px solid var(--rule)}
+.svc-block-inner{display:grid;grid-template-columns:1fr 1fr}
+.svc-block:nth-child(even) .svc-img-col{order:2}
+.svc-img-col{position:relative;overflow:hidden;min-height:520px}
+.svc-img-col img{width:100%;height:100%;object-fit:cover;filter:saturate(.7) brightness(.9);display:block;transition:transform .7s}
+.svc-block:hover .svc-img-col img{transform:scale(1.03)}
+.svc-img-lbl{position:absolute;bottom:20px;left:24px;font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,226,213,.5);background:rgba(26,31,26,.68);padding:5px 12px}
+.svc-txt-col{padding:76px 60px;display:flex;flex-direction:column;justify-content:center;background:var(--white)}
+.svc-num{font-size:10px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.svc-h{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.4vw,46px);font-weight:300;color:var(--forest);line-height:1.05;margin-bottom:16px}
+.svc-outcome{font-family:'Crimson Text',serif;font-style:italic;font-size:17px;color:var(--sage);line-height:1.5;margin-bottom:22px}
+.svc-p{font-size:14px;font-weight:300;color:var(--mid);line-height:1.8;margin-bottom:26px}
+.svc-services-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:26px}
+.svc-chip{font-size:11px;font-weight:400;color:var(--forest);background:var(--linen);padding:6px 13px;border:1px solid var(--rule)}
+.svc-value{display:flex;gap:32px;padding:20px 0;border-top:1px solid var(--rule)}
+.svc-value-item{}
+.svc-value-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--forest);line-height:1}
+.svc-value-lbl{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(38,52,43,.42);margin-top:5px}
+
+/* ═══════════ PROJECTS PAGE ═══════════ */
+.proj-hero{background:var(--forest);padding:120px 52px 64px;border-bottom:1px solid rgba(255,255,255,.06)}
+.proj-hero h1{font-size:clamp(46px,6.5vw,90px);margin-bottom:20px}
+.proj-hero p{font-size:16px;font-weight:300;color:rgba(232,226,213,.55);max-width:520px;line-height:1.7}
+.proj-filters{background:var(--ink);padding:20px 52px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:66px;z-index:140}
+.pfilter{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:transparent;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.5);padding:9px 17px;cursor:pointer;transition:all .2s}
+.pfilter:hover,.pfilter.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06)}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px;background:var(--white)}
+.pcard{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/5}
+.pcard img{width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.66);transition:transform .7s,filter .35s;display:block}
+.pcard:hover img{transform:scale(1.05);filter:brightness(.5) saturate(.6)}
+.pcard-meta{position:absolute;top:20px;left:22px;z-index:1}
+.pcard-tag{font-size:8.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--linen);background:rgba(26,31,26,.6);backdrop-filter:blur(6px);padding:4px 10px}
+.pcard-info{position:absolute;bottom:0;left:0;right:0;padding:28px 26px;z-index:1}
+.pcard-type{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pcard-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--linen);line-height:1.1}
+.pcard-loc{font-size:11px;font-weight:300;color:rgba(232,226,213,.55);margin-top:5px}
+
+/* FOOTER */
+footer{background:var(--ink);padding:72px 52px 36px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07)}
+.flogo{font-size:14px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--linen);margin-bottom:14px;display:block}
+.flogo sup{color:var(--gold);font-weight:400;font-size:8px}
+.ftag{font-size:13px;font-weight:300;color:rgba(232,226,213,.3);line-height:1.7;max-width:250px;margin-bottom:22px}
+.fsoc{display:flex;gap:8px}
+.fsoc a{width:32px;height:32px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;color:rgba(232,226,213,.3);font-size:10px;font-weight:500;transition:all .2s;cursor:none}
+.fsoc a:hover{border-color:var(--gold);color:var(--gold)}
+.fct{font-size:9.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.flinks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.flinks a{font-size:13px;font-weight:300;color:rgba(232,226,213,.28);text-decoration:none;transition:color .2s;cursor:none}
+.flinks a:hover{color:var(--linen)}
+.fb{display:flex;justify-content:space-between;align-items:center}
+.fcopy{font-size:10px;font-weight:300;color:rgba(232,226,213,.16);letter-spacing:.04em}
+.fleg{display:flex;gap:18px}
+.fleg a{font-size:10px;font-weight:300;color:rgba(232,226,213,.16);text-decoration:none;cursor:none;transition:color .2s}
+.fleg a:hover{color:rgba(232,226,213,.45)}
+
+@media(max-width:900px){
+  nav{padding:0 24px}.nav-links{display:none}
+  .hero-content,.pillars,.how,.value,.testi,.cta,.promise,.svc-hero,.proj-hero,.proj-filters,.svc-txt-col,.feat-content{padding-left:24px;padding-right:24px}
+  .pillar-grid,.trust,.how-steps,.value-grid,.cta,.featured,.svc-block-inner,.proj-grid,.ft{grid-template-columns:1fr}
+  .pillar.wide{grid-column:auto}
+  .trust-item{border-right:none;border-bottom:1px solid var(--rule)}
+  .feat-content,.svc-txt-col{border-left:none;border-top:1px solid var(--rule)}
+  .svc-block:nth-child(even) .svc-img-col{order:0}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo" onclick="show('home');return false">Ardivia<sup>®</sup></a>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="show('home');return false">Home</a></li>
+    <li><a href="#" onclick="show('services');return false">What We Do</a></li>
+    <li><a href="#" onclick="show('projects');return false">Our Work</a></li>
+    <li><a href="#" onclick="show('home');return false">About</a></li>
+  </ul>
+  <button class="nav-cta" onclick="show('contact')">Get a Free Quote</button>
+</nav>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80" alt="Beautifully improved home">
+    <div class="hero-panel"></div>
+    <div class="hero-wm">ARDIVIA</div>
+    <div class="hero-content">
+      <div class="hero-lbl">Property Improvement Specialists</div>
+      <h1 class="reveal">Better homes,<br>inside <em>and out.</em></h1>
+      <span class="hero-rule"></span>
+      <p class="hero-sub reveal d1">We renovate, improve and maintain homes inside and out — managing every aspect of your project from start to finish. One trusted company, one point of contact, one beautiful result.</p>
+      <div class="hero-actions reveal d2">
+        <a href="#" class="btn btn-g" onclick="show('services');return false">Explore what we do <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="btn btn-ol" onclick="show('contact');return false">Get a free quote</a>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="scroll-line"></div><span>Explore</span></div>
+  </section>
+
+  <!-- PROMISE -->
+  <div class="promise">
+    <div class="promise-q reveal">You don't want a carpenter, a tiler or a decorator. You want a <em>nicer kitchen</em>, a <em>modern bathroom</em>, a garden that looks after itself, and a home that's worth more. We deliver the outcome.</div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="trust">
+    <div class="trust-item reveal"><div class="trust-num">15+</div><div class="trust-lbl">Years improving homes</div></div>
+    <div class="trust-item reveal d1"><div class="trust-num">1,200+</div><div class="trust-lbl">Projects completed</div></div>
+    <div class="trust-item reveal d2"><div class="trust-num">4.9★</div><div class="trust-lbl">Average client rating</div></div>
+    <div class="trust-item reveal d3"><div class="trust-num">Fully</div><div class="trust-lbl">Insured &amp; FMB accredited</div></div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars">
+    <div class="pillars-hdr">
+      <div class="tag center reveal">What kind of improvement?</div>
+      <h2 class="disp dark reveal d1">Pick where you'd<br>like to start.</h2>
+      <p class="body reveal d2" style="margin-top:8px">Whatever your home needs, it fits into one of these. Choose a pillar to see everything we do.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar reveal" onclick="show('services')">
+        <div class="pillar-accent"></div>
+        <img class="pillar-bg" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80" alt="Interior improvements">
+        <div class="pillar-overlay"></div>
+        <div class="pillar-num">01</div>
+        <div class="pillar-body">
+          <div class="pillar-name">Interior Improvements</div>
+          <div class="pillar-desc">Everything that modernises the inside of your home — from a fresh kitchen or bathroom to a full refurbishment.</div>
+          <div class="pillar-tags"><span class="ptag">Kitchens</span><span class="ptag">Bathrooms</span><span class="ptag">Flooring</span><span class="ptag">Joinery</span><span class="ptag">Decorating</span></div>
+          <div class="pillar-link">See interior services <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="pillar reveal d1" onclick="show('services')">
+        <div class="pillar-accent"></div>
+        <img class="pillar-bg" src="https://images.unsplash.com/photo-1558904541-efa843a96f01?w=900&q=80" alt="Exterior improvements">
+        <div class="pillar-overlay"></div>
+        <div class="pillar-num">02</div>
+        <div class="pillar-body">
+          <div class="pillar-name">Exterior Improvements</div>
+          <div class="pillar-desc">Everything that lifts kerb appeal and creates outdoor space built for relaxing, entertaining, and adding value.</div>
+          <div class="pillar-tags"><span class="ptag">Landscaping</span><span class="ptag">Patios</span><span class="ptag">Driveways</span><span class="ptag">Fencing</span><span class="ptag">Decking</span></div>
+          <div class="pillar-link">See exterior services <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="pillar reveal" onclick="show('services')">
+        <div class="pillar-accent"></div>
+        <img class="pillar-bg" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&q=80" alt="Property upgrades">
+        <div class="pillar-overlay"></div>
+        <div class="pillar-num">03</div>
+        <div class="pillar-body">
+          <div class="pillar-name">Property Upgrades</div>
+          <div class="pillar-desc">Projects that make your home more functional and more valuable — converting, extending use, and future-proofing.</div>
+          <div class="pillar-tags"><span class="ptag">Garage conversions</span><span class="ptag">Home offices</span><span class="ptag">Utility rooms</span><span class="ptag">Insulation</span></div>
+          <div class="pillar-link">See upgrade services <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="pillar reveal d1" onclick="show('services')">
+        <div class="pillar-accent"></div>
+        <img class="pillar-bg" src="https://images.unsplash.com/photo-1632759145351-1d592919f522?w=900&q=80" alt="Repairs and maintenance">
+        <div class="pillar-overlay"></div>
+        <div class="pillar-num">04</div>
+        <div class="pillar-body">
+          <div class="pillar-name">Repairs &amp; Maintenance</div>
+          <div class="pillar-desc">Keeping your property in top condition — from roofs and gutters to damp, repointing, and landlord maintenance.</div>
+          <div class="pillar-tags"><span class="ptag">Roofing</span><span class="ptag">Guttering</span><span class="ptag">Damp</span><span class="ptag">Repointing</span><span class="ptag">Landlord care</span></div>
+          <div class="pillar-link">See maintenance services <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+      <div class="pillar wide reveal" onclick="show('services')">
+        <div class="pillar-accent"></div>
+        <img class="pillar-bg" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1400&q=80" alt="Project management">
+        <div class="pillar-overlay"></div>
+        <div class="pillar-num">05</div>
+        <div class="pillar-body">
+          <div class="pillar-name">Full Project Management</div>
+          <div class="pillar-desc">On bigger projects, you deal with one trusted contractor instead of chasing several trades. We handle planning, scheduling, procurement, quality, budgets and timelines — so you don't have to.</div>
+          <div class="pillar-link">How we manage your project <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how">
+    <div class="how-hdr">
+      <div class="tag center muted reveal">How it works</div>
+      <h2 class="disp light reveal d1">Simple, from first<br>call to finished home.</h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step reveal"><div class="how-step-num">1</div><div class="how-step-title">Get in touch</div><div class="how-step-desc">Tell us what you'd like to improve. We'll arrange a visit at a time that suits you.</div></div>
+      <div class="how-step reveal d1"><div class="how-step-num">2</div><div class="how-step-title">Free quote</div><div class="how-step-desc">We assess the work and give you a clear, fixed quote — no jargon, no hidden costs.</div></div>
+      <div class="how-step reveal d2"><div class="how-step-num">3</div><div class="how-step-title">We do the work</div><div class="how-step-desc">Our vetted team delivers to schedule, keeping you updated at every stage.</div></div>
+      <div class="how-step reveal d3"><div class="how-step-num">4</div><div class="how-step-title">Enjoy the result</div><div class="how-step-desc">We finish, clean up, and check you're delighted. Backed by our workmanship guarantee.</div></div>
+    </div>
+  </section>
+
+  <!-- FEATURED BEFORE/AFTER -->
+  <section class="featured">
+    <div class="feat-img">
+      <span class="feat-badge">Before &amp; After</span>
+      <img src="https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?w=1000&q=80" alt="Kitchen transformation">
+    </div>
+    <div class="feat-content">
+      <div class="feat-type reveal">Interior Improvement · Kitchen Renovation</div>
+      <div class="feat-title reveal d1">An outdated kitchen, transformed into a modern living space.</div>
+      <p class="feat-body reveal d2">Our clients in Surrey wanted a kitchen that worked for family life and entertaining. We removed a wall to open the space, fitted bespoke cabinetry, new flooring and lighting, and managed every trade — completed in four weeks, on budget.</p>
+      <div class="feat-stats reveal d3">
+        <div><div class="feat-stat-num">4 wks</div><div class="feat-stat-lbl">Start to finish</div></div>
+        <div><div class="feat-stat-num">£24k</div><div class="feat-stat-lbl">Fixed price</div></div>
+        <div><div class="feat-stat-num">+£40k</div><div class="feat-stat-lbl">Value added</div></div>
+      </div>
+      <div class="reveal d3"><a href="#" class="btn btn-old" onclick="show('projects');return false">See more of our work <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    </div>
+  </section>
+
+  <!-- VALUE / ONE COMPANY -->
+  <section class="value">
+    <div class="value-grid">
+      <div>
+        <div class="tag muted reveal">Why one company</div>
+        <h2 class="disp light reveal d1" style="font-size:clamp(30px,3.6vw,50px)">One trusted contractor.<br>Not five separate trades.</h2>
+        <p class="body light reveal d2" style="margin-top:18px;max-width:420px">The value we offer isn't a single trade — it's taking the entire project off your hands. You get one point of contact, one quote, and one company accountable for the finished result.</p>
+      </div>
+      <div class="value-list">
+        <div class="value-row reveal"><svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6L9 17l-5-5"/></svg><div><div class="value-row-title">One point of contact</div><div class="value-row-desc">No chasing separate trades or refereeing between them. You deal with us, and we handle the rest.</div></div></div>
+        <div class="value-row reveal d1"><svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6L9 17l-5-5"/></svg><div><div class="value-row-title">Fixed, transparent pricing</div><div class="value-row-desc">A clear quote before we start. You know exactly what you're paying, with no surprises.</div></div></div>
+        <div class="value-row reveal d2"><svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6L9 17l-5-5"/></svg><div><div class="value-row-title">Managed start to finish</div><div class="value-row-desc">Planning, scheduling, materials, trades, and quality control — all coordinated by us.</div></div></div>
+        <div class="value-row reveal d3"><svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M20 6L9 17l-5-5"/></svg><div><div class="value-row-title">Guaranteed workmanship</div><div class="value-row-desc">Fully insured, FMB-accredited, and backed by our workmanship guarantee on every job.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="testi">
+    <div class="testi-q reveal">"We'd been putting off doing up the house because we dreaded managing all the different trades. Ardivia took the whole thing off our hands — kitchen, bathroom, decorating, the lot. It's the first time a project actually felt easy."</div>
+    <div class="reveal d1"><div class="testi-line"></div><div class="testi-author">Sarah &amp; James Whitfield</div><div class="testi-role">Whole-house refurbishment · Guildford</div></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div>
+      <div class="tag muted reveal">Get started</div>
+      <h2 class="disp light reveal d1">Let's improve<br>your home.</h2>
+      <p class="cta-sub reveal d2">Tell us what you have in mind and we'll get back to you with a free, no-obligation quote. Whatever the size of the job, we'd love to help.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name" required><input class="ff" type="tel" placeholder="Phone number"></div>
+        <input class="ff" type="email" placeholder="Email address" required>
+        <select class="ff" required>
+          <option value="">What would you like to improve?</option>
+          <option>Interior — kitchen, bathroom, refurb…</option>
+          <option>Exterior — garden, driveway, patio…</option>
+          <option>Property upgrade — conversion, office…</option>
+          <option>Repairs &amp; maintenance</option>
+          <option>A larger project — not sure where to start</option>
+        </select>
+        <textarea class="ff" placeholder="Tell us a little about the project"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Get my free quote <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════ SERVICES ══════════════ -->
+<div class="page" id="page-services">
+  <div class="svc-hero">
+    <div class="tag muted reveal">What we do</div>
+    <h1 class="disp light reveal d1">Everything your<br>home needs.</h1>
+    <p class="reveal d2">We've organised everything we do into five simple areas. Whatever you're trying to achieve, it fits into one of them — and we manage all of it, start to finish.</p>
+  </div>
+
+  <!-- 1 Interior -->
+  <div class="svc-block">
+    <div class="svc-block-inner">
+      <div class="svc-img-col"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1000&q=80" alt="Interior"><div class="svc-img-lbl">01 — Interior Improvements</div></div>
+      <div class="svc-txt-col">
+        <div class="svc-num reveal">Pillar 01</div>
+        <h2 class="svc-h reveal d1">Interior Improvements</h2>
+        <div class="svc-outcome reveal d1">We transform outdated homes into modern, functional living spaces.</div>
+        <p class="svc-p reveal d2">Everything that modernises the inside of your home — whether it's a single room or a complete refurbishment. Our team handles every trade so the finish is seamless.</p>
+        <div class="svc-services-list reveal d3">
+          <span class="svc-chip">Full house refurbishments</span><span class="svc-chip">Kitchen renovations</span><span class="svc-chip">Bathroom renovations</span><span class="svc-chip">Painting &amp; decorating</span><span class="svc-chip">Flooring</span><span class="svc-chip">Tiling</span><span class="svc-chip">Carpentry &amp; joinery</span><span class="svc-chip">Internal doors</span><span class="svc-chip">Built-in wardrobes</span><span class="svc-chip">Media walls</span><span class="svc-chip">Plastering</span><span class="svc-chip">Ceiling repairs</span><span class="svc-chip">Loft boarding</span><span class="svc-chip">Storage solutions</span>
+        </div>
+        <div class="svc-value reveal d3">
+          <div class="svc-value-item"><div class="svc-value-num">£200–2k</div><div class="svc-value-lbl">Small jobs</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">£3–15k</div><div class="svc-value-lbl">Room refurbs</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">£20–100k+</div><div class="svc-value-lbl">Whole house</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 Exterior -->
+  <div class="svc-block">
+    <div class="svc-block-inner">
+      <div class="svc-img-col"><img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1000&q=80" alt="Exterior"><div class="svc-img-lbl">02 — Exterior Improvements</div></div>
+      <div class="svc-txt-col">
+        <div class="svc-num reveal">Pillar 02</div>
+        <h2 class="svc-h reveal d1">Exterior Improvements</h2>
+        <div class="svc-outcome reveal d1">We create outdoor spaces built for entertaining, relaxing, and adding value to your home.</div>
+        <p class="svc-p reveal d2">Everything that improves kerb appeal and outdoor living — from a new driveway that transforms the front of your home to a garden designed for summer evenings.</p>
+        <div class="svc-services-list reveal d3">
+          <span class="svc-chip">Landscaping</span><span class="svc-chip">Patios</span><span class="svc-chip">Decking</span><span class="svc-chip">Artificial grass</span><span class="svc-chip">Turfing</span><span class="svc-chip">Garden redesign</span><span class="svc-chip">Fencing</span><span class="svc-chip">Gates</span><span class="svc-chip">Garden walls</span><span class="svc-chip">Driveways</span><span class="svc-chip">Resin driveways</span><span class="svc-chip">Block paving</span><span class="svc-chip">Exterior decorating</span><span class="svc-chip">Pressure washing</span><span class="svc-chip">Brick cleaning</span>
+        </div>
+        <div class="svc-value reveal d3">
+          <div class="svc-value-item"><div class="svc-value-num">Spring</div><div class="svc-value-lbl">Book early for summer</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">Kerb appeal</div><div class="svc-value-lbl">Adds resale value</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 Upgrades -->
+  <div class="svc-block">
+    <div class="svc-block-inner">
+      <div class="svc-img-col"><img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1000&q=80" alt="Upgrades"><div class="svc-img-lbl">03 — Property Upgrades</div></div>
+      <div class="svc-txt-col">
+        <div class="svc-num reveal">Pillar 03</div>
+        <h2 class="svc-h reveal d1">Property Upgrades</h2>
+        <div class="svc-outcome reveal d1">We turn wasted space into rooms you'll use every day — and value you'll bank when you sell.</div>
+        <p class="svc-p reveal d2">Projects that make your home more functional and more valuable. These are investments rather than repairs — turning garages, lofts, and awkward corners into genuinely useful space.</p>
+        <div class="svc-services-list reveal d3">
+          <span class="svc-chip">Garage conversions</span><span class="svc-chip">Utility rooms</span><span class="svc-chip">Home offices</span><span class="svc-chip">Walk-in wardrobes</span><span class="svc-chip">Loft storage</span><span class="svc-chip">Insulation upgrades</span><span class="svc-chip">Fire doors</span><span class="svc-chip">Soundproofing</span><span class="svc-chip">Accessibility improvements</span>
+        </div>
+        <div class="svc-value reveal d3">
+          <div class="svc-value-item"><div class="svc-value-num">High value</div><div class="svc-value-lbl">Adds usable space</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">Investment</div><div class="svc-value-lbl">Not just a repair</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 Repairs -->
+  <div class="svc-block">
+    <div class="svc-block-inner">
+      <div class="svc-img-col"><img src="https://images.unsplash.com/photo-1632759145351-1d592919f522?w=1000&q=80" alt="Repairs"><div class="svc-img-lbl">04 — Repairs &amp; Maintenance</div></div>
+      <div class="svc-txt-col">
+        <div class="svc-num reveal">Pillar 04</div>
+        <h2 class="svc-h reveal d1">Repairs &amp; Maintenance</h2>
+        <div class="svc-outcome reveal d1">We keep your property in perfect condition — and catch the small things before they become big ones.</div>
+        <p class="svc-p reveal d2">Keeping your home or rental in top condition. Ideal for landlords and busy owners who want one reliable number to call for everything from a leaking gutter to end-of-tenancy work.</p>
+        <div class="svc-services-list reveal d3">
+          <span class="svc-chip">Roof repairs</span><span class="svc-chip">Gutter replacement</span><span class="svc-chip">Fascia &amp; soffit repairs</span><span class="svc-chip">Fence repairs</span><span class="svc-chip">General maintenance</span><span class="svc-chip">Landlord maintenance</span><span class="svc-chip">End-of-tenancy repairs</span><span class="svc-chip">Insurance repairs</span><span class="svc-chip">Damp repairs</span><span class="svc-chip">Brick repointing</span>
+        </div>
+        <div class="svc-value reveal d3">
+          <div class="svc-value-item"><div class="svc-value-num">Landlords</div><div class="svc-value-lbl">One number for everything</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">Fast</div><div class="svc-value-lbl">Responsive callouts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 Project Management -->
+  <div class="svc-block">
+    <div class="svc-block-inner">
+      <div class="svc-img-col"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1000&q=80" alt="Project management"><div class="svc-img-lbl">05 — Project Management</div></div>
+      <div class="svc-txt-col">
+        <div class="svc-num reveal">Pillar 05</div>
+        <h2 class="svc-h reveal d1">Full Project Management</h2>
+        <div class="svc-outcome reveal d1">You get the finished home. We handle everything it takes to get there.</div>
+        <p class="svc-p reveal d2">On larger projects, the real value is convenience: dealing with one trusted contractor instead of coordinating several independent trades yourself. We take care of the entire process.</p>
+        <div class="svc-services-list reveal d3">
+          <span class="svc-chip">Planning</span><span class="svc-chip">Scheduling</span><span class="svc-chip">Material procurement</span><span class="svc-chip">Sourcing &amp; managing trades</span><span class="svc-chip">Quality control</span><span class="svc-chip">Client communication</span><span class="svc-chip">Budget management</span><span class="svc-chip">Timeline management</span>
+        </div>
+        <div class="svc-value reveal d3">
+          <div class="svc-value-item"><div class="svc-value-num">One contact</div><div class="svc-value-lbl">Not five trades</div></div>
+          <div class="svc-value-item"><div class="svc-value-num">Stress-free</div><div class="svc-value-lbl">We coordinate it all</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div>
+      <div class="tag muted reveal">Not sure where to start?</div>
+      <h2 class="disp light reveal d1">Tell us what you<br>have in mind.</h2>
+      <p class="cta-sub reveal d2">Describe what you'd like to achieve and we'll point you in the right direction — with a free, no-obligation quote.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name" required><input class="ff" type="tel" placeholder="Phone number"></div>
+        <input class="ff" type="email" placeholder="Email address" required>
+        <textarea class="ff" placeholder="What would you like to improve?"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Get my free quote <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════ PROJECTS ══════════════ -->
+<div class="page" id="page-projects">
+  <div class="proj-hero">
+    <div class="tag muted reveal">Our work</div>
+    <h1 class="disp light reveal d1">Homes we've<br>improved.</h1>
+    <p class="reveal d2">A selection of recent projects across the region — inside and out, big and small. Every one delivered and managed by us, start to finish.</p>
+  </div>
+  <div class="proj-filters">
+    <button class="pfilter active">All Work</button>
+    <button class="pfilter">Interior</button>
+    <button class="pfilter">Exterior</button>
+    <button class="pfilter">Upgrades</button>
+    <button class="pfilter">Repairs</button>
+  </div>
+  <div class="proj-grid">
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Interior</span></div><img src="https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Kitchen Renovation</div><div class="pcard-name">Surrey Family Kitchen</div><div class="pcard-loc">Guildford · 2024</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Exterior</span></div><img src="https://images.unsplash.com/photo-1558904541-efa843a96f01?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Garden Redesign</div><div class="pcard-name">Low-Maintenance Garden</div><div class="pcard-loc">Woking · 2024</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Interior</span></div><img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Bathroom Renovation</div><div class="pcard-name">Modern Family Bathroom</div><div class="pcard-loc">Farnham · 2024</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Upgrade</span></div><img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Garage Conversion</div><div class="pcard-name">Garage to Home Office</div><div class="pcard-loc">Godalming · 2023</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Exterior</span></div><img src="https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Resin Driveway</div><div class="pcard-name">Front-of-House Transformation</div><div class="pcard-loc">Camberley · 2024</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Interior</span></div><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Whole-House Refurb</div><div class="pcard-name">Complete Refurbishment</div><div class="pcard-loc">Guildford · 2023</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Exterior</span></div><img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Patio &amp; Landscaping</div><div class="pcard-name">Entertaining Garden</div><div class="pcard-loc">Haslemere · 2024</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Upgrade</span></div><img src="https://images.unsplash.com/photo-1616627561950-9f746e330187?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Utility Room</div><div class="pcard-name">Boot &amp; Utility Room</div><div class="pcard-loc">Cranleigh · 2023</div></div></div>
+    <div class="pcard"><div class="pcard-meta"><span class="pcard-tag">Repairs</span></div><img src="https://images.unsplash.com/photo-1632759145351-1d592919f522?w=700&q=80" alt=""><div class="pcard-info"><div class="pcard-type">Roof &amp; Guttering</div><div class="pcard-name">Roof Restoration</div><div class="pcard-loc">Aldershot · 2024</div></div></div>
+  </div>
+
+  <section class="cta">
+    <div>
+      <div class="tag muted reveal">Your home next</div>
+      <h2 class="disp light reveal d1">Ready to start<br>your project?</h2>
+      <p class="cta-sub reveal d2">Every project here started with a simple conversation. Tell us about yours and we'll send a free quote.</p>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name" required><input class="ff" type="tel" placeholder="Phone number"></div>
+        <input class="ff" type="email" placeholder="Email address" required>
+        <textarea class="ff" placeholder="Tell us about your project"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Get my free quote <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<div class="page" id="page-contact">
+  <div class="svc-hero" style="padding-bottom:52px">
+    <div class="tag muted reveal">Get a free quote</div>
+    <h1 class="disp light reveal d1">Let's improve<br>your home.</h1>
+    <p class="reveal d2">Tell us what you'd like to do. We'll get back to you quickly with a free, no-obligation quote — whatever the size of the job.</p>
+  </div>
+  <section class="cta" style="padding-top:64px">
+    <div>
+      <div class="tag muted reveal">Talk to us</div>
+      <h2 class="disp light reveal d1" style="font-size:clamp(28px,3.4vw,46px)">We'd love to help.</h2>
+      <div style="margin-top:36px" class="reveal d2">
+        <div style="display:flex;gap:14px;padding:16px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)"><span style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);width:60px">Phone</span><span style="font-size:14px;font-weight:300;color:rgba(232,226,213,.55)">01483 000 000</span></div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)"><span style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);width:60px">Email</span><span style="font-size:14px;font-weight:300;color:rgba(232,226,213,.55)">hello@ardivia.co.uk</span></div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)"><span style="font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);width:60px">Hours</span><span style="font-size:14px;font-weight:300;color:rgba(232,226,213,.55)">Mon–Sat · 8am–6pm</span></div>
+      </div>
+    </div>
+    <div>
+      <form class="form-wrap reveal d1" onsubmit="sub(this,event)">
+        <div class="form-row"><input class="ff" placeholder="Your name" required><input class="ff" type="tel" placeholder="Phone number"></div>
+        <input class="ff" type="email" placeholder="Email address" required>
+        <select class="ff" required>
+          <option value="">What would you like to improve?</option>
+          <option>Interior — kitchen, bathroom, refurb…</option>
+          <option>Exterior — garden, driveway, patio…</option>
+          <option>Property upgrade — conversion, office…</option>
+          <option>Repairs &amp; maintenance</option>
+          <option>A larger project — not sure where to start</option>
+        </select>
+        <textarea class="ff" placeholder="Tell us a little about the project"></textarea>
+        <button class="btn btn-g" style="align-self:flex-start;margin-top:10px">Get my free quote <svg class="arrow" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft">
+    <div>
+      <span class="flogo">Ardivia<sup>®</sup></span>
+      <p class="ftag">Property improvement specialists. We renovate, improve and maintain homes inside and out — managing every project from start to finish.</p>
+      <div class="fsoc"><a href="#">IG</a><a href="#">FB</a><a href="#">in</a></div>
+    </div>
+    <div>
+      <div class="fct">What We Do</div>
+      <ul class="flinks">
+        <li><a onclick="show('services')">Interior Improvements</a></li>
+        <li><a onclick="show('services')">Exterior Improvements</a></li>
+        <li><a onclick="show('services')">Property Upgrades</a></li>
+        <li><a onclick="show('services')">Repairs &amp; Maintenance</a></li>
+        <li><a onclick="show('services')">Project Management</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Company</div>
+      <ul class="flinks">
+        <li><a onclick="show('home')">Home</a></li>
+        <li><a onclick="show('projects')">Our Work</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a onclick="show('contact')">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fct">Get in touch</div>
+      <ul class="flinks">
+        <li><a href="#">01483 000 000</a></li>
+        <li><a href="#">hello@ardivia.co.uk</a></li>
+        <li><a onclick="show('contact')" style="color:var(--gold)">Get a free quote →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">
+    <div class="fcopy">© 2026 Ardivia Ltd. Fully insured · FMB Member. Registered in England &amp; Wales.</div>
+    <div class="fleg"><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';},50);});
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+function show(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(t=>t.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg){pg.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  setTimeout(()=>{
+    const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');o.unobserve(e.target);}});},{threshold:0.08});
+    document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el=>o.observe(el));
+  },60);
+  return false;
+}
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('.pfilter').forEach(f=>f.addEventListener('click',()=>{document.querySelectorAll('.pfilter').forEach(x=>x.classList.remove('active'));f.classList.add('active');}));
+function sub(form,e){e.preventDefault();const b=form.querySelector('button');b.textContent="Thanks — we'll be in touch shortly.";b.style.background='#7A8B6F';}
+</script>
+</body>
+</html>

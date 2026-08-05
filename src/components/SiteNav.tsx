@@ -29,14 +29,9 @@ export function SiteNav() {
   }, [pathname]);
 
   return (
-    <motion.nav
-      className={`av-nav${scrolled ? " scrolled" : ""}`}
-      initial={{ y: -28, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <motion.nav className={`av-nav${scrolled ? " scrolled" : ""}`}>
       <Link href="/" className="av-logo">
-        Ardi<span>v</span>ia<sup>®</sup>
+        Ardivia<sup>®</sup>
       </Link>
       <ul className="av-links">
         {links.map((link) => (
@@ -48,7 +43,7 @@ export function SiteNav() {
         ))}
       </ul>
       <Link href="/contact" className="av-cta">
-        Start a Conversation
+        Get a Free Quote
       </Link>
       <button
         className="av-burger"
@@ -88,7 +83,7 @@ export function SiteNav() {
               </li>
             ))}
             <li>
-              <Link href="/contact">Start a Conversation</Link>
+              <Link href="/contact">Get a Free Quote</Link>
             </li>
           </motion.ul>
         ) : null}

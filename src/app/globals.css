@@ -62,10 +62,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 66px;
   padding: 0 52px;
-  background: rgba(245, 243, 238, 0.94);
-  border-bottom: 1px solid rgba(38, 52, 43, 0.08);
+  background: var(--white);
+  border-bottom: 1px solid transparent;
   transition:
     background 0.4s,
     border-color 0.4s,
@@ -78,8 +78,8 @@ button {
   box-shadow: none;
 }
 .av-logo {
-  font-family: var(--font-sans);
-  font-size: 13px;
+  font-family: var(--font-integrated-sans);
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -87,7 +87,7 @@ button {
   text-decoration: none;
 }
 .av-logo sup {
-  font-family: var(--font-sans);
+  font-family: var(--font-integrated-sans);
   font-size: 8px;
   font-weight: 400;
   letter-spacing: 0;
@@ -105,14 +105,14 @@ button {
   display: none;
 }
 .av-links a {
-  font-family: var(--font-sans);
+  font-family: var(--font-integrated-sans);
   font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
   text-decoration: none;
-  opacity: 0.5;
+  opacity: 0.55;
   transition:
     opacity 0.2s,
     color 0.2s;
@@ -123,7 +123,7 @@ button {
   color: var(--ink);
 }
 .av-cta {
-  font-family: var(--font-sans);
+  font-family: var(--font-integrated-sans);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.12em;
@@ -131,7 +131,7 @@ button {
   color: var(--white);
   background: var(--forest);
   border: none;
-  padding: 10px 24px;
+  padding: 11px 22px;
   cursor: pointer;
   text-decoration: none;
   transition:
@@ -180,15 +180,8 @@ button {
   line-height: 1.04;
 }
 .reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
-}
-.reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 .d1 {
   transition-delay: 0.1s;
@@ -1762,6 +1755,10 @@ textarea.form-field {
   opacity: 1;
   transform: translateY(0);
 }
+.pcard:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -4px;
+}
 .cs-hero {
   position: relative;
   height: 88vh;
@@ -2963,7 +2960,7 @@ textarea.form-field {
   justify-content: space-between;
   gap: 48px;
   padding: 56px 52px;
-  background: var(--forest);
+  background: var(--ink);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 .ih-contact-strip .ih-display {

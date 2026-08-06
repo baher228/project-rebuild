@@ -9,7 +9,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/projects", label: "Projects" },
-  { href: "/journal", label: "Insights" },
+  { href: "/contact", label: "Contact us" },
 ] as const;
 
 export function SiteNav() {
@@ -31,7 +31,7 @@ export function SiteNav() {
   return (
     <motion.nav className={`av-nav${scrolled ? " scrolled" : ""}`}>
       <Link href="/" className="av-logo">
-        Ardivia<sup>®</sup>
+        Ardivia
       </Link>
       <ul className="av-links">
         {links.map((link) => (

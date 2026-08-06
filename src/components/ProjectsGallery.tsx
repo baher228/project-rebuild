@@ -13,9 +13,6 @@ export function ProjectsGallery() {
           aria-label={`Explore ${project.name}`}
         >
           <img src={project.images[0]} alt={project.name} />
-          <div className="pcard-meta">
-            <span className="pcard-tag">Residential</span>
-          </div>
           <div className="pcard-info">
             <div className="pcard-type">{project.service}</div>
             <h2 className="pcard-name">{project.name}</h2>

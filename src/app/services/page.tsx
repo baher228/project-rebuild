@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 
-import { EnquiryForm } from "@/components/EnquiryForm";
-
 export const metadata: Metadata = {
   title: "Services",
   description:
@@ -204,6 +202,7 @@ export default function ServicesPage() {
         ))}
       </div>
 
+      {/*
       <section className="what-we-do__cta" aria-labelledby="services-cta-title">
         <div>
           <p className="what-we-do__kicker">Not sure where to start?</p>
@@ -239,6 +238,7 @@ export default function ServicesPage() {
           ]}
         />
       </section>
+      */}
     </main>
   );
 }

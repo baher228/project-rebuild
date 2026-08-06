@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Crimson_Text, DM_Sans, Josefin_Sans } from "next/font/google";
+import { Cormorant_Garamond, Crimson_Text, DM_Sans, Josefin_Sans, Tenor_Sans } from "next/font/google";
 
 import "./globals.css";
 import { RevealObserver } from "@/components/RevealObserver";
@@ -32,6 +32,12 @@ const integratedSansFont = DM_Sans({
   variable: "--font-integrated-sans",
 });
 
+const logoFont = Tenor_Sans({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-logo",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Ardivia - Bespoke Design & Build, London",
@@ -55,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${displayFont.variable} ${serifFont.variable} ${sansFont.variable} ${integratedSansFont.variable}`}
+      className={`${displayFont.variable} ${serifFont.variable} ${sansFont.variable} ${integratedSansFont.variable} ${logoFont.variable}`}
     >
       <body>
         <RevealObserver />

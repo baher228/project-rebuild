@@ -1,104 +1,98 @@
 import Link from "next/link";
 
+import { ArrowIcon } from "@/components/ArrowIcon";
+
 export function SiteFooter() {
   return (
     <footer className="av-footer">
-      <div className="footer-top">
+      <section className="footer-conversation" aria-labelledby="footer-conversation-title">
         <div>
-          <Link href="/" className="footer-logo-el">
-            Ardi<span>v</span>ia
+          <h2 id="footer-conversation-title">Start a conversation.</h2>
+          <p>No commitment. Just a conversation about what you&apos;re trying to achieve.</p>
+        </div>
+        <Link href="/contact" className="footer-conversation__button">
+          Get in touch <ArrowIcon />
+        </Link>
+      </section>
+      <div className="reference-footer__top">
+        <div>
+          <Link href="/" className="reference-footer__logo">
+            Ardivia<sup>®</sup>
           </Link>
-          <p className="footer-tagline">
-            Bespoke design and build for those who demand the extraordinary. London &amp; beyond.
+          <p className="reference-footer__tagline">
+            Property improvement specialists. We renovate, improve and maintain homes inside and out
+            — managing every project from start to finish.
           </p>
-          <div className="footer-socials">
-            <a href="#" className="social-link" aria-label="LinkedIn">
-              In
-            </a>
-            <a href="#" className="social-link" aria-label="Instagram">
+          <div className="reference-footer__socials" aria-label="Social media links">
+            <a href="#" aria-label="Instagram">
               IG
             </a>
-            <a href="#" className="social-link" aria-label="Pinterest">
-              Pi
+            <a href="#" aria-label="Facebook">
+              FB
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              in
             </a>
           </div>
         </div>
+        <FooterLinks
+          title="What we do"
+          links={[
+            ["Interior Improvements", "/services"],
+            ["Exterior Improvements", "/services"],
+            ["Property Upgrades", "/services"],
+            ["Repairs & Maintenance", "/services"],
+            ["Project Management", "/services"],
+          ]}
+        />
+        <FooterLinks
+          title="Company"
+          links={[
+            ["Home", "/"],
+            ["Our Work", "/projects"],
+            ["About Us", "/studio"],
+            ["Contact", "/contact"],
+          ]}
+        />
         <div>
-          <div className="footer-col-title">Services</div>
-          <ul className="footer-links">
+          <h2 className="reference-footer__title">Get in touch</h2>
+          <ul className="reference-footer__links">
             <li>
-              <Link href="/services">Residential Design</Link>
+              <a href="tel:+441483000000">01483 000 000</a>
             </li>
-            <li>
-              <Link href="/services">Commercial Interiors</Link>
-            </li>
-            <li>
-              <Link href="/services">Project Management</Link>
-            </li>
-            <li>
-              <Link href="/services">Materials Sourcing</Link>
-            </li>
-            <li>
-              <Link href="/services">Heritage Restoration</Link>
-            </li>
-            <li>
-              <Link href="/services">Completion &amp; Snagging</Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="footer-col-title">Studio</div>
-          <ul className="footer-links">
-            <li>
-              <Link href="/studio">About Ardivia</Link>
-            </li>
-            <li>
-              <Link href="/studio">The Team</Link>
-            </li>
-            <li>
-              <Link href="/projects">Projects</Link>
-            </li>
-            <li>
-              <Link href="/journal">Journal</Link>
-            </li>
-            <li>
-              <Link href="/clients">Clients</Link>
-            </li>
-            <li>
-              <Link href="/contact">Contact</Link>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <div className="footer-col-title">Contact</div>
-          <ul className="footer-links">
             <li>
               <a href="mailto:hello@ardivia.co.uk">hello@ardivia.co.uk</a>
             </li>
             <li>
-              <a href="tel:+442079460000">+44 20 7946 0000</a>
+              <Link className="reference-footer__quote-link" href="/contact">
+                Get a free quote →
+              </Link>
             </li>
           </ul>
-          <p className="footer-tagline" style={{ marginTop: 18 }}>
-            14 Charlotte Street
-            <br />
-            Fitzrovia, London
-            <br />
-            W1T 2LS
-          </p>
         </div>
       </div>
-      <div className="footer-bottom">
-        <div className="footer-copy">
-          &copy; 2026 Ardivia Ltd. Registered in England &amp; Wales. Company No. 06712834. RIBA
-          Chartered Practice.
-        </div>
-        <div className="footer-legal">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Cookie Settings</a>
+      <div className="reference-footer__bottom">
+        <p>© 2026 Ardivia Ltd. Fully insured · FMB Member. Registered in England & Wales.</p>
+        <div>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLinks({ title, links }: { title: string; links: [string, string][] }) {
+  return (
+    <div>
+      <h2 className="reference-footer__title">{title}</h2>
+      <ul className="reference-footer__links">
+        {links.map(([label, href]) => (
+          <li key={label}>
+            <Link href={href}>{label}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

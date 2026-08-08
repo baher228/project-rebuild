@@ -176,7 +176,6 @@ export default function ServicesPage() {
             </div>
 
             <div className="what-we-do__content">
-              <p className="what-we-do__number">Pillar {service.number}</p>
               <h2 className="what-we-do__heading" id={service.id}>
                 {service.title}
               </h2>

@@ -17,7 +17,7 @@ export function SiteFooter() {
       <div className="reference-footer__top">
         <div>
           <Link href="/" className="reference-footer__logo">
-            Ardivia<sup>®</sup>
+            Ardivia
           </Link>
           <p className="reference-footer__tagline">
             Property improvement specialists. We renovate, improve and maintain homes inside and out
@@ -58,10 +58,10 @@ export function SiteFooter() {
           <h2 className="reference-footer__title">Get in touch</h2>
           <ul className="reference-footer__links">
             <li>
-              <a href="tel:+441483000000">01483 000 000</a>
+              <a href="tel:+447985482703">+44 7985 482 703</a>
             </li>
             <li>
-              <a href="mailto:hello@ardivia.co.uk">hello@ardivia.co.uk</a>
+              <a href="mailto:info@ardivia.co.uk">info@ardivia.co.uk</a>
             </li>
             <li>
               <Link className="reference-footer__quote-link" href="/contact">

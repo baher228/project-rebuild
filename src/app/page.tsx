@@ -122,12 +122,11 @@ export default function HomePage() {
           <h1>
             Better homes,
             <br />
-            inside <em>and out.</em>
+            inside and out.
           </h1>
           <p className="property-home__hero-copy">
-            We renovate, improve and maintain homes inside and out — managing every aspect of your
-            project from start to finish. One trusted company, one point of contact, one beautiful
-            result.
+            We renovate, improve and maintain homes inside and out. One trusted company manages
+            every stage, from start to finish.
           </p>
           <div className="property-home__hero-actions">
             <Link href="/services" className="property-home__button property-home__button--gold">
@@ -242,8 +241,8 @@ export default function HomePage() {
             An outdated kitchen, transformed into a modern living space.
           </h2>
           <div>
-            Our clients in Surrey wanted a kitchen that worked for family life and entertaining. We
-            removed a wall to open the space, fitted bespoke cabinetry, new flooring and lighting,
+            The brief was a kitchen that worked for family life and entertaining. We removed a wall
+            to open the space, fitted bespoke cabinetry, new flooring and lighting,
             and managed every trade — completed in four weeks, on budget.
           </div>
           <dl>

@@ -40,8 +40,7 @@
   border-bottom: 1px solid rgba(232, 226, 213, 0.14);
 }
 
-.what-we-do__kicker,
-.what-we-do__number {
+.what-we-do__kicker {
   font-family: var(--font-integrated-sans), sans-serif;
   font-size: 0.625rem;
   font-weight: 500;
@@ -143,11 +142,6 @@
   justify-content: center;
   background: var(--white);
   padding: clamp(3.5rem, 7vw, 5.7rem) clamp(1.4rem, 5vw, 4.5rem);
-}
-
-.what-we-do__number {
-  margin-bottom: 1rem;
-  color: var(--sage-mid);
 }
 
 .what-we-do__heading {
@@ -310,7 +304,6 @@
   border-color: var(--border);
 }
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 body {
@@ -4402,7 +4395,7 @@ textarea.ic-field {
 }
 
 .property-home__hero-label {
-  margin-bottom: 1.6rem;
+  margin-bottom: 1rem;
 }
 
 .property-home__hero h1,
@@ -4415,9 +4408,10 @@ textarea.ic-field {
 }
 
 .property-home__hero h1 {
+  margin: 0 0 2rem;
   color: var(--linen);
   font-size: clamp(3.1rem, 7vw, 6rem);
-  line-height: 0.95;
+  line-height: 0.88;
 }
 
 .property-home__hero h1 em,
@@ -4426,12 +4420,12 @@ textarea.ic-field {
 }
 
 .property-home__hero-copy {
-  max-width: 31rem;
+  max-width: 25rem;
   margin-bottom: 2.5rem;
   color: rgba(232, 226, 213, 0.8);
   font-family: var(--font-integrated-sans), sans-serif;
   font-size: 1.125rem;
-  line-height: 1.7;
+  line-height: 1.65;
   text-wrap: pretty;
 }
 
@@ -4568,9 +4562,10 @@ textarea.ic-field {
 .property-home__trust-item strong {
   margin-bottom: 0.35rem;
   color: var(--forest);
-  font-family: var(--font-display);
+  font-family: var(--font-serif), serif;
   font-size: clamp(2rem, 3.3vw, 2.75rem);
-  font-weight: 300;
+  font-weight: 400;
+  font-variant-numeric: oldstyle-nums;
   line-height: 1;
 }
 
@@ -5230,19 +5225,13 @@ footer.av-footer {
 .reference-footer__logo {
   color: var(--linen);
   display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-family: var(--font-logo), sans-serif;
+  font-size: 18px;
+  font-weight: 400;
   letter-spacing: 0.2em;
   margin-bottom: 0.875rem;
   text-decoration: none;
   text-transform: uppercase;
-}
-
-.reference-footer__logo sup {
-  color: #c9a84c;
-  font-size: 0.5rem;
-  font-weight: 400;
 }
 
 .reference-footer__tagline {

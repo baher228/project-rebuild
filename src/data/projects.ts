@@ -15,7 +15,7 @@ export const projects: Project[] = [
     slug: "novorizhsky-residence",
     name: "Novorizhsky Residence Garden",
     service: "Private Garden Design",
-    location: "Moscow",
+    location: "Minsk",
     year: 2023,
     summary:
       "Minimalist landscape design featuring basalt rock accents, calm lawn panels and structured planting for a serene private estate.",
@@ -24,7 +24,7 @@ export const projects: Project[] = [
       "The garden combines durable hardscape, soft planting and carefully placed lighting to make the estate as usable after dusk as it is during the day.",
     ],
     details: [
-      ["Location", "Moscow"],
+      ["Location", "Minsk"],
       ["Completion", "2023"],
       ["Service", "Private Garden Design"],
       ["Project type", "Private residence"],
@@ -90,7 +90,7 @@ export const projects: Project[] = [
     slug: "razdory-estate-gardens",
     name: "Razdory 2–3 Estate Gardens",
     service: "Estate Garden Design",
-    location: "Moscow",
+    location: "Minsk",
     year: 2023,
     summary:
       "Elegant formal gardens frame a classical estate with sculpted evergreens, seasonal blooms and precisely edged lawns.",
@@ -99,7 +99,7 @@ export const projects: Project[] = [
       "Evergreen structure gives the garden a strong year-round framework, while flowering borders soften the geometry with seasonal colour and texture.",
     ],
     details: [
-      ["Location", "Moscow"],
+      ["Location", "Minsk"],
       ["Completion", "2023"],
       ["Service", "Estate Garden Design"],
       ["Project type", "Private estate"],

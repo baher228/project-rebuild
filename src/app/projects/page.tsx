@@ -5,7 +5,7 @@ import { ProjectsGallery } from "@/components/ProjectsGallery";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "A selection of residential landscape and outdoor living projects across Moscow, Indiana and Wisconsin.",
+    "A selection of residential landscape and outdoor living projects across Minsk, Indiana and Wisconsin.",
 };
 
 export default function ProjectsPage() {

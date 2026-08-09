@@ -242,8 +242,8 @@ export default function HomePage() {
           </h2>
           <div>
             The brief was a kitchen that worked for family life and entertaining. We removed a wall
-            to open the space, fitted bespoke cabinetry, new flooring and lighting,
-            and managed every trade — completed in four weeks, on budget.
+            to open the space, fitted bespoke cabinetry, new flooring and lighting, and managed
+            every trade — completed in four weeks, on budget.
           </div>
           <dl>
             <div>

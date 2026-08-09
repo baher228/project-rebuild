@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Crimson_Text, DM_Sans, Josefin_Sans, Tenor_Sans } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Crimson_Text,
+  DM_Sans,
+  Josefin_Sans,
+  Tenor_Sans,
+} from "next/font/google";
 
 import "./globals.css";
 import { RevealObserver } from "@/components/RevealObserver";

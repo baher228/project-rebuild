@@ -153,10 +153,9 @@ export default function HomePage() {
 
       <section className="property-home__trust" aria-label="Ardivia credentials">
         {[
-          ["15+", "Years improving homes"],
-          ["1,200+", "Projects completed"],
+          ["3+", "Years improving homes"],
+          ["20+", "Projects completed"],
           ["4.9★", "Average client rating"],
-          ["Fully", "Insured & FMB accredited"],
         ].map(([value, label]) => (
           <div className="property-home__trust-item" key={label}>
             <strong>{value}</strong>
@@ -225,44 +224,6 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
-      </section>
-
-      <section className="property-home__featured" aria-labelledby="home-featured-title">
-        <div className="property-home__featured-image">
-          <span>Before &amp; after</span>
-          <img
-            src="https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?w=1000&q=80"
-            alt="Modern kitchen transformation"
-          />
-        </div>
-        <div className="property-home__featured-content">
-          <p>Interior improvement · Kitchen renovation</p>
-          <h2 id="home-featured-title">
-            An outdated kitchen, transformed into a modern living space.
-          </h2>
-          <div>
-            The brief was a kitchen that worked for family life and entertaining. We removed a wall
-            to open the space, fitted bespoke cabinetry, new flooring and lighting, and managed
-            every trade — completed in four weeks, on budget.
-          </div>
-          <dl>
-            <div>
-              <dt>4 wks</dt>
-              <dd>Start to finish</dd>
-            </div>
-            <div>
-              <dt>£24k</dt>
-              <dd>Fixed price</dd>
-            </div>
-            <div>
-              <dt>+£40k</dt>
-              <dd>Value added</dd>
-            </div>
-          </dl>
-          <Link href="/projects" className="property-home__button property-home__button--forest">
-            See more of our work <ArrowIcon />
-          </Link>
-        </div>
       </section>
 
       <section className="property-home__value" aria-labelledby="home-value-title">

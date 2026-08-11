@@ -29,23 +29,15 @@ export default function ContactPage() {
 
           <div className="ic-details reveal d3">
             <div className="ic-detail-row">
-              <span className="ic-detail-label">Office</span>
-              <span className="ic-detail-value">
-                14 Charlotte Street
-                <br />
-                Fitzrovia, London W1T 2LS
-              </span>
-            </div>
-            <div className="ic-detail-row">
               <span className="ic-detail-label">Email</span>
               <a className="ic-detail-value" href="mailto:hello@ardivia.co.uk">
-                hello@ardivia.co.uk
+                info@ardivia.co.uk
               </a>
             </div>
             <div className="ic-detail-row">
               <span className="ic-detail-label">Phone</span>
               <a className="ic-detail-value" href="tel:+442079460000">
-                +44 20 7946 0000
+                +44 79 8548 2703
               </a>
             </div>
             <div className="ic-detail-row">

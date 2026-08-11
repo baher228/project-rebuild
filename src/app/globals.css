@@ -3409,7 +3409,7 @@ textarea.form-field {
 .ic-left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 64px;
   background: var(--forest);
   border-right: 1px solid rgba(255, 255, 255, 0.06);

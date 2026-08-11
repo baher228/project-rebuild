@@ -34,7 +34,16 @@ jobs:
       - name: Build Next.js app
         env:
           NEXT_TELEMETRY_DISABLED: "1"
-        run: npm run build
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if npm run build; then
+              exit 0
+            fi
+            echo "Build failed on attempt ${attempt}; retrying in 10 seconds..."
+            sleep 10
+          done
+          exit 1
 
   deploy:
     name: Deploy to VPS
@@ -66,7 +75,16 @@ jobs:
           git checkout main
           git pull --ff-only origin main
           npm ci
-          NEXT_TELEMETRY_DISABLED=1 npm run build
+          for attempt in 1 2 3; do
+            if NEXT_TELEMETRY_DISABLED=1 npm run build; then
+              break
+            fi
+            if [ "$attempt" = "3" ]; then
+              exit 1
+            fi
+            echo "Build failed on attempt ${attempt}; retrying in 10 seconds..."
+            sleep 10
+          done
           systemctl restart ardivia.service
           systemctl is-active --quiet ardivia.service
           REMOTE

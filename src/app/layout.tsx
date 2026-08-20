@@ -52,6 +52,11 @@ export const metadata: Metadata = {
   description:
     "Ardivia is a London design and build studio creating exceptional residential and commercial architecture for discerning clients.",
   authors: [{ name: "Ardivia" }],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/icons/favicon.png",
+  },
   openGraph: {
     title: "Ardivia - Bespoke Design & Build, London",
     description:
